@@ -1,0 +1,31 @@
+$white : #fff;
+$body-color: #33276a;
+$body-color-2: #4f457c;
+$body-color-3: #6342ff; 
+ 
+
+$facebook: #0069f7;
+$twitter: #00c6f7;
+$dribbble: #f7007a;
+$google-plus: #d1062c;
+$linkedin: #007bb5;
+
+/* Typography */
+ 
+
+//== font sizes
+$base-font-size: 16px !default;
+$font-size-h1: 80px !default;
+$font-size-h2: 54px !default;
+$font-size-h3: 24px !default;
+$font-size-h4: 20px !default;
+//** Unit-less `line-height` for use in components like buttons.
+$line-height: 1.875 !default;
+// border-radius
+$border-radius-5: 5px !default;
+$border-radius-25: 25px !default;
+$border-radius-3: 3px !default;
+$border-radius-circle: 50% !default;
+//  transition
+$transition: all .3s ease-in;
+$transition-long: all .5s ease-in;

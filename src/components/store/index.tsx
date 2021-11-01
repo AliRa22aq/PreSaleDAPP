@@ -14,6 +14,7 @@ interface DataType {
     contractAddress: string | null,
     isWaletConnect: boolean,
     isSignedIn: boolean,
+    userPincicInfo: {balance: string}
 
   }
 
@@ -27,6 +28,8 @@ const initialState: DataType = {
     contractAddress: "",
     isWaletConnect: false,
     isSignedIn: false,
+    userPincicInfo: {balance: "0"}
+
 
 }
 
@@ -55,9 +58,13 @@ const dataSlice = createSlice({
       state.isWaletConnect = payload;
     },
     
-    setContractFn(state, {payload}: PayloadAction<PICNICType>){
+    setPICNICContractFn(state, {payload}: PayloadAction<PICNICType>){
       state.PICNICContract = payload;
 
+    },
+
+    setuserPicnicBalance(state, { payload }: PayloadAction<string>){
+      state.userPincicInfo.balance = payload
     }
 
 
@@ -72,6 +79,6 @@ const dataSlice = createSlice({
 // Extract the action creators object and the reducer
 const { actions, reducer } = dataSlice
 // Extract and export each action creator by name
-export const  {setContractFn, setLoading, clearState, setNetworkID, setActiveUser, userWalletconnected } = actions
+export const  {setuserPicnicBalance, setPICNICContractFn, setLoading, clearState, setNetworkID, setActiveUser, userWalletconnected } = actions
 // Export the reducer, either as a default or named export
 export default reducer

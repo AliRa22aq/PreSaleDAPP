@@ -12,15 +12,19 @@ export const LoadWeb3 = async () => {
       await window.ethereum.enable();
       console.log(window.web3.currentProvider.isMetaMask)
 
+      let networkId = await web3.eth.net.getId()
+      console.log("networkId from loadFn", networkId)
+      dispatch(setNetworkID(Number(networkId)));
+
       // Get current logged in user address
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       dispatch(userWalletconnected(true));
-
+  
       const userCurrentAddress = accounts[0];
       dispatch(setActiveUser(userCurrentAddress));
+      console.log("accounts from loadFn", userCurrentAddress)
 
-      let networkId = await web3.eth.net.getId()
-      dispatch(setNetworkID(Number(networkId)));
+    
 
     } else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider);

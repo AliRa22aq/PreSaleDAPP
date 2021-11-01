@@ -1,0 +1,51 @@
+/*============================================ 
+Template Name: Gooland
+Version: 1.0
+Author: pixelaxis
+Author URI: https://themeforest.net/user/pixelaxis/portfolio
+Description: Bitcoin Investment HTML Template
+ 
+
+/*======== Table of Css Content ==========*/
+/* Typography */
+/* variables */
+/* Normalize */
+/* input and button type focus outline disable */
+/* Global style */
+/* Preloader Css */
+/* Banners Start */
+/* Main-menu Start */
+/* Banners Start */
+/* Hero_area Start */
+/* Compare Start */
+/* Feature Start */
+/* upper-content Start */
+/* Deposit Start */
+/* Earningpartners Start */
+/* Deposit Amount Start */
+/* Earning Start */
+/* Transaction Start */
+/* How-use Start */
+/* Counter Start */
+/* Process Start */
+/* testomonial Start */
+/* Footer Start */
+/* Scroll To Top Start *
+/* 
+=========================
+=============================
+ */
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700;800&display=swap');
+/* 
+=========================
+font-family: 'Josefin Sans', sans-serif;
+font-family: 'Open Sans', sans-serif;
+=============================
+ */
+
+// Sass Global
+@import "main/_variables.scss";
+@import "main/_normalize.scss";
+@import "main/_global.scss";
+// pages
+@import "pages/_index-html.scss"; 

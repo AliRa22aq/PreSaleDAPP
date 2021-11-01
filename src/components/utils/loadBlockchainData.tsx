@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading, setContractFn } from '../store';
+import  { setLoading,  setPICNICContractFn } from '../store';
 import TokenABI from "../../abis/PICNIC.json";
 import { PICNIC as PICNICType } from '../../../types/web3-v1-contracts/PICNIC'
 
@@ -23,7 +23,7 @@ export const LoadBlockchainData = async () => {
     const tokenContract = (new web3.eth.Contract(TokenABI as any, "0x96D91c8f5eE3C4478854944A7523d8975094D2B3") as any) as PICNICType;
     // new web3.eth.Contract(TokenABI as any, "0x96D91c8f5eE3C4478854944A7523d8975094D2B3") as PICNIC 
     console.log(tokenContract)
-    dispatch(setContractFn(tokenContract))
+    dispatch(setPICNICContractFn(tokenContract))
     
     
     const accounts = await window.web3.eth.getAccounts()

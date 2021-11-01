@@ -1,0 +1,133 @@
+/* Normalize  */
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    overflow-x: hidden;
+    font: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font: inherit;
+    overflow: hidden;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    line-height: 1.556;
+    font-weight: 400;
+}
+
+// Typography
+  
+h1 {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 70px;
+    line-height: 100px; 
+    font-weight: 700; 
+}
+ 
+  
+h2 {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 60px;
+    line-height: 1.167;  
+}
+  
+h3 {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 36px;
+    line-height: 46px;
+    font-weight: 600;   
+}
+h4 {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 24px;
+    line-height: 34px;  
+    font-weight: 600;  
+}
+ 
+
+p, a, li, span {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    line-height: 1.556;
+    font-weight: 400;  
+    padding: 0;
+    margin: 0; 
+}
+ 
+
+a {  
+    display: inline-block;
+    font-family: 'Open Sans', sans-serif;
+    cursor: pointer; 
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 { 
+    font-family: 'Josefin Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
+
+a {
+    text-decoration: none; 
+    font-weight: 400;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+    text-decoration: none;
+    outline: none;
+}
+
+a i {
+    padding: 0 2px;
+}
+
+img {
+    max-width: 100%;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+
+    li {
+        list-style: none;
+    }
+}
+
+/*input and button type focus outline disable*/
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+input[type="button"]:focus,
+input[type="reset"]:focus,
+input[type="date"]:focus,
+input[type="submit"]:focus,
+select:focus,
+button:focus {
+    outline: none;
+    box-shadow: none;
+}

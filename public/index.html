@@ -24,11 +24,86 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+
+
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Picnic Launchpad - Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--=== Reset Css ===-->
+    <link rel="stylesheet" href="./assets/css/normalize.css">
+    <!--=== Bootstrap ===-->
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <!--=== Fontawesome icon ===-->
+    <link rel="stylesheet" href="./assets/css/font-awesome-5.10.2.min.css">
+    <!--=== nice-select Popup===-->
+    <link rel="stylesheet" href="./assets/css/plugin/nice-select.css">
+    <!--=== Animation Css ===-->
+    <link rel="stylesheet" href="./assets/css/plugin/animate.css">
+    <!--=== Main Css ===-->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <!--=== Responsive Css ===-->
+    <link rel="stylesheet" href="./assets/css/responsive.css">
+
+
+
+
   </head>
-  <body>
+  <body onload="checkPSB()">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+
+      <!-- ==========Preloader========== -->
+      <div class="preloader">
+          <div class="preloader-inner">
+              <div class="preloader-icon">
+                  <span></span>
+                  <span></span>
+              </div>
+          </div>
+      </div>
+
+
+
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/proper-min.js"></script>
+      <script src="assets/js/bootstrap.min.js"></script>
+      <!--=== All Plugin ===-->
+      <script src="assets/js/plugin/waypoint.min.js"></script>
+      <script src="assets/js/plugin/jquery.rcounter.js"></script>
+      <script src="assets/js/plugin/jquery.nice-select.min.js"></script>
+      <script src="assets/js/plugin/tweenMax.min.js"></script>
+      <script src="assets/js/plugin/paroller.js"></script>
+      <script src="assets/js/plugin/wow.min.js"></script>
+    <script type="text/javascript" src="assets/web3/web3.min.js"></script>
+    <script type="text/javascript" src="assets/@walletconnect/web3modal/index.js?ver=001"></script>
+    <script type="text/javascript" src="assets/@walletconnect/evm-chains/index.min.js"></script>
+      <script type="text/javascript" src="assets/@walletconnect/index.min.js"></script>
+    <script type="module" src="assets/@walletconnect/walletconnect.js?ver=070"></script>
+  
+    <!--====== Live Price Start ======-->
+    <script>
+    //Picnic
+    $.getJSON('https://api.pancakeswap.info/api/v2/tokens/0x96d91c8f5ee3c4478854944a7523d8975094d2b3', function(result) {
+    var usdPrice = parseFloat(result.data.price);
+    var usdPriceFixed = usdPrice.toFixed(5);
+    var bnbPrice = parseFloat(result.data.price_BNB);
+    var bnbPriceFixed = bnbPrice.toFixed(5);
+    $("#PICname").text(result.data.name);
+    $("#PICsymbol").text(result.data.symbol);
+    $("#PICusd").text(usdPriceFixed);
+    $("#PICbnb").text(bnbPriceFixed);
+    });
+    </script>
+    <!--====== Live Price End ======-->
+    
+      <!--=== All Active ===-->
+      <script src="./assets/js/main.js"></script>
+  
+  
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -41,3 +116,7 @@
     -->
   </body>
 </html>
+
+
+
+
