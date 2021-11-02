@@ -51,7 +51,7 @@ const Footer = () => {
                     </div>
                     <div className="col-xl-2 col-lg-4 col-md-6 wow fadeInUp" data-wow-duration="0.4s" data-wow-delay="0.3s">
                         <div className="footer-box">
-                            <h4 className="lasthead">&nbsp</h4>
+                            <h4 className="lasthead">&nbsp;</h4>
                             <ul className="footer-link">
                                 <li><a href="#currentPresale">Pre-Sale</a></li>
                                 <li><a href="https://t.me/PICNICLaunchPad" target="_blank" rel="noopener noreferrer">Telegram</a></li>

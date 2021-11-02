@@ -23,7 +23,7 @@ let selectedAccount;
 /**
  * Setup the orchestra
  */
-function init() {
+export function init() {
 
   console.log("Initializing example");
   console.log("WalletConnectProvider is", WalletConnectProvider);
@@ -31,13 +31,13 @@ function init() {
 
   // Check that the web page is run in a secure context,
   // as otherwise MetaMask won't be available
-  if(location.protocol !== 'https:') {
-    // https://ethereum.stackexchange.com/a/62217/620
-    const alert = document.querySelector("#alert-error-https");
-    // alert.style.display = "block";
-    // document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
-    return;
-  }
+  // if(location.protocol !== 'https:') {
+  //   // https://ethereum.stackexchange.com/a/62217/620
+  //   const alert = document.querySelector("#alert-error-https");
+  //   alert.style.display = "block";
+  //   document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
+  //   return;
+  // }
 
   // Tell Web3modal what providers we have available.
   // Built-in web browser provider (only one can exist as a time)
@@ -69,7 +69,7 @@ function init() {
 /**
  * Kick in the UI action after Web3modal dialog has chosen a provider
  */
-async function fetchAccountData() {
+ export async function fetchAccountData() {
 
   // Get a Web3 instance for the wallet
   const web3 = new Web3(provider);
@@ -80,7 +80,7 @@ async function fetchAccountData() {
   const chainId = await web3.eth.getChainId();
   // Load chain information over an HTTP API
   const chainData = evmChains.getChain(chainId);
-  document.querySelector("#network-name").textContent = "Current Network: " + chainData.name;
+  // document.querySelector("#network-name").textContent = "Current Network: " + chainData.name;
 
   // Get list of accounts of the connected wallet
   const accounts = await web3.eth.getAccounts();
@@ -89,11 +89,11 @@ async function fetchAccountData() {
   console.log("Got accounts", accounts);
   selectedAccount = accounts[0];
 
-  document.querySelector("#selected-account").textContent = "Connected Wallet: " + selectedAccount;
+  // document.querySelector("#selected-account").textContent = "Connected Wallet: " + selectedAccount;
 
   // Get a handl
-  const template = document.querySelector("#template-balance");
-  const accountContainer = document.querySelector("#accounts");
+  // const template = document.querySelector("#template-balance");
+  // const accountContainer = document.querySelector("#accounts");
 
   // Purge UI elements any previously loaded accounts
   //accountContainer.innerHTML = '';
@@ -125,22 +125,22 @@ async function fetchAccountData() {
  * - User switches networks in wallet
  * - User connects wallet initially
  */
-async function refreshAccountData() {
+ export async function refreshAccountData() {
 
   // Disable button while UI is loading.
   // fetchAccountData() will take a while as it communicates
   // with Ethereum node via JSON-RPC and loads chain data
   // over an API call.
-  document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
+  // document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
   await fetchAccountData(provider);
-  document.querySelector("#btn-connect").removeAttribute("disabled")
+  // document.querySelector("#btn-connect").removeAttribute("disabled")
 }
 
 
 /**
  * Connect wallet button pressed.
  */
-async function onConnect() {
+ export async function onConnect() {
 
   console.log("Opening a dialog", web3Modal);
   try {
@@ -172,7 +172,7 @@ async function onConnect() {
 /**
  * Disconnect wallet button pressed.
  */
-async function onDisconnect() {
+ export async function onDisconnect() {
 
   console.log("Killing the wallet connection", provider);
 
@@ -203,7 +203,7 @@ const txParams = {
 		gas: '30000',
 };
 
-async function sendPSF() {
+export async function sendPSF() {
 	try {
 		if (whitelist.includes(selectedAccount) == true) {
 			const sendPresale = await ethereum.request({

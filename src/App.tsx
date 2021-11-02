@@ -12,14 +12,6 @@ import Gatway from './components/Gatway';
 import Testomonial from './components/Testomonial';
 import Counter from './components/Counter';
 import Footer from './components/Footer';
-
-
-
-
-
-
-import {LoadBlockchainData} from './components/utils/loadBlockchainData'
-import {LoadWeb3} from './components/utils/loadWeb3'
 import { useDispatch, useSelector } from 'react-redux';
 import {  setPICNICContractFn, setActiveUser, setNetworkID } from  './components/store';
 
@@ -32,43 +24,21 @@ function App() {
     dispatch(setActiveUser(accounts[0]));
   })
 
+  // Subscribe to chainId change
+  window.ethereum.on("chainChanged", (chainId: number) => {
+    console.log("chainChanged", chainId);
+  });
 
-  const loadBlockchainData = async () => {
-    const web3 = new Web3(window.ethereum);
+  // Subscribe to provider connection
+  window.ethereum.on("connect", (info: { chainId: number }) => {
+    console.log("connect", info);
+  });
 
-    // Detect which Ethereum network the user is connected to
-    let networkId = await web3.eth.net.getId()
-    console.log(networkId)
+  // Subscribe to provider disconnection
+  window.ethereum.on("disconnect", (error: { code: number; message: string }) => {
+    console.log("disconnect", error);
+  });
 
-    // if(networkId == 56){
-      // alert("Please switch your network to Binance Smart chain")
-    // }
-
-    dispatch(setNetworkID(Number(networkId)));
-
-    // Load Contract Data
-    const tokenContract = (new web3.eth.Contract(TokenABI as any, "0x96D91c8f5eE3C4478854944A7523d8975094D2B3") as any) as PICNICType;
-    console.log(tokenContract)
-    dispatch(setPICNICContractFn(tokenContract))
-
-    // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-
-
-    // const PICNICBalance = await tokenContract.methods.balanceOf(accounts[0]).call()
-
-    // console.log("PICNICBalance ", PICNICBalance)
-
-
-
-
-  }
-
-
-
-  useEffect(() => {
-    loadBlockchainData()
-  }, [])
 
   return (
     <div className="App">

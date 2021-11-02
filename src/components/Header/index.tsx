@@ -9,57 +9,86 @@ import "../../assets/css/plugin/nice-select.css"
 import LOGO from "../../assets/img/logo.png"
 import TokenABI from "../../abis/PICNIC.json";
 import {PICNIC as PICNICType} from '../../../types/web3-v1-contracts/PICNIC';
-
-
-
+import {init, onConnect} from '../utils/@walletconnect/walletconnect'
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setuserPicnicBalance, setNetworkID, setActiveUser, userWalletconnected, setPICNICContractFn } from '../store';
 import Web3 from "web3";
 
 
+interface Provider {
+  cachedProvider: string;
+  connect(): Promise<any>;
+  connectTo(id: string): Promise<any>;
+  toggleModal(): Promise<void>;
+  on(event: string, callback: any): any;
+  off(event: string, callback?: any): void;
+  clearCachedProvider(): void;
+  setCachedProvider(id: string): void;
+  updateTheme(theme: string | any): Promise<void>;
+}
+
+
 const Header = () => {
 
     const dispatch = useDispatch();
-
     const {userAddress} = useSelector((state: any) => state)
-    // console.log("userAddress ", userAddress)
+    // const [provider, setProvider] = useState<Provider | null>(null);
 
     const ConnectWallet = async () => {
         
         if (window.ethereum) {
             window.web3 = new Web3(window.ethereum);
 
+            const providerOptions = {
+                walletconnect: {
+                  package: WalletConnectProvider,
+                  options: {
+                      rpc: {
+                          56: 'https://bsc-dataseed.binance.org/:80'
+                        },
+                        network: 'binance',
+                        chainId: 56,
+                        infuraId: "5ba68febfb4b4ebc8b591b41f79ba72c",
+                   }
+                }
+              };
+            
+            const web3Modal = new Web3Modal({
+                cacheProvider: false, // optional
+                providerOptions, // required
+                disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+              });
 
-            // Get current logged in user address
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            // await web3Modal.updateTheme("dark");
+
+            await web3Modal.connect();
+            // setProvider(web3Modal)
+            // console.log(provider)
 
             dispatch(userWalletconnected(true));
 
-
-            // Detect which Ethereum network the user is connected to
-            let networkId = await web3.eth.net.getId()
-            console.log(networkId)
-
-            // if(networkId == 56){
-            // alert("Please switch your network to Binance Smart chain")
-            // }
-
-            dispatch(setNetworkID(Number(networkId)));
-
-
-        
-            const userCurrentAddress = accounts[0];
-            dispatch(setActiveUser(userCurrentAddress));
+            const chainId = await web3.eth.getChainId();
+            dispatch(setNetworkID(Number(chainId)));
+          
+            // Get list of accounts of the connected wallet
+            const accounts = await web3.eth.getAccounts();
+            
+            // MetaMask does not give you all accounts, only the selected account
+            console.log("Got accounts", accounts);
+            const selectedAccount = accounts[0];
+            console.log(selectedAccount)
+            dispatch(setActiveUser(selectedAccount));
+            
 
             // Load Contract Data
             const tokenContract = (new web3.eth.Contract(TokenABI as any, "0x96D91c8f5eE3C4478854944A7523d8975094D2B3") as any) as PICNICType;
             console.log(tokenContract)
             dispatch(setPICNICContractFn(tokenContract))
 
-            console.log("userCurrentAddress ", userCurrentAddress)
-
-            const PICNICBalance = await tokenContract.methods.balanceOf(userCurrentAddress).call()
+            const PICNICBalance = await tokenContract.methods.balanceOf(selectedAccount).call()
 
             console.log("PICNICBalance ", PICNICBalance)
             dispatch(setuserPicnicBalance(PICNICBalance))
@@ -111,9 +140,8 @@ const Header = () => {
                         <li className="nav-item">
                             {
                                 userAddress ? 
-                                <span> 
-                                    {userAddress.slice(0,5)} ... {userAddress.slice(37)}                                
-                                </span> : 
+                                  <span>  {userAddress.slice(0,5)}...{userAddress.slice(37)} </span>                                
+                                : 
                                 <a className="nav-link button-1" id="btn-connect" onClick= {ConnectWallet}>Connect Wallet</a>
                             }
                         </li>
