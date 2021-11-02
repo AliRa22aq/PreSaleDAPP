@@ -20,24 +20,24 @@ function App() {
 
   const dispatch = useDispatch();
 
-  window.ethereum.on('accountsChanged', function (accounts: string[]) {
-    dispatch(setActiveUser(accounts[0]));
-  })
+  // window.ethereum.on('accountsChanged', function (accounts: string[]) {
+  //   dispatch(setActiveUser(accounts[0]));
+  // })
 
-  // Subscribe to chainId change
-  window.ethereum.on("chainChanged", (chainId: number) => {
-    console.log("chainChanged", chainId);
-  });
+  // // Subscribe to chainId change
+  // window.ethereum.on("chainChanged", (chainId: number) => {
+  //   console.log("chainChanged", chainId);
+  // });
 
-  // Subscribe to provider connection
-  window.ethereum.on("connect", (info: { chainId: number }) => {
-    console.log("connect", info);
-  });
+  // // Subscribe to provider connection
+  // window.ethereum.on("connect", (info: { chainId: number }) => {
+  //   console.log("connect", info);
+  // });
 
-  // Subscribe to provider disconnection
-  window.ethereum.on("disconnect", (error: { code: number; message: string }) => {
-    console.log("disconnect", error);
-  });
+  // // Subscribe to provider disconnection
+  // window.ethereum.on("disconnect", (error: { code: number; message: string }) => {
+  //   console.log("disconnect", error);
+  // });
 
 
   return (

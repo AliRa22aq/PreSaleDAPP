@@ -9,7 +9,6 @@ import "../../assets/css/plugin/nice-select.css"
 import LOGO from "../../assets/img/logo.png"
 import TokenABI from "../../abis/PICNIC.json";
 import {PICNIC as PICNICType} from '../../../types/web3-v1-contracts/PICNIC';
-import {init, onConnect} from '../utils/@walletconnect/walletconnect'
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 
