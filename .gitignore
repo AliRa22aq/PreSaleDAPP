@@ -10,7 +10,7 @@
 # testing
 /coverage
 
-/src/assets
+/src/assets/**
 # production
 /build
 /Contract/build
