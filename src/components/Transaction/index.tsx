@@ -8,30 +8,41 @@ import "../../assets/css/plugin/animate.css"
 import "../../assets/css/plugin/nice-select.css"
 
 import Picnictableicon from "../../assets/img/table/picnictableicon.png"
-import HeroImg from "../../assets/img/hero-img.png"
-
-
-import Bannershap1 from "../../assets/img/bannershap-1.png"
-import Bannercoin1 from "../../assets/img/bannercoin-1.png"
-import Bannercoin2 from "../../assets/img/bannercoin-2.png"
-import Bannercoin3 from "../../assets/img/bannercoin-3.png"
-
-import Color1 from "../../assets/img/color-1.png"
-import Color2 from "../../assets/img/color-2.png"
-import Color3 from "../../assets/img/color-3.png"
-import ExchangeImg from "../../assets/img/exchange-img.png"
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setNetworkID, setActiveUser, userWalletconnected } from '../store';
 import Web3 from "web3";
+import axios from 'axios'
+
+
+interface Data {
+    name: string,
+    price: number,
+    price_BNB: number,
+    symbol: string
+}
+
+const InitalData  = {
+    name: "PICNIC",
+    price: 3.3177,
+    price_BNB: 0.0061,
+    symbol: "$PIC"
+}
 
 
 const Transaction = () => {
 
     const dispatch = useDispatch();
-
     const {userAddress} = useSelector((state: any) => state)
+    const [staticData, setStaticData] = useState<Data>(InitalData)
 
+    useEffect(()=>{
+        const fetchData = async () => {
+            const res: any = await axios.get("https://api.pancakeswap.info/api/v2/tokens/0x96d91c8f5ee3c4478854944a7523d8975094d2b3")
+            setStaticData({name: res.data.data.name, price: Number(res.data.data.price), price_BNB: Number(res.data.data.price_BNB) , symbol:  res.data.data.symbol })
+        }
+        fetchData();
+    }, [])
 
 
     return(
@@ -69,17 +80,17 @@ const Transaction = () => {
                                             <td>
                                                 <div className="name">
                                                     <img className="coin" src={Picnictableicon} alt="" />
-                                                    <span id="PICname"></span>
+                                                    <span id="PICname"> {staticData?.name} </span>
                                                 </div>
                                             </td>
                                             <td>
-                                                <span id="PICsymbol"></span>
+                                                <span id="PICsymbol"> {staticData?.symbol}</span>
                                             </td>
                                             <td>
-                                                <span id="PICusd"></span>
+                                                <span id="PICusd"> {staticData?.price.toFixed(5)}</span>
                                             </td>
                                             <td>
-                                                <span id="PICbnb"> 0.00651 </span>
+                                                <span id="PICbnb"> {staticData?.price_BNB.toFixed(5)} </span>
                                             </td>
                                             <td>
                                                 <span id="PICsupply">100,000</span>

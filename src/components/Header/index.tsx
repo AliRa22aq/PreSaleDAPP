@@ -34,7 +34,6 @@ const Header = () => {
 
     const dispatch = useDispatch();
     const {userAddress} = useSelector((state: any) => state)
-    // const [provider, setProvider] = useState<Provider | null>(null);
 
     const ConnectWallet = async () => {
         
@@ -59,6 +58,14 @@ const Header = () => {
                 cacheProvider: false, // optional
                 providerOptions, // required
                 disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+                // theme: {
+                //     background: "rgb(39, 49, 56)",
+                //     main: "rgb(199, 199, 199)",
+                //     secondary: "rgb(136, 136, 136)",
+                //     border: "rgba(195, 195, 195, 0.14)",
+                //     hover: "rgb(16, 26, 32)"
+                //   }
+                
               });
 
             // await web3Modal.updateTheme("dark");
@@ -139,7 +146,7 @@ const Header = () => {
                         <li className="nav-item">
                             {
                                 userAddress ? 
-                                  <span>  {userAddress.slice(0,5)}...{userAddress.slice(37)} </span>                                
+                                  <span >  {userAddress.slice(0,5)}...{userAddress.slice(37)} </span>                                
                                 : 
                                 <a className="nav-link button-1" id="btn-connect" onClick= {ConnectWallet}>Connect Wallet</a>
                             }
