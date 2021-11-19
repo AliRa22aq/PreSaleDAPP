@@ -2,14 +2,18 @@
 
 # dependencies
 /node_modules
+/Contract/node_modules
+
 /.pnp
 .pnp.js
 
 # testing
 /coverage
 
+/src/assets/**
 # production
 /build
+/Contract/build
 
 # misc
 .DS_Store
