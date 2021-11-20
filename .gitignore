@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /Contract/node_modules
+/presaleContract/node_modules
 
 /.pnp
 .pnp.js
