@@ -15,6 +15,7 @@
 # production
 /build
 /Contract/build
+/presaleContract/build
 
 # misc
 .DS_Store
