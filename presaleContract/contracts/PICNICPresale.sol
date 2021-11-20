@@ -5,6 +5,7 @@ pragma solidity ^0.8.9;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
+
 interface IERC20 {
     function name() external view returns (string memory);
     function symbol() external view returns (string memory);
@@ -16,7 +17,7 @@ interface IERC20 {
     function transferFrom( address sender, address recipient, uint256 amount) external returns (bool);
 }
 
-    interface IFactory {
+interface IFactory {
     //   function getPair(address tokenA, address tokenB) external view returns (address pair);
       function createPair(address tokenA, address tokenB) external returns (address pair);
     }
@@ -42,29 +43,30 @@ contract PICNICPresale is Ownable {
     
     uint count = 0;
     
-    address public criteriaToken = 0xd9145CCE52D386f254917e481eB44e9943F39138; 
+    address public criteriaTokenAddr = 0xd9145CCE52D386f254917e481eB44e9943F39138;
+    address devTeamAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
     
     //# Ethereum mainnet, and the Ropsten, Rinkeby, Görli, and Kovan testnets
-    address UniswapV2Factory = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
-    address UniswapV2Router02 = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
+    address UniswapV2FactoryAddr = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
+    address UniswapV2Router02Addr = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
     
     
     //# PancakeSwap on BSC testnet:
-    address pancakeSwapFactory = 0x6725F303b657a9451d8BA641348b6761A6CC7a17;
-    address pancakeSwapRouter = 0xD99D1c33F9fC3444f8101754aBC46c52416550D1;
+    address pancakeSwapFactoryAddr = 0x6725F303b657a9451d8BA641348b6761A6CC7a17;
+    address pancakeSwapRouterAddr = 0xD99D1c33F9fC3444f8101754aBC46c52416550D1;
 
     //# BNB address
-    address BNB = 0xB8c77482e45F1F44dE1745F52C74426C631bDD52;
+    address BNBAddr = 0xB8c77482e45F1F44dE1745F52C74426C631bDD52;
     
     enum PoolType{ UNI, PCS }
 
     
     mapping(uint256 => PresaleContract) public presaleContract;
-    mapping(uint256 => PresaleContractStaticInfo) public presaleContractStatic;
+    mapping(uint256 => PresaleContractStatic) public presaleContractStatic;
 
     
-    struct PresaleContractStaticInfo {
-        address contractAddress;
+    struct PresaleContractStatic {
+        address preSaleContractAddr;
         string symbol;
         string name;
         PoolType _poolType;
@@ -76,14 +78,14 @@ contract PICNICPresale is Ownable {
         uint256 presaleId;
         
         // Contract Info
-        address contractAddress;
-        uint256 remainingTokens;
+        address preSaleContractAddr;
+        
+        // Token distribution
+        uint256 reservedTokensPCForLP;      // 70% = 0.7   =>   1700/1.7 = 700
+        uint256 tokensForSale;              // 1000
+        uint256 remainingTokensForSale;
         uint256 accumulatedBalance;
 
-        uint256 totalTokensOnSale;
-        uint256 softCap;
-        uint256 hardCap;
-        
         // Participation Criteria
         uint256 priceOfEachToken;
         uint256 minTokensForParticipation;
@@ -92,56 +94,50 @@ contract PICNICPresale is Ownable {
         uint256 startedAt;
         uint256 expiredAt;
         
-        // PresaleContractStaticInfo staticInfo;
     }
     
     function setPresaleContractInfo(
         // Contract Info
-        address _contractAddress,
+        address _preSaleContractAddress,
+
+        uint8 _reservedTokensPCForLP,
+        uint256 _tokensForSale,
 
         // Participation Criteria
         uint256 _priceOfEachToken,
         uint256 _minTokensForParticipation,
-        uint256 _minContibution,        
+        uint256 _minContibution,
         uint256 _maxContibution,
-        uint256 _softCap,
-        uint256 _hardCap,
         uint256 _startedAt,
         uint256 _expiredAt,
         PoolType _poolType
         
         ) public onlyOwner returns(uint){
 
+
         count++;
         
         address _pairAddr = _poolType == PoolType.UNI ?
-            IFactory(UniswapV2Factory).createPair(_contractAddress, BNB):
-            IFactory(pancakeSwapFactory).createPair(_contractAddress, BNB);
-
-        uint presaleTokensInContract = IERC20(_contractAddress).balanceOf(address(this));
+            IFactory(UniswapV2FactoryAddr).createPair(_preSaleContractAddress, BNBAddr):
+            IFactory(pancakeSwapRouterAddr).createPair(_preSaleContractAddress, BNBAddr);
         
-        
-        presaleContractStatic[count] = PresaleContractStaticInfo(
-            _contractAddress,
-            IERC20(_contractAddress).symbol(),
-            IERC20(_contractAddress).name(),
+        presaleContractStatic[count] = PresaleContractStatic(
+            _preSaleContractAddress,
+            IERC20(_preSaleContractAddress).symbol(),
+            IERC20(_preSaleContractAddress).name(),
             _poolType,
             _pairAddr
         );
 
-
-
         presaleContract[count] = PresaleContract(
-            count, //id
-
-            // Contract Info
-            _contractAddress,
-            presaleTokensInContract,
-            0, // accumulatedBalance;
+            count,
+            _preSaleContractAddress,
             
-            presaleTokensInContract,
-            _softCap,
-            _hardCap,
+            // Token distribution
+            _reservedTokensPCForLP,             // 70% = 0.7   =>   1700/1.7 = 700
+            _tokensForSale,                     // 1000    tokensForSale
+            _tokensForSale,                     // remainingTokensForSale = tokensForSale (initially)
+            0,                                  // accumulatedBalance
 
             // Participation Criteria
             _priceOfEachToken,
@@ -156,7 +152,7 @@ contract PICNICPresale is Ownable {
     }
 
     
-    function getLatestPresaleContractStaticInfo() public view returns(PresaleContractStaticInfo memory){
+    function getLatestPresaleContractStaticInfo() public view returns(PresaleContractStatic memory){
         return presaleContractStatic[count];
     }
     
@@ -167,41 +163,42 @@ contract PICNICPresale is Ownable {
     function updatePresaleContractInfo (
         uint256 _id, // id
         
+        
+        uint8 _reservedTokensPCForLP,
+        uint256 _tokensForSale,
+            
         // Participation Criteria
         uint256 _priceOfEachToken,
         uint256 _minTokensForParticipation,
         uint256 _minContibution,      
         uint256 _maxContibution,
-        uint256 _softCap,
-        uint256 _hardCap,
         uint256 _startedAt,
         uint256 _expiredAt
 
         ) public onlyOwner returns(PresaleContract memory){
 
         PresaleContract memory currentProject = presaleContract[_id];
-        uint presaleTokensInContract = IERC20(presaleContract[_id].contractAddress).balanceOf(address(this));
 
         presaleContract[_id]  = PresaleContract(
             _id,
+            currentProject.preSaleContractAddr,
             
-            currentProject.contractAddress,
-            presaleTokensInContract, //_remainingTokens
-            currentProject.accumulatedBalance, //_accumulatedBalance;
+            // Token distribution
+            _reservedTokensPCForLP,                     // 70% = 0.7   =>   1700/1.7 = 700
+            _tokensForSale,                             // 1000    tokensForSale
+            _tokensForSale,                             // remainingTokensForSale = tokensForSale (initially)
+            currentProject.accumulatedBalance,          // accumulatedBalance
             
-            presaleTokensInContract, //_remainingTokens
-            _softCap,
-            _hardCap,
-            
+            // Participation Criteria
             _priceOfEachToken,
             _minTokensForParticipation,
             _minContibution,
             _maxContibution,
             _startedAt,
             _expiredAt
-
         );
             
+        
         return presaleContract[_id];
     }
 
@@ -217,54 +214,81 @@ contract PICNICPresale is Ownable {
         
         require(block.timestamp > presaleContract[_id].startedAt, "Presale hasn't begin yet. please wait");
         require(block.timestamp < presaleContract[_id].expiredAt, "Presale is over. Try next time");
-        require(_numOfTokensRequested <= presaleContract[_id].remainingTokens, "insufficient tokens to fulfill this order");
+
+        require(presaleContract[_id].remainingTokensForSale <= IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(address(this)), "insufficient tokens to fulfill this order");
+        
+        require(_numOfTokensRequested <= presaleContract[_id].remainingTokensForSale, "insufficient tokens to fulfill this order");
         require(msg.value >= _numOfTokensRequested*presaleContract[_id].priceOfEachToken, "insufficient funds");
 
-        uint256 PICNICTokensOfUser = IERC20(criteriaToken).balanceOf(msg.sender);
+        uint256 PICNICTokensOfUser = IERC20(criteriaTokenAddr).balanceOf(msg.sender);
         require(PICNICTokensOfUser >= presaleContract[_id].minTokensForParticipation, "Not enough tokens to participate. Should be atleast 250");
         
     
         require(_numOfTokensRequested >= presaleContract[_id].minContibution, "Contribution is low, Please request more than minimum contribution");
-        require(_numOfTokensRequested + IERC20(presaleContract[_id].contractAddress).balanceOf(address(msg.sender)) <= presaleContract[_id].maxContibution, "Contribution is high, Please request less than maximum contribution");
+        require(_numOfTokensRequested + IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(address(msg.sender)) <= presaleContract[_id].maxContibution, "Contribution is high, Please request less than maximum contribution");
 
         
-        bool tokenDistribution = IERC20(presaleContract[_id].contractAddress).transfer(address(msg.sender), _numOfTokensRequested);
+        bool tokenDistribution = IERC20(presaleContract[_id].preSaleContractAddr).transfer(address(msg.sender), _numOfTokensRequested);
         
         if(tokenDistribution == true){
-            presaleContract[_id].accumulatedBalance += msg.value; 
-            presaleContract[_id].remainingTokens -= _numOfTokensRequested; 
-
+            presaleContract[_id].accumulatedBalance += msg.value;
+            presaleContract[_id].remainingTokensForSale -= _numOfTokensRequested;
+            return true;
+        } else {
+            return false;
         }
         
-        return tokenDistribution;
 
     }
     
-        function endPresale(uint _id) public onlyOwner {
+        
+        function endPresale(uint _id) public onlyOwner returns (uint, uint, uint){
             
-            uint revenueFromPresale = PresaleContract[_id].accumulatedBalance;
+            PresaleContract memory currentProject = presaleContract[_id];
             
-            uint devTeamShare = revenueFromPresale.mul(30).div(100);
-            
-            uint poolShare = revenueFromPresale.sub(devTeamShare);
-            
-            PresaleContract[_id].accumulatedBalance = 0;
-            
-            // Split revue
-            
-            // Send dev team their contribution
-            
-            // find remaining balanceOf
-            
-            // Provide liquidity to the pool and send LP tokens to dev team
-            
-    // uint _type =  PresaleContract[_id]._poolType;
-    // PoolType{ UNI, PCS }
+            require(block.timestamp > currentProject.expiredAt, "Presale is not over yet");
 
-    
-    // mapping(uint256 => PresaleContract) public presaleContract;
-    // mapping(uint256 => PresaleContractStaticInfo) public presaleContractStatic;
             
+            uint256 revenueFromPresale = currentProject.accumulatedBalance;
+            require(revenueFromPresale > 0, "No revenue to add liquidity");
+
+        
+            uint256 totalTokensSold = currentProject.tokensForSale - currentProject.remainingTokensForSale;
+            
+            uint256 tokensToAddLiquidity = totalTokensSold.mul(currentProject.reservedTokensPCForLP).div(100);
+            uint256 poolShareBNB = revenueFromPresale.mul(currentProject.reservedTokensPCForLP).div(100);
+            uint256 devTeamShareBNB = revenueFromPresale.sub(poolShareBNB);
+            
+            (bool devTeam) = payable(devTeamAddr).send(devTeamShareBNB);
+            require(devTeam);
+            
+            PoolType _poolType =  presaleContractStatic[_id]._poolType;
+            
+            (uint amountA, uint amountB, uint liquidity) = _poolType == PoolType.UNI ?
+                IRouter(UniswapV2Router02Addr).addLiquidity(
+                    currentProject.preSaleContractAddr,
+                    BNBAddr,
+                    poolShareBNB,
+                    tokensToAddLiquidity,
+                    poolShareBNB,
+                    tokensToAddLiquidity,
+                    devTeamAddr,
+                    block.timestamp + 5*60
+                ):
+                IRouter(pancakeSwapFactoryAddr).addLiquidity(
+                    currentProject.preSaleContractAddr,
+                    BNBAddr,
+                    poolShareBNB,
+                    tokensToAddLiquidity,
+                    poolShareBNB,
+                    tokensToAddLiquidity,
+                    devTeamAddr,
+                    block.timestamp + 5*60
+                );
+            
+            currentProject.accumulatedBalance = 0;
+            
+            return (amountA, amountB, liquidity);
             
         }
         
@@ -272,19 +296,19 @@ contract PICNICPresale is Ownable {
             address  _factoryAddr;
             
             _factoryAddr = _poolType == PoolType.UNI ?
-             IRouter(UniswapV2Router02).factory():
-             IRouter(pancakeSwapFactory).factory();
+             IRouter(UniswapV2Router02Addr).factory():
+             IRouter(pancakeSwapFactoryAddr).factory();
              
              return _factoryAddr;
           }
 
         // Helping functions;
-        function presaleTokenBalance (uint256 _id, address _address) public view returns(uint256){
-            return IERC20(presaleContract[_id].contractAddress).balanceOf(_address);
+        function preSaleTokenBalance (uint256 _id, address _address) public view returns(uint256){
+            return IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(_address);
         }
         
-        function PICNICBalanceOfUser() public view returns (uint){
-            return IERC20(criteriaToken).balanceOf(address(msg.sender));
+        function PICNICBalanceOfUser(address _address) public view returns (uint){
+            return IERC20(criteriaTokenAddr).balanceOf(address(_address));
         }
     
 
