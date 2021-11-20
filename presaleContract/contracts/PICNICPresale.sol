@@ -44,7 +44,7 @@ contract PICNICPresale is Ownable {
     uint count = 0;
     
     address public criteriaTokenAddr = 0xd9145CCE52D386f254917e481eB44e9943F39138;
-    address devTeamAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
+    address public devTeamAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
     
     //# Ethereum mainnet, and the Ropsten, Rinkeby, Görli, and Kovan testnets
     address UniswapV2FactoryAddr = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
@@ -58,12 +58,20 @@ contract PICNICPresale is Ownable {
     //# BNB address
     address BNBAddr = 0xB8c77482e45F1F44dE1745F52C74426C631bDD52;
     
-    enum PoolType{ UNI, PCS }
 
     
     mapping(uint256 => PresaleContract) public presaleContract;
     mapping(uint256 => PresaleContractStatic) public presaleContractStatic;
+    mapping(uint256 => mapping(address => Partipant)) public participant;
 
+    enum PoolType{ UNI, PCS }
+    enum PreSaleStatus {pause, inProgress, success, failed}
+    
+    struct Partipant {
+        uint256 value;
+        uint256 tokens;
+    }
+    
     
     struct PresaleContractStatic {
         address preSaleContractAddr;
@@ -71,6 +79,7 @@ contract PICNICPresale is Ownable {
         string name;
         PoolType _poolType;
         address pairAddress;
+        PreSaleStatus preSaleStatus;
     }
     
     struct PresaleContract {
@@ -89,12 +98,16 @@ contract PICNICPresale is Ownable {
         // Participation Criteria
         uint256 priceOfEachToken;
         uint256 minTokensForParticipation;
-        uint256 minContibution;        
+        uint256 minContibution;
         uint256 maxContibution;
+        uint256 softCap;
         uint256 startedAt;
         uint256 expiredAt;
         
+        // count of participant for this project
+        uint256 countOfParticipants;
     }
+    
     
     function setPresaleContractInfo(
         // Contract Info
@@ -108,6 +121,7 @@ contract PICNICPresale is Ownable {
         uint256 _minTokensForParticipation,
         uint256 _minContibution,
         uint256 _maxContibution,
+        uint256 _softCap,
         uint256 _startedAt,
         uint256 _expiredAt,
         PoolType _poolType
@@ -126,9 +140,10 @@ contract PICNICPresale is Ownable {
             IERC20(_preSaleContractAddress).symbol(),
             IERC20(_preSaleContractAddress).name(),
             _poolType,
-            _pairAddr
+            _pairAddr,
+            PreSaleStatus.inProgress
         );
-
+        
         presaleContract[count] = PresaleContract(
             count,
             _preSaleContractAddress,
@@ -144,9 +159,15 @@ contract PICNICPresale is Ownable {
             _minTokensForParticipation,
             _minContibution,
             _maxContibution,
+            _softCap,
             _startedAt,
-            _expiredAt
+            _expiredAt,
+            
+            // count of participant for this project
+            0
         );
+            // participant[count][0] = Partipant(address(0), 0);
+            // mapping(uint256 => mapping(uint256 => Partipant)) participant;        );
         
         return count;
     }
@@ -172,6 +193,7 @@ contract PICNICPresale is Ownable {
         uint256 _minTokensForParticipation,
         uint256 _minContibution,      
         uint256 _maxContibution,
+        uint256 _softCap,
         uint256 _startedAt,
         uint256 _expiredAt
 
@@ -194,8 +216,10 @@ contract PICNICPresale is Ownable {
             _minTokensForParticipation,
             _minContibution,
             _maxContibution,
+            _softCap,
             _startedAt,
-            _expiredAt
+            _expiredAt,
+            currentProject.countOfParticipants
         );
             
         
@@ -211,11 +235,13 @@ contract PICNICPresale is Ownable {
 
 
     function buyTokensOnPresale(uint256 _id, uint256 _numOfTokensRequested) payable public returns (bool){
+
+        require(presaleContractStatic[_id].preSaleStatus == PreSaleStatus.inProgress, "Presale is not in progress");
         
         require(block.timestamp > presaleContract[_id].startedAt, "Presale hasn't begin yet. please wait");
         require(block.timestamp < presaleContract[_id].expiredAt, "Presale is over. Try next time");
 
-        require(presaleContract[_id].remainingTokensForSale <= IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(address(this)), "insufficient tokens to fulfill this order");
+        // require(presaleContract[_id].remainingTokensForSale <= IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(address(this)), "insufficient tokens to fulfill this order");
         
         require(_numOfTokensRequested <= presaleContract[_id].remainingTokensForSale, "insufficient tokens to fulfill this order");
         require(msg.value >= _numOfTokensRequested*presaleContract[_id].priceOfEachToken, "insufficient funds");
@@ -227,17 +253,40 @@ contract PICNICPresale is Ownable {
         require(_numOfTokensRequested >= presaleContract[_id].minContibution, "Contribution is low, Please request more than minimum contribution");
         require(_numOfTokensRequested + IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(address(msg.sender)) <= presaleContract[_id].maxContibution, "Contribution is high, Please request less than maximum contribution");
 
-        
-        bool tokenDistribution = IERC20(presaleContract[_id].preSaleContractAddr).transfer(address(msg.sender), _numOfTokensRequested);
-        
-        if(tokenDistribution == true){
+
             presaleContract[_id].accumulatedBalance += msg.value;
             presaleContract[_id].remainingTokensForSale -= _numOfTokensRequested;
+            participant[_id][msg.sender] = Partipant(_numOfTokensRequested, msg.value);
+            
+            
             return true;
-        } else {
-            return false;
-        }
+
+    }
+    
+    function claimTokensOrRefund(uint _id) public {
         
+        require( presaleContract[_id].presaleId != 0, "user or project does not exist");
+        
+        PreSaleStatus _status = presaleContractStatic[_id].preSaleStatus;
+        require(_status != PreSaleStatus.inProgress, "Presale is still in progress");
+        
+        Partipant memory _participant = participant[_id][msg.sender];
+        
+        
+        if (_status == PreSaleStatus.success){
+            require(_participant.tokens > 0, "No tokens to claim");        
+            bool tokenDistribution = IERC20(presaleContract[_id].preSaleContractAddr).transfer(address(msg.sender), _participant.tokens);
+            require(tokenDistribution, "Unable to transfer tokens to the participant");
+            participant[_id][msg.sender] = Partipant(0, 0);
+
+        }
+        else if(_status == PreSaleStatus.failed){
+            require(_participant.value > 0, "No amount to refund");        
+            bool refund = payable(msg.sender).send(_participant.value);
+            require(refund, "Unable to refund amount to the participant");
+            participant[_id][msg.sender] = Partipant(0, 0);
+
+        }
 
     }
     
@@ -247,52 +296,66 @@ contract PICNICPresale is Ownable {
             PresaleContract memory currentProject = presaleContract[_id];
             
             require(block.timestamp > currentProject.expiredAt, "Presale is not over yet");
-
             
-            uint256 revenueFromPresale = currentProject.accumulatedBalance;
-            require(revenueFromPresale > 0, "No revenue to add liquidity");
 
-        
             uint256 totalTokensSold = currentProject.tokensForSale - currentProject.remainingTokensForSale;
             
-            uint256 tokensToAddLiquidity = totalTokensSold.mul(currentProject.reservedTokensPCForLP).div(100);
-            uint256 poolShareBNB = revenueFromPresale.mul(currentProject.reservedTokensPCForLP).div(100);
-            uint256 devTeamShareBNB = revenueFromPresale.sub(poolShareBNB);
+            // successful presale
+            if( totalTokensSold >= currentProject.softCap ){
+                presaleContractStatic[_id].preSaleStatus = PreSaleStatus.success;
+                
+                uint256 revenueFromPresale = currentProject.accumulatedBalance;
+                require(revenueFromPresale > 0, "No revenue to add liquidity");
+                
+                
+                uint256 tokensToAddLiquidity = totalTokensSold.mul(currentProject.reservedTokensPCForLP).div(100);
+                uint256 poolShareBNB = revenueFromPresale.mul(currentProject.reservedTokensPCForLP).div(100);
+                uint256 devTeamShareBNB = revenueFromPresale.sub(poolShareBNB);
+                
+                (bool devTeam) = payable(devTeamAddr).send(devTeamShareBNB);
+                require(devTeam);
+                
+                PoolType _poolType =  presaleContractStatic[_id]._poolType;
+                
+                (uint amountA, uint amountB, uint liquidity) = _poolType == PoolType.UNI ?
+                    IRouter(UniswapV2Router02Addr).addLiquidity(
+                        currentProject.preSaleContractAddr,
+                        BNBAddr,
+                        poolShareBNB,
+                        tokensToAddLiquidity,
+                        poolShareBNB,
+                        tokensToAddLiquidity,
+                        devTeamAddr,
+                        block.timestamp + 5*60
+                    ):
+                    IRouter(pancakeSwapFactoryAddr).addLiquidity(
+                        currentProject.preSaleContractAddr,
+                        BNBAddr,
+                        poolShareBNB,
+                        tokensToAddLiquidity,
+                        poolShareBNB,
+                        tokensToAddLiquidity,
+                        devTeamAddr,
+                        block.timestamp + 5*60
+                    );
+                
+                currentProject.accumulatedBalance = 0;
+                
+                return (amountA, amountB, liquidity);
+                
+            }
+            else {
+                presaleContractStatic[_id].preSaleStatus = PreSaleStatus.failed;
+                return (0,0,0);
+            }
             
-            (bool devTeam) = payable(devTeamAddr).send(devTeamShareBNB);
-            require(devTeam);
             
-            PoolType _poolType =  presaleContractStatic[_id]._poolType;
             
-            (uint amountA, uint amountB, uint liquidity) = _poolType == PoolType.UNI ?
-                IRouter(UniswapV2Router02Addr).addLiquidity(
-                    currentProject.preSaleContractAddr,
-                    BNBAddr,
-                    poolShareBNB,
-                    tokensToAddLiquidity,
-                    poolShareBNB,
-                    tokensToAddLiquidity,
-                    devTeamAddr,
-                    block.timestamp + 5*60
-                ):
-                IRouter(pancakeSwapFactoryAddr).addLiquidity(
-                    currentProject.preSaleContractAddr,
-                    BNBAddr,
-                    poolShareBNB,
-                    tokensToAddLiquidity,
-                    poolShareBNB,
-                    tokensToAddLiquidity,
-                    devTeamAddr,
-                    block.timestamp + 5*60
-                );
-            
-            currentProject.accumulatedBalance = 0;
-            
-            return (amountA, amountB, liquidity);
             
         }
         
         function factory(PoolType _poolType) public view returns (address){
+            
             address  _factoryAddr;
             
             _factoryAddr = _poolType == PoolType.UNI ?
