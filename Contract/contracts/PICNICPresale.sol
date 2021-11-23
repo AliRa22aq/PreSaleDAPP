@@ -2,8 +2,8 @@
 pragma solidity ^0.8.9;
 
 
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "./SafeMath.sol";
+import "./Ownable.sol";
 
 
 interface IERC20 {
@@ -242,74 +242,75 @@ contract PICNICPresale is Ownable {
     }
     
         
-        function endPresale(uint _id) public onlyOwner returns (uint, uint, uint){
-            
-            PresaleContract memory currentProject = presaleContract[_id];
-            
-            require(block.timestamp > currentProject.expiredAt, "Presale is not over yet");
-
-            
-            uint256 revenueFromPresale = currentProject.accumulatedBalance;
-            require(revenueFromPresale > 0, "No revenue to add liquidity");
+    function endPresale(uint _id) public onlyOwner returns (uint, uint, uint){
+        
+        PresaleContract memory currentProject = presaleContract[_id];
+        
+        require(block.timestamp > currentProject.expiredAt, "Presale is not over yet");
 
         
-            uint256 totalTokensSold = currentProject.tokensForSale - currentProject.remainingTokensForSale;
-            
-            uint256 tokensToAddLiquidity = totalTokensSold.mul(currentProject.reservedTokensPCForLP).div(100);
-            uint256 poolShareBNB = revenueFromPresale.mul(currentProject.reservedTokensPCForLP).div(100);
-            uint256 devTeamShareBNB = revenueFromPresale.sub(poolShareBNB);
-            
-            (bool devTeam) = payable(devTeamAddr).send(devTeamShareBNB);
-            require(devTeam);
-            
-            PoolType _poolType =  presaleContractStatic[_id]._poolType;
-            
-            (uint amountA, uint amountB, uint liquidity) = _poolType == PoolType.UNI ?
-                IRouter(UniswapV2Router02Addr).addLiquidity(
-                    currentProject.preSaleContractAddr,
-                    BNBAddr,
-                    poolShareBNB,
-                    tokensToAddLiquidity,
-                    poolShareBNB,
-                    tokensToAddLiquidity,
-                    devTeamAddr,
-                    block.timestamp + 5*60
-                ):
-                IRouter(pancakeSwapFactoryAddr).addLiquidity(
-                    currentProject.preSaleContractAddr,
-                    BNBAddr,
-                    poolShareBNB,
-                    tokensToAddLiquidity,
-                    poolShareBNB,
-                    tokensToAddLiquidity,
-                    devTeamAddr,
-                    block.timestamp + 5*60
-                );
-            
-            currentProject.accumulatedBalance = 0;
-            
-            return (amountA, amountB, liquidity);
-            
-        }
-        
-        function factory(PoolType _poolType) public view returns (address){
-            address  _factoryAddr;
-            
-            _factoryAddr = _poolType == PoolType.UNI ?
-             IRouter(UniswapV2Router02Addr).factory():
-             IRouter(pancakeSwapFactoryAddr).factory();
-             
-             return _factoryAddr;
-          }
+        uint256 revenueFromPresale = currentProject.accumulatedBalance;
+        require(revenueFromPresale > 0, "No revenue to add liquidity");
 
-        // Helping functions;
-        function preSaleTokenBalance (uint256 _id, address _address) public view returns(uint256){
-            return IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(_address);
-        }
-        
-        function PICNICBalanceOfUser(address _address) public view returns (uint){
-            return IERC20(criteriaTokenAddr).balanceOf(address(_address));
-        }
     
+        uint256 totalTokensSold = currentProject.tokensForSale - currentProject.remainingTokensForSale;
+        
+        uint256 tokensToAddLiquidity = totalTokensSold.mul(currentProject.reservedTokensPCForLP).div(100);
+        uint256 poolShareBNB = revenueFromPresale.mul(currentProject.reservedTokensPCForLP).div(100);
+        uint256 devTeamShareBNB = revenueFromPresale.sub(poolShareBNB);
+        
+        (bool devTeam) = payable(devTeamAddr).send(devTeamShareBNB);
+        require(devTeam);
+        
+        PoolType _poolType =  presaleContractStatic[_id]._poolType;
+        
+        (uint amountA, uint amountB, uint liquidity) = _poolType == PoolType.UNI ?
+            IRouter(UniswapV2Router02Addr).addLiquidity(
+                currentProject.preSaleContractAddr,
+                BNBAddr,
+                poolShareBNB,
+                tokensToAddLiquidity,
+                poolShareBNB,
+                tokensToAddLiquidity,
+                devTeamAddr,
+                block.timestamp + 5*60
+            ):
+            IRouter(pancakeSwapFactoryAddr).addLiquidity(
+                currentProject.preSaleContractAddr,
+                BNBAddr,
+                poolShareBNB,
+                tokensToAddLiquidity,
+                poolShareBNB,
+                tokensToAddLiquidity,
+                devTeamAddr,
+                block.timestamp + 5*60
+            );
+        
+        currentProject.accumulatedBalance = 0;
+        
+        return (amountA, amountB, liquidity);
+        
+    }
+    
+    function factory(PoolType _poolType) public view returns (address){
+        address  _factoryAddr;
+        
+        _factoryAddr = _poolType == PoolType.UNI ?
+            IRouter(UniswapV2Router02Addr).factory():
+            IRouter(pancakeSwapFactoryAddr).factory();
+            
+            return _factoryAddr;
+        }
+
+    // Helping functions;
+    
+    function preSaleTokenBalance (uint256 _id, address _address) public view returns(uint256){
+        return IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(_address);
+    }
+    
+    function PICNICBalanceOfUser(address _address) public view returns (uint){
+        return IERC20(criteriaTokenAddr).balanceOf(address(_address));
+    }
+
 
 }
