@@ -1,5 +1,5 @@
-const PICNICPresale = artifacts.require("PICNICPresale");
+const Presale = artifacts.require("Presale.sol");
 
 module.exports = function (deployer) {
-  deployer.deploy(PICNICPresale);
+  deployer.deploy(Presale);
 };

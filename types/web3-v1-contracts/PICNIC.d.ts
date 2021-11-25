@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 import BN from "bn.js";
-import { ContractOptions } from "web3-eth-contract";
-import { EventLog } from "web3-core";
-import { EventEmitter } from "events";
+import {ContractOptions} from "web3-eth-contract";
+import {EventLog} from "web3-core";
+import {EventEmitter} from "events";
 import {
   Callback,
   PayableTransactionObject,

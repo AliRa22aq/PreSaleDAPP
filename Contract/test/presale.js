@@ -1,16 +1,16 @@
-var PICNICPresale = artifacts.require("PICNICPresale.sol");
+var Presale = artifacts.require("Presale.sol");
 // const moment = require('moment');
 
 
-contract("PICNICPresale", (accounts) => {
+contract("Presale", (accounts) => {
   
-  let PICNICPresaleInstance;
+  let PresaleInstance;
 
   it("Check if Contract is deploying fine and initial state is as expectation ", async () =>  {
 
     const owner = accounts[0];
 
-    PICNICPresaleInstance = await PICNICPresale.deployed()
+    PresaleInstance = await Presale.deployed()
 
   })
 
