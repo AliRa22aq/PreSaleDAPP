@@ -20,8 +20,7 @@
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 require('dotenv').config()
-const mnemonic = "quit nation parade clever tuna salon visa vital install picnic salmon hold"
-//
+
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
