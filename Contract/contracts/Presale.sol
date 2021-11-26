@@ -37,7 +37,7 @@ contract Presale is Ownable{
 
     enum PreSaleStatus {paused, inProgress, succeed, failed}
 
-    struct InternalData { 
+    struct InternalData {
         uint totalTokensSold;
         uint revenueFromPresale;
         uint tokensToAddLiquidity;
@@ -60,7 +60,7 @@ contract Presale is Ownable{
         uint256 countOfParticipants;
     }
     
-    struct PresaleContract {      
+    struct PresaleContract {
         // Contract Info
         address preSaleContractAddr;
         
@@ -73,8 +73,8 @@ contract Presale is Ownable{
         // Participation Criteria
         uint256 priceOfEachToken;
         uint256 minTokensForParticipation;
-        uint256 minContibution;
-        uint256 maxContibution;
+        uint256 minTokensReq;
+        uint256 maxTokensReq;
         uint256 softCap;
         uint256 startedAt;
         uint256 expiredAt;
@@ -89,13 +89,24 @@ contract Presale is Ownable{
         // Participation Criteria
         uint256 _priceOfEachToken,
         uint256 _minTokensForParticipation,
-        uint256 _minContibution,
-        uint256 _maxContibution,
+        uint256 _minTokensReq,
+        uint256 _maxTokensReq,
         uint256 _softCap,
         uint256 _startedAt,
         uint256 _expiredAt
 
         ) public onlyOwner returns(uint){
+
+        require( _preSaleContractAddress != address(0), "Presale project address can't be null");
+        require( _tokensForSale > 0, "tokens for sale must be more than 0");
+        require( _softCap < _tokensForSale, "softcap should be less than the tokan tokens on sale");
+        require( _maxTokensReq > _minTokensReq, "_maxTokensReq > _minTokensReq");
+        require( _startedAt > block.timestamp && _expiredAt > block.timestamp, "_maxTokensReq > _minTokensReq");
+        
+        require( _maxTokensReq > _minTokensReq, "_maxTokensReq > _minTokensReq");
+
+
+        // require( presaleContract[_id].preSaleContractAddr != address(0), "project does not exist");
 
         count++;
         
@@ -122,8 +133,8 @@ contract Presale is Ownable{
             // Participation Criteria
             _priceOfEachToken,
             _minTokensForParticipation,
-            _minContibution,
-            _maxContibution,
+            _minTokensReq,
+            _maxTokensReq,
             _softCap,
             _startedAt,
             _expiredAt
@@ -144,30 +155,34 @@ contract Presale is Ownable{
 
     function buyTokensOnPresale(uint256 _id, uint256 _numOfTokensRequested) payable public returns (bool){
 
+        PresaleContract memory currentProject = presaleContract[_id];
+
         require(presaleContractStatic[_id].preSaleStatus == PreSaleStatus.inProgress, "Presale is not in progress");
         
-        //require(block.timestamp > presaleContract[_id].startedAt, "Presale hasn't begin yet. please wait");
-        //require(block.timestamp < presaleContract[_id].expiredAt, "Presale is over. Try next time");
-
-        // require(presaleContract[_id].remainingTokensForSale <= IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(address(this)), "insufficient tokens to fulfill this order");
+        require(block.timestamp >= currentProject.startedAt, "Presale hasn't begin yet. please wait");
+        require(block.timestamp < currentProject.expiredAt, "Presale is over. Try next time");
         
-        //require(_numOfTokensRequested <= presaleContract[_id].remainingTokensForSale, "insufficient tokens to fulfill this order");
-        //require(msg.value >= _numOfTokensRequested*presaleContract[_id].priceOfEachToken, "insufficient funds");
+        require(_numOfTokensRequested <= currentProject.remainingTokensForSale, "insufficient tokens to fulfill this order");
+        require(msg.value >= _numOfTokensRequested*currentProject.priceOfEachToken, "insufficient funds");
 
-        // uint256 PICNICTokensOfUser = IERC20(criteriaTokenAddr).balanceOf(msg.sender);
-        // require(PICNICTokensOfUser >= presaleContract[_id].minTokensForParticipation, "Not enough tokens to participate. Should be atleast 250");
+        uint256 PICNICTokensOfUser = IERC20(criteriaTokenAddr).balanceOf(msg.sender);
+        require(PICNICTokensOfUser >= currentProject.minTokensForParticipation, "Not enough tokens to participate. Should be atleast 250");
         
-    
-        //require(_numOfTokensRequested >= presaleContract[_id].minContibution, "Contribution is low, Please request more than minimum contribution");
-        //require(_numOfTokensRequested + IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(address(msg.sender)) <= presaleContract[_id].maxContibution, "Contribution is high, Please request less than maximum contribution");
+        uint tokensAlreadyBought =  participant[_id][msg.sender].tokens;
 
-            presaleContractStatic[_id].countOfParticipants++;
-            presaleContract[_id].accumulatedBalance += msg.value;
-            presaleContract[_id].remainingTokensForSale -= _numOfTokensRequested;
-            participant[_id][msg.sender] = Partipant(msg.value, _numOfTokensRequested);
-            
-            
-            return true;
+        require(_numOfTokensRequested >= currentProject.minTokensReq, "Request for tokens is low, Please request more than minTokensReq");
+        require(_numOfTokensRequested + tokensAlreadyBought <= currentProject.maxTokensReq, "Request for tokens is high, Please request less than maxTokensReq");
+        
+        presaleContractStatic[_id].countOfParticipants++;
+        presaleContract[_id].accumulatedBalance = presaleContract[_id].accumulatedBalance.add(msg.value);
+        presaleContract[_id].remainingTokensForSale = presaleContract[_id].remainingTokensForSale.sub(_numOfTokensRequested);
+
+        uint newValue = participant[_id][msg.sender].value.add(msg.value); 
+        uint newTokens = tokensAlreadyBought.add(_numOfTokensRequested); 
+
+        participant[_id][msg.sender] = Partipant(newValue, newTokens);
+        
+        return true;
 
     }
 
@@ -187,7 +202,7 @@ contract Presale is Ownable{
 
         if (_status == PreSaleStatus.succeed){
             require(_participant.tokens > 0, "No tokens to claim");        
-            bool tokenDistribution = IERC20(presaleContract[_id].preSaleContractAddr).transfer(address(msg.sender), _participant.tokens);
+            bool tokenDistribution = IERC20(presaleContract[_id].preSaleContractAddr).transfer(msg.sender, _participant.tokens);
             require(tokenDistribution, "Unable to transfer tokens to the participant");
             participant[_id][msg.sender] = Partipant(0, 0);
         }
@@ -203,15 +218,16 @@ contract Presale is Ownable{
 
     function endPresale(uint _id) public onlyOwner returns (uint, uint, uint){
         
-        require( presaleContract[_id].preSaleContractAddr != address(0), "project does not exist");
-
         PresaleContract memory currentProject = presaleContract[_id];
+
+        require( currentProject.preSaleContractAddr != address(0), "project does not exist");
+
         
-        //require(block.timestamp > currentProject.expiredAt, "Presale is not over yet");
+        require(block.timestamp > currentProject.expiredAt, "Presale is not over yet");
         
         uint256 totalTokensSold = currentProject.tokensForSale.sub(currentProject.remainingTokensForSale);
         
-        require(totalTokensSold >= currentProject.softCap, "Tokensold are less than softcap");
+        // require(totalTokensSold >= currentProject.softCap, "Tokensold are less than softcap");
 
 
         // successful presale
@@ -226,15 +242,14 @@ contract Presale is Ownable{
             uint256 poolShareBNB = revenueFromPresale.mul(currentProject.reservedTokensPCForLP).div(100);
             uint256 devTeamShareBNB = revenueFromPresale.sub(poolShareBNB);
             
-            (bool devTeam) = payable(devTeamAddr).send(devTeamShareBNB);
-            require(devTeam, "cannot send dev's share");
+            require(tokensToAddLiquidity >= 1000, "tokensToAddLiquidity less than 100  0");
             
             // Approval
-            require(tokensToAddLiquidity >= 1000, "tokensToAddLiquidity less than 100  0");
-
-
             bool approval = IERC20(currentProject.preSaleContractAddr).approve(pancakeSwapRouterAddr, tokensToAddLiquidity);
             require(approval, "cannot send dev's share");
+
+            (bool devTeam) = payable(devTeamAddr).send(devTeamShareBNB);
+            require(devTeam, "cannot send dev's share");
 
             internalData[_id] = InternalData(
                 totalTokensSold,
@@ -266,7 +281,7 @@ contract Presale is Ownable{
         
     }
 
-    function BNBbalanceOfContract() public view onlyOwner returns(uint){
+    function BNBbalanceOfContract() public view returns(uint){
         return address(this).balance;  
     }
 
@@ -275,21 +290,22 @@ contract Presale is Ownable{
         presaleContract[_id].startedAt = _starttime;
         presaleContract[_id].expiredAt = _endTime;
     }
-    
+
+   
     function updateParticipationCriteria (
             uint _id, 
             uint _priceOfEachToken, 
             uint _minTokensForParticipation,
-            uint _minContibution, 
-            uint _maxContibution, 
+            uint _minTokensReq, 
+            uint _maxTokensReq, 
             uint _softCap
         ) public onlyOwner {
 
         require( presaleContract[_id].preSaleContractAddr != address(0), "project does not exist");
         presaleContract[_id].priceOfEachToken = _priceOfEachToken;
         presaleContract[_id].minTokensForParticipation = _minTokensForParticipation;
-        presaleContract[_id].minContibution = _minContibution;
-        presaleContract[_id].maxContibution = _maxContibution;
+        presaleContract[_id].minTokensReq = _minTokensReq;
+        presaleContract[_id].maxTokensReq = _maxTokensReq;
         presaleContract[_id].softCap = _softCap;
     }
 
@@ -315,16 +331,15 @@ contract Presale is Ownable{
     }
         
     // Helping functions;
-    function preSaleTokenBalanceOfContract (uint256 _id) public view returns(uint256){
-        return IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(address(this));
+    function preSaleTokenBalanceOfContract (IERC20 _token) public view returns(uint256){
+        return _token.balanceOf(address(this));
     }
     
-    function preSaleTokenBalanceOfUser (uint256 _id) public view returns(uint256){
-        return IERC20(presaleContract[_id].preSaleContractAddr).balanceOf(address(msg.sender));
+    function preSaleTokenBalanceOfUser (IERC20 _token) public view returns(uint256){
+        return _token.balanceOf(address(msg.sender));
     }
-    function PICNICBalanceOfUser() public view returns (uint){
+    function criteriaTokenBalanceOfUser() public view returns (uint){
         return IERC20(criteriaTokenAddr).balanceOf(address(msg.sender));
     }
-    
 
 }
