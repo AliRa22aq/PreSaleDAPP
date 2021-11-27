@@ -38,30 +38,24 @@ module.exports = {
     //   timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
     //   skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     // },
-    // networks: {
-      // development: {
-      //   host: "127.0.0.1",     // Localhost (default: none)
-      //   port: 8545,            // Standard BSC port (default: none)
-      //   network_id: "*",       // Any network (default: none)
-      // },
-    // testnet: {
-    //   provider: () => new HDWalletProvider(mnemonic, `wss://data-seed-prebsc-1-s1.binance.org:8545`),
-    //   // provider: () => new HDWalletProvider(process.env.mnemonic, `wss://data-seed-prebsc-1-s1.binance.org:8545`),
-    //   network_id: 97,
-    //   confirmations: 10,
-    //   timeoutBlocks: 200,
-    //   skipDryRun: true
+    networks: {
+      development: {
+        host: "127.0.0.1",     // Localhost (default: none)
+        port: 7545,            // Standard BSC port (default: none)
+        network_id: "*",       // Any network (default: none)
+      },
+    }
+
+    // bscTestnet: {
+
+    //   provider: () => new HDWalletProvider(mnemonic, `https://speedy-nodes-nyc.moralis.io/bcf0017bb895dcaaa02ec143/bsc/testnet`),
+    //   network_id: 97,       // Ropsten's id
+    //   gas: 5500000,        // Ropsten has a lower block limit than mainnet
+    //   confirmations: 10,    // # of confs to wait between deployments. (default: 0)
+    //   timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+    //   skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+
     // },
-    bscTestnet: {
-
-      provider: () => new HDWalletProvider(mnemonic, `https://speedy-nodes-nyc.moralis.io/bcf0017bb895dcaaa02ec143/bsc/testnet`),
-      network_id: 97,       // Ropsten's id
-      gas: 5500000,        // Ropsten has a lower block limit than mainnet
-      confirmations: 10,    // # of confs to wait between deployments. (default: 0)
-      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
-
-    },
     // testnet: {
     //   provider: () => new HDWalletProvider(process.env.mnemonic, `https://data-seed-prebsc-1-s1.binance.org:8545`),
     //   network_id: 97,
@@ -76,12 +70,7 @@ module.exports = {
     //   timeoutBlocks: 200,
     //   skipDryRun: true
     // },
-    // Useful for private networks
-    // private: {
-    // provider: () => new HDWalletProvider(mnemonic, `https://network.io`),
-    // network_id: 2111,   // This network is yours, in the cloud.
-    // production: true    // Treats this network as if it was a public net. (default: false)
-    // }
+
   },
 
   // Set default mocha options here, use special reporters etc.
