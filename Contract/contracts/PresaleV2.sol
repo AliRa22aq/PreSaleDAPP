@@ -16,8 +16,8 @@ contract Presale is Ownable{
     uint8 presaleFeeShare = 0;
     
     // address public criteriaTokenAddr = 0x067F4A06A1CF8d3f508f4288d6cE7f5d90653AEb;
-    address public TeamAddr = 0x655181991a7310880485250DccDD376000b74a9B;
-    address public devAddr = 0x655181991a7310880485250DccDD376000b74a9B;
+    address public TeamAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
+    address public devAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
     
     //# PancakeSwap on BSC mainnet
     // address pancakeSwapFactoryAddr = 0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73;
@@ -25,13 +25,12 @@ contract Presale is Ownable{
     // address WBNBAddr = 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c;
     // 0x0000000000000000000000000000000000000000
     
-    
+      
     //# PancakeSwap on BSC testnet:
     address pancakeSwapFactoryAddr = 0x6725F303b657a9451d8BA641348b6761A6CC7a17;
     address pancakeSwapRouterAddr = 0xD99D1c33F9fC3444f8101754aBC46c52416550D1;
     address WBNBAddr = 0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd;
     
-
     mapping(uint256 => PresaleInfo) public presaleInfo;
     mapping(uint256 => PresalectCounts) public presalectCounts;
     mapping(uint256 => PresaleParticipationCriteria) public presaleParticipationCriteria;
@@ -70,7 +69,7 @@ contract Presale is Ownable{
     }
 
     struct PresalectCounts {
-        uint256 countOfParticipants;
+        uint256 participants;
         uint256 countOfClaims;
     }
     
@@ -155,17 +154,17 @@ contract Presale is Ownable{
 
         ) payable public returns(uint){
 
+        if(msg.sender != owner() || isOwnerWhitelisted[msg.sender]){
+            require( msg.value >= upfrontfee, "Insufficient Funds to start the presale");
+        }
+        
         if(_presaleType == PresaleType.open || _presaleType == PresaleType.onlyWhiteListed){
             require( _criteriaTokenAddr == address(0), "Criteria token address should be a null address");
         }
         else if(_presaleType == PresaleType.onlyTokenHolders){
             require( _criteriaTokenAddr != address(0), "Criteria token address shouldn't be a null address");
         }
-            // enum TypeOfPresale {open, onlyWhiteListed, onlyTokenHolders}
 
-        if(msg.sender != owner() || isOwnerWhitelisted[msg.sender]){
-            require( msg.value >= upfrontfee, "Insufficient Funds to start the presale");
-        }
 
         require( _preSaleContractAddress != address(0), "Presale project address can't be null");
         require( _tokensForSale > 0, "tokens for sale must be more than 0");
@@ -174,16 +173,13 @@ contract Presale is Ownable{
         require( _presaleTimes.startedAt > block.timestamp && _presaleTimes.expiredAt > block.timestamp, "_maxTokensReq > _minTokensReq");
 
         uint reservedTokens = _tokensForSale.mul(_reservedTokensPCForLP).div(100);
-        IERC20(_preSaleContractAddress).transfer( address(this), _tokensForSale.add(reservedTokens) );
-            // function transfer(address to, uint value) external returns (bool);
+        // IERC20(_preSaleContractAddress).transfer( address(this), _tokensForSale.add(reservedTokens) );
+        bool transfer = IERC20(_preSaleContractAddress).transferFrom(msg.sender, address(this), _tokensForSale.add(reservedTokens));
+        require( transfer, "Unable to transfer presale tokens to the contract");
 
         count++;
         
         address _address = IPancakeFactory(pancakeSwapFactoryAddr).createPair(_preSaleContractAddress, WBNBAddr);
-
-        // mapping(uint256 => PresaleInfo) public presaleInfo;
-        // mapping(uint256 => PresaleParticipationCriteria) public presaleParticipationCriteria;
-        // mapping(uint256 => PresalectCounts) public presalectCounts;
 
 
         presaleInfo[count] = PresaleInfo(
@@ -199,6 +195,7 @@ contract Presale is Ownable{
             _tokensForSale,                     // remainingTokensForSale = tokensForSale (initially)
             0,
             _address,
+            // address(0),
             PreSaleStatus.inProgress
         );
 
@@ -209,12 +206,8 @@ contract Presale is Ownable{
             _criteriaTokenAddr,
             _minTokensForParticipation,
             _reqestedTokens,
-            // _minTokensReq,
-            // _maxTokensReq,
             _softCap,
             _presaleTimes
-            // _startedAt,
-            // _expiredAt
         );
 
         presalectCounts[count] = PresalectCounts (
@@ -232,41 +225,38 @@ contract Presale is Ownable{
     // }
 
 
-    // function buyTokensOnPresale(uint256 _id, uint256 _numOfTokensRequested) payable public isIDValid(_id) isPresaleActive(_id){
+    function buyTokensOnPresale(uint256 _id, uint256 _numOfTokensRequested) payable public isIDValid(_id) isPresaleActive(_id){
 
-    //     PresaleContract memory currentProject = presaleContract[_id];
-    //     PresaleContractStatic memory currentProjectStatic = presaleContractStatic[_id];
+        PresaleInfo memory info = presaleInfo[_id];
+        PresaleParticipationCriteria memory criteria = presaleParticipationCriteria[_id];
 
-    //     // enum TypeOfPresale {open, onlyWhiteListed, onlyTokenHolders}
-    //     // address _criteriaToken =  currentProjectStatic.criteriaTokenAddr;
-    //     bool isWhitelisted = participant[_id][msg.sender].whiteListed;
+        Partipant memory currentParticipant = participant[_id][msg.sender]; 
 
-    //     if(currentProjectStatic.typeOfPresale == TypeOfPresale.onlyWhiteListed){
-    //         require( isWhitelisted == true, "Only whitelisted users are allowed to participate");
-    //     }
-    //     else if(currentProjectStatic.typeOfPresale == TypeOfPresale.onlyTokenHolders){
-    //         // uint _critriaTokenUserHold = IERC20(_criteriaToken).balanceOf(msg.sender);
-    //         require(IERC20(currentProjectStatic.criteriaTokenAddr).balanceOf(msg.sender) >= currentProject.minTokensForParticipation, "You don't hold enough criteria tokens");
-    //     }
+        if(info.typeOfPresale == PresaleType.onlyWhiteListed){
+            require( currentParticipant.whiteListed == true, "Only whitelisted users are allowed to participate");
+        }
+        else if(info.typeOfPresale == PresaleType.onlyTokenHolders){
+            require(IERC20(criteria.criteriaTokenAddr).balanceOf(msg.sender) >= criteria.minTokensForParticipation, "You don't hold enough criteria tokens");
+        }
 
-    //     require(_numOfTokensRequested <= currentProject.remainingTokensForSale, "insufficient tokens to fulfill this order");
-    //     require(msg.value >= _numOfTokensRequested*currentProject.priceOfEachToken, "insufficient funds");
+        require(_numOfTokensRequested <= info.remainingTokensForSale, "insufficient tokens to fulfill this order");
+        require(msg.value >= _numOfTokensRequested*info.priceOfEachToken, "insufficient funds");
         
-    //     uint tokensAlreadyBought =  participant[_id][msg.sender].tokens;
-
-    //     require(_numOfTokensRequested >= currentProject.minTokensReq, "Request for tokens is low, Please request more than minTokensReq");
-    //     require(_numOfTokensRequested + tokensAlreadyBought <= currentProject.maxTokensReq, "Request for tokens is high, Please request less than maxTokensReq");
+        if(currentParticipant.tokens == 0){
+            require(_numOfTokensRequested >= criteria.reqestedTokens.minTokensReq, "Request for tokens is low, Please request more than minTokensReq");
+        }
+        require(_numOfTokensRequested + currentParticipant.tokens <= criteria.reqestedTokens.maxTokensReq, "Request for tokens is high, Please request less than maxTokensReq");
         
-    //     presaleContractStatic[_id].countOfParticipants++;
-    //     presaleContract[_id].accumulatedBalance = presaleContract[_id].accumulatedBalance.add(msg.value);
-    //     presaleContract[_id].remainingTokensForSale = presaleContract[_id].remainingTokensForSale.sub(_numOfTokensRequested);
+        presalectCounts[_id].participants++;
+        presaleInfo[_id].accumulatedBalance = info.accumulatedBalance.add(msg.value);
+        presaleInfo[_id].remainingTokensForSale = info.remainingTokensForSale.sub(_numOfTokensRequested);
 
-    //     uint newValue = participant[_id][msg.sender].value.add(msg.value);
-    //     uint newTokens = tokensAlreadyBought.add(_numOfTokensRequested);
+        uint newValue = currentParticipant.value.add(msg.value);
+        uint newTokens = currentParticipant.tokens.add(_numOfTokensRequested);
 
-    //     participant[_id][msg.sender] = Partipant(newValue, newTokens, isWhitelisted);
+        participant[_id][msg.sender] = Partipant(newValue, newTokens, currentParticipant.whiteListed);
         
-    // }
+    }
 
     // function claimTokensOrARefund(uint _id) public isIDValid(_id){
         
