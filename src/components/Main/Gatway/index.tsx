@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react"
-import "../../assets/css/style.css"
-import "../../assets/css/responsive.css"
-import "../../assets/css/font-awesome-5.10.2.min.css"
-import "../../assets/css/bootstrap.min.css"
-import "../../assets/css/normalize.css"
-import "../../assets/css/plugin/animate.css"
-import "../../assets/css/plugin/nice-select.css"
+import "../../../assets/css/style.css"
+import "../../../assets/css/responsive.css"
+import "../../../assets/css/font-awesome-5.10.2.min.css"
+import "../../../assets/css/bootstrap.min.css"
+import "../../../assets/css/normalize.css"
+import "../../../assets/css/plugin/animate.css"
+import "../../../assets/css/plugin/nice-select.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { setNetworkID, setActiveUser, userWalletconnected } from '../store';
+import { setNetworkID, setActiveUser, userWalletconnected } from '../../store';
 import Web3 from "web3";
 
-import MethodIcon from "../../assets/img/method-icon.png"
-import PICNICLogo2 from "../../assets/img/picniclogo2.png"
-import BNBLogo from "../../assets/img/bnb_logo.png"
-import EthLogo from "../../assets/img/eth_logo.png"
+import MethodIcon from "../../../assets/img/method-icon.png"
+import PICNICLogo2 from "../../../assets/img/picniclogo2.png"
+import BNBLogo from "../../../assets/img/bnb_logo.png"
+import EthLogo from "../../../assets/img/eth_logo.png"
 
 
 

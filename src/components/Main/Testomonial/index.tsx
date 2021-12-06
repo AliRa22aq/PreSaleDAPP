@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from "react";
-import "../../assets/css/style.css";
-import "../../assets/css/responsive.css";
-import "../../assets/css/font-awesome-5.10.2.min.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/css/normalize.css";
-import "../../assets/css/plugin/animate.css";
-import "../../assets/css/plugin/nice-select.css";
+import "../../../assets/css/style.css";
+import "../../../assets/css/responsive.css";
+import "../../../assets/css/font-awesome-5.10.2.min.css";
+import "../../../assets/css/bootstrap.min.css";
+import "../../../assets/css/normalize.css";
+import "../../../assets/css/plugin/animate.css";
+import "../../../assets/css/plugin/nice-select.css";
 
 
-import Tcoin1 from "../../assets/img/tcoin-1.png";
-import Tcoin2 from "../../assets/img/tcoin-2.png";
-import Tcoin3 from "../../assets/img/tcoin-3.png";
-import Tcoin4 from "../../assets/img/tcoin-4.png";
-import Tcoin15 from "../../assets/img/tcoin-5.png";
+import Tcoin1 from "../../../assets/img/tcoin-1.png";
+import Tcoin2 from "../../../assets/img/tcoin-2.png";
+import Tcoin3 from "../../../assets/img/tcoin-3.png";
+import Tcoin4 from "../../../assets/img/tcoin-4.png";
+import Tcoin15 from "../../../assets/img/tcoin-5.png";
+
+
+import { Routes, Route, Link } from "react-router-dom";
 
 
 
 
 
 import { useDispatch, useSelector } from "react-redux";
-import { setNetworkID, setActiveUser, userWalletconnected } from "../store";
+import { setNetworkID, setActiveUser, userWalletconnected } from "../../store";
 import Web3 from "web3";
 
 const Testomonial = () => {
@@ -81,9 +84,9 @@ const Testomonial = () => {
             <div className="section-head">
               <h4 className="lasthead">Pre-Sale</h4>
               <h2 className="title">Join our latest presale today.</h2>
-              <p className="text">
+              {/* <p className="text">
                 Current Launch: LockedUP (Requires 150 $PICNIC to join pre-sale)
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
@@ -96,7 +99,7 @@ const Testomonial = () => {
           >
             <div className="testo-box">
               <div className="review">
-                <div style={{ display: "inline", textAlign: "left" }}>
+                {/* <div style={{ display: "inline", textAlign: "left" }}>
                   <p className="text" id="selected-account"></p>
                   <p className="text" id="picnicHeld">
                     Picnic You Hold: {userPincicInfo.balance}
@@ -128,17 +131,22 @@ const Testomonial = () => {
                     placeholder="0.1BNB - 1BNB"
                     required
                   />
-                </p>
+                </p>*/}
 
                 <br />
-                <a
-                  style={{ display: "inline-block", width: "200px" }}
-                  className="nav-link button-1"
-                  id="sendCont"
-                  onClick={()=> {}}
-                >
-                  Send Contribution
-                </a>
+                
+                <Link to="/presale">
+                  {/* <a
+                    style={{ display: "inline-block", width: "200px" }}
+                    className="nav-link button-1"
+                    id="sendCont"
+                    // onClick={()=> {}}
+                  >
+                </a> */}
+                  GO TO PRESALE SECTION
+                
+                </Link>
+
               </div>
             </div>
           </div>

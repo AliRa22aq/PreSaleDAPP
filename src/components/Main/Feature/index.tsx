@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react"
-import "../../assets/css/style.css"
-import "../../assets/css/responsive.css"
-import "../../assets/css/font-awesome-5.10.2.min.css"
-import "../../assets/css/bootstrap.min.css"
-import "../../assets/css/normalize.css"
-import "../../assets/css/plugin/animate.css"
-import "../../assets/css/plugin/nice-select.css"
+import "../../../assets/css/style.css"
+import "../../../assets/css/responsive.css"
+import "../../../assets/css/font-awesome-5.10.2.min.css"
+import "../../../assets/css/bootstrap.min.css"
+import "../../../assets/css/normalize.css"
+import "../../../assets/css/plugin/animate.css"
+import "../../../assets/css/plugin/nice-select.css"
 
-import FeatureIcon1 from "../../assets/img/feature-icon-1.png"
-import FeatureIcon2 from "../../assets/img/feature-icon-2.png"
-import FeatureIcon3 from "../../assets/img/feature-icon-3.png"
-import FeatureIcon4 from "../../assets/img/feature-icon-4.png"
+import FeatureIcon1 from "../../../assets/img/feature-icon-1.png"
+import FeatureIcon2 from "../../../assets/img/feature-icon-2.png"
+import FeatureIcon3 from "../../../assets/img/feature-icon-3.png"
+import FeatureIcon4 from "../../../assets/img/feature-icon-4.png"
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setNetworkID, setActiveUser, userWalletconnected } from '../store';
+import { setNetworkID, setActiveUser, userWalletconnected } from '../../store';
 import Web3 from "web3";
 
 

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.2.2",
     "@openzeppelin/contracts": "^4.3.3",
     "@pancakeswap2/pancake-swap-core": "^0.1.0",
     "@reduxjs/toolkit": "^1.6.2",
@@ -20,8 +23,10 @@
     "react-dom": "^17.0.2",
     "react-eth-address": "^0.1.0",
     "react-redux": "^7.2.6",
+    "react-router-dom": "6",
     "react-scripts": "4.0.3",
     "redux": "^4.1.1",
+    "styled-components": "^5.3.3",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1",
     "web3": "^1.5.2",
@@ -58,6 +63,7 @@
     "@babel/plugin-syntax-class-properties": "^7.12.13",
     "@typechain/web3-v1": "^3.1.0",
     "@types/bn.js": "^4.11.6",
+    "@types/styled-components": "^5.1.16",
     "typechain": "^5.1.2"
   }
 }

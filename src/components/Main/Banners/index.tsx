@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from "react"
-import "../../assets/css/style.css"
-import "../../assets/css/responsive.css"
-import "../../assets/css/font-awesome-5.10.2.min.css"
-import "../../assets/css/bootstrap.min.css"
-import "../../assets/css/normalize.css"
-import "../../assets/css/plugin/animate.css"
-import "../../assets/css/plugin/nice-select.css"
+import "../../../assets/css/style.css"
+import "../../../assets/css/responsive.css"
+import "../../../assets/css/font-awesome-5.10.2.min.css"
+import "../../../assets/css/bootstrap.min.css"
+import "../../../assets/css/normalize.css"
+import "../../../assets/css/plugin/animate.css"
+import "../../../assets/css/plugin/nice-select.css"
 
-import Background from "../../assets/img/banner-bg.png"
-import HeroImg from "../../assets/img/hero-img.png"
+import Background from "../../../assets/img/banner-bg.png"
+import HeroImg from "../../../assets/img/hero-img.png"
 
 
-import Bannershap1 from "../../assets/img/bannershap-1.png"
-import Bannercoin1 from "../../assets/img/bannercoin-1.png"
-import Bannercoin2 from "../../assets/img/bannercoin-2.png"
-import Bannercoin3 from "../../assets/img/bannercoin-3.png"
+import Bannershap1 from "../../../assets/img/bannershap-1.png"
+import Bannercoin1 from "../../../assets/img/bannercoin-1.png"
+import Bannercoin2 from "../../../assets/img/bannercoin-2.png"
+import Bannercoin3 from "../../../assets/img/bannercoin-3.png"
 
-import Color1 from "../../assets/img/color-1.png"
-import Color2 from "../../assets/img/color-2.png"
-import Color3 from "../../assets/img/color-3.png"
-import ExchangeImg from "../../assets/img/exchange-img.png"
+import Color1 from "../../../assets/img/color-1.png"
+import Color2 from "../../../assets/img/color-2.png"
+import Color3 from "../../../assets/img/color-3.png"
+import ExchangeImg from "../../../assets/img/exchange-img.png"
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setNetworkID, setActiveUser, userWalletconnected } from '../store';
+import { setNetworkID, setActiveUser, userWalletconnected } from '../../store';
 import Web3 from "web3";
 
 

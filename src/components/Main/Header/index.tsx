@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react"
-import "../../assets/css/style.css"
-import "../../assets/css/responsive.css"
-import "../../assets/css/font-awesome-5.10.2.min.css"
-import "../../assets/css/bootstrap.min.css"
-import "../../assets/css/normalize.css"
-import "../../assets/css/plugin/animate.css"
-import "../../assets/css/plugin/nice-select.css"
-import LOGO from "../../assets/img/logo.png"
-import TokenABI from "../../abis/PICNIC.json";
-import {PICNIC as PICNICType} from '../../../types/web3-v1-contracts/PICNIC';
+import "../../../assets/css/style.css"
+import "../../../assets/css/responsive.css"
+import "../../../assets/css/font-awesome-5.10.2.min.css"
+import "../../../assets/css/bootstrap.min.css"
+import "../../../assets/css/normalize.css"
+import "../../../assets/css/plugin/animate.css"
+import "../../../assets/css/plugin/nice-select.css"
+import LOGO from "../../../assets/img/logo.png"
+import TokenABI from "../../../abis/PICNIC.json";
+import {PICNIC as PICNICType} from '../../../../types/web3-v1-contracts/PICNIC';
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setuserPicnicBalance, setNetworkID, setActiveUser, userWalletconnected, setPICNICContractFn } from '../store';
+import { setuserPicnicBalance, setNetworkID, setActiveUser, userWalletconnected, setPICNICContractFn } from '../../store';
 import Web3 from "web3";
 
 

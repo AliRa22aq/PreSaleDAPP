@@ -14,9 +14,7 @@ contract Presale is Ownable{
     uint public count = 0;
     uint public upfrontfee = 1;
     uint8 public salesFeeInPercent = 1;
-    // uint8 presalePercentFee = 
     
-    // address public criteriaTokenAddr = 0x067F4A06A1CF8d3f508f4288d6cE7f5d90653AEb;
     address public teamAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
     address public devAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
     

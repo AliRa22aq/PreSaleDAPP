@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react"
-import "../../assets/css/style.css"
-import "../../assets/css/responsive.css"
-import "../../assets/css/font-awesome-5.10.2.min.css"
-import "../../assets/css/bootstrap.min.css"
-import "../../assets/css/normalize.css"
-import "../../assets/css/plugin/animate.css"
-import "../../assets/css/plugin/nice-select.css"
+import "../../../assets/css/style.css"
+import "../../../assets/css/responsive.css"
+import "../../../assets/css/font-awesome-5.10.2.min.css"
+import "../../../assets/css/bootstrap.min.css"
+import "../../../assets/css/normalize.css"
+import "../../../assets/css/plugin/animate.css"
+import "../../../assets/css/plugin/nice-select.css"
 
-import Picnictableicon from "../../assets/img/table/picnictableicon.png"
+import Picnictableicon from "../../../assets/img/table/picnictableicon.png"
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setNetworkID, setActiveUser, userWalletconnected } from '../store';
+import { setNetworkID, setActiveUser, userWalletconnected } from '../../store';
 import Web3 from "web3";
 import axios from 'axios'
 
