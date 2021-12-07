@@ -80,3 +80,14 @@ export const FormSubHeading = styled.div`
         width: '100%'; */
 
 `;
+
+
+export const SaleDetailHeader = styled.div`
+        border: 2px solid red;
+        margin-bottom: 10px
+        /* height: 100px */
+        /* margin-right: 50px;
+        width: '100%'; */
+
+`;
+

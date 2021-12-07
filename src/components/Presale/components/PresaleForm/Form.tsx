@@ -21,32 +21,12 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
-// import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
-
-
-// PresaleType _presaleType,
-// address _preSaleContractAddress,
-// address _criteriaTokenAddr,
-// uint8 _reservedTokensPCForLP,
-// uint256 _tokensForSale,
-
-// // Participation Criteria
-// uint256 _priceOfEachToken,
-// uint256 _minTokensForParticipation,
-// PresaleTimes memory _presaleTimes,
-// ReqestedTokens memory _reqestedTokens,
-// uint256 _softCap
 
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-
-
-
-
-
 
 
 function InputForm() {
@@ -94,8 +74,6 @@ function InputForm() {
                     <FromContainer>
                     <Form>
 
-
-
                     <div style={{margin: "5px"}}>
 
                         <Accordion expanded={expanded === 'panel1'} onChange={handleAccordionChange('panel1')}>
@@ -123,7 +101,6 @@ function InputForm() {
 
                             </AccordionDetails>
                         </Accordion>
-
 
                         <Accordion expanded={expanded === 'panel2'} onChange={handleAccordionChange('panel2')}>
 
@@ -197,8 +174,6 @@ function InputForm() {
                             </AccordionDetails>
 
                         </Accordion>
-
-
 
                         <Accordion expanded={expanded === 'panel3'} onChange={handleAccordionChange('panel3')}>
                             <AccordionSummary
@@ -296,9 +271,6 @@ function InputForm() {
                             </AccordionDetails>
                         </Accordion>
 
-
-
-
                         <Accordion expanded={expanded === 'panel4'} onChange={handleAccordionChange('panel4')}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -332,9 +304,6 @@ function InputForm() {
 
                             </AccordionDetails>
                         </Accordion>
-
-
-
 
                     </div>
 
