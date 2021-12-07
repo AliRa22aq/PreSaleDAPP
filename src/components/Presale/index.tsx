@@ -16,7 +16,7 @@ function Presale() {
 
             <ButtonContainer >
                 <Link to='form' >
-                    <StyledButton size="small" variant="contained" sx={{top: 1,  right: 1 }}> Start a Presale </StyledButton>
+                    <StyledButton size="small" variant="contained" > Start a Presale </StyledButton>
                 </Link>
             </ButtonContainer >
 
@@ -24,7 +24,7 @@ function Presale() {
             <PresaleHeader />
                 
             <PresaleListings  />
-
+                
             </RootContainer>
         </PreRootContainer>
     )
