@@ -50,8 +50,12 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
         return <Completionist />;
         } else {
         // Render a countdown
-        return <span style={{fontSize: "40px", fontWeight: 900}}>{days}:{hours}:{minutes}:{seconds}</span>;
-        }
+        return (
+            <div>
+                <div style={{fontSize: "20px", fontWeight: 700, marginBottom: "-10px"}}> Presale Ends in </div>
+                <div style={{fontSize: "40px", fontWeight: 900}}> {days}:{hours}:{minutes}:{seconds} </div>
+            </div>
+        )}
     };
 
     return (

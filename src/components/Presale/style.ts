@@ -4,27 +4,27 @@ import Button from '@mui/material/Button';
 
 
 
-declare module '@mui/material/styles' {
-        interface Theme {
-          status: {
-            danger: string;
-          };
+// declare module '@mui/material/styles' {
+//         interface Theme {
+//           status: {
+//             danger: string;
+//           };
           
-        }
-        // allow configuration using `createTheme`
-        interface ThemeOptions {
-          status?: {
-            danger?: string;
-          };
-        }
-      }
+//         }
+//         // allow configuration using `createTheme`
+//         interface ThemeOptions {
+//           status?: {
+//             danger?: string;
+//           };
+//         }
+//       }
       
 
 
 export const PreRootContainer = styled.div`
         border: 2px solid black;
-        /* background-color: #5e34eb; */
-        background: linear-gradient(to bottom right, #6600ff 0%, #ff99cc 100%);
+        background-color: #000;
+        /* background: linear-gradient(to bottom right, #6600ff 0%, #ff99cc 100%); */
         width: 100%;
         height: 100%;
         min-height: 100vh;
