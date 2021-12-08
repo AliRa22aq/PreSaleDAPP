@@ -16,21 +16,25 @@ const PresaleCardd: FC<CardPros> = ({id}) => {
 
     return (
             <Box sx={{margin: 1, height: 500}}>
-                <Card variant="outlined" sx={{border: "2px solid black", height: "100%", width: "100%"}}>
+                <Card variant="outlined" sx={{border: "0.5px solid black", height: "100%", width: "100%"}}>
 
                     <React.Fragment>
                         
-                        <CardContent sx={{ border: "2px solid red", height: "80%", padding: 1}}>
+                        <CardContent sx={{ border: "0.5px solid black", height: "80%", padding: 1}}>
+
                             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                 Presale # {id}
                             </Typography>
+    
+    
                         </CardContent>
 
 
-                        <CardActions sx={{ border: "2px solid black" , height: "20%", justifyContent: "center", padding: 1}}>
-                            <Link to={String(id)} >                        
-                                    <Button variant="contained" sx={{ }}>
-                                        Participate
+
+                        <CardActions sx={{ border: "0.5px solid black" , height: "20%", justifyContent: "center", padding: 1}}>
+                            <Link to={String(id)} style={{ textDecoration: 'none' }}>                        
+                                    <Button variant="contained" sx={{}}>
+                                       <div> Participate </div>
                                     </Button>
                             </Link>
                         </CardActions>

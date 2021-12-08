@@ -18,9 +18,9 @@ import Stack from '@mui/material/Stack';
 import {TextField as TextF} from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import TimePicker from '@mui/lab/TimePicker';
+// import TimePicker from '@mui/lab/TimePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+// import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 
 
 import Select from '@mui/material/Select';
@@ -45,7 +45,7 @@ function InputForm() {
       };
   
 
-    const [value, setValue] = React.useState<Date | null>(
+    const [time, setTime] = React.useState<Date | null>(
         new Date('2014-08-18T21:11:54'),
     );
 
@@ -235,7 +235,7 @@ function InputForm() {
                                     <Stack spacing={3}>
                                             <DateTimePicker
                                             label='Starting time of crowd sale'
-                                            value={value}
+                                            value={time}
                                             onChange={handleStartingTime}
                                             renderInput={(params) => <TextF {...params} />}
                                             />
@@ -248,7 +248,7 @@ function InputForm() {
                                     <Stack spacing={3}>
                                             <DateTimePicker
                                             label='Starting time of crowd sale'
-                                            value={value}
+                                            value={time}
                                             onChange={handleEndingTime}
                                             renderInput={(params) => <TextF {...params} />}
                                             />
@@ -287,16 +287,16 @@ function InputForm() {
 
                             <div style={{display: "flex-box"}}>
 
-                                    <Typography sx={{ color: 'text.secondary', border: "1px solid black", width: "33%" }} >
+                                    <Typography sx={{ color: 'text.secondary', border: process.env.REACT_APP_BORDER, width: "33%" }} >
                                         Hello World
                                     </Typography> <br />
-                                    <Typography sx={{ color: 'text.secondary', border: "1px solid black", width: "33%"  }} >
+                                    <Typography sx={{ color: 'text.secondary', border: process.env.REACT_APP_BORDER, width: "33%"  }} >
                                         Hello World
                                     </Typography> <br />
-                                    <Typography sx={{ color: 'text.secondary', border: "1px solid black", width: "33%"   }} >
+                                    <Typography sx={{ color: 'text.secondary', border: process.env.REACT_APP_BORDER, width: "33%"   }} >
                                         Hello World
                                     </Typography> <br />
-                                    <Typography sx={{ color: 'text.secondary', border: "1px solid black", width: "33%"   }} >
+                                    <Typography sx={{ color: 'text.secondary', border: process.env.REACT_APP_BORDER, width: "33%"   }} >
                                         Hello World
                                     </Typography> <br />
 
@@ -311,7 +311,7 @@ function InputForm() {
                         <Grid container spacing={0} >
 
                             <Grid item xs={12} 
-                                sx={{ border: "1px solid black", display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}>
+                                sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}>
                                 
                                 <Button
                                     variant="contained"

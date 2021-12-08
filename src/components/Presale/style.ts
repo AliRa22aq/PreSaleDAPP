@@ -1,11 +1,30 @@
 import styled from 'styled-components'
 import Button from '@mui/material/Button';
+// import { MuiThemeProvider, createMuiTheme } from '@mui/material/styles';
 
+
+
+declare module '@mui/material/styles' {
+        interface Theme {
+          status: {
+            danger: string;
+          };
+          
+        }
+        // allow configuration using `createTheme`
+        interface ThemeOptions {
+          status?: {
+            danger?: string;
+          };
+        }
+      }
+      
 
 
 export const PreRootContainer = styled.div`
         border: 2px solid black;
-        background-color: lightcoral;
+        /* background-color: #5e34eb; */
+        background: linear-gradient(to bottom right, #6600ff 0%, #ff99cc 100%);
         width: 100%;
         height: 100%;
         min-height: 100vh;
@@ -38,7 +57,7 @@ export const RootContainer = styled.div`
 `;
 
 export const HeaderContainer = styled.div`
-        border: 2px solid violet;
+        border: 2px solid black;
         margin: 5px;
         padding: 5px;
         height: 50px;
@@ -48,7 +67,7 @@ export const HeaderContainer = styled.div`
 
 
 export const FromContainer = styled.div`
-        border: 2px solid violet;
+        border: 2px solid black;
         /* height: 100%; */
 
 `;

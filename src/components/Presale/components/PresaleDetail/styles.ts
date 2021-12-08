@@ -10,7 +10,7 @@ export const DetailContainer = styled.div`
 `;
 
 export const PaiChartContainer = styled.div`
-        border: 2px solid blue;
+        border: 2px solid black;
         width: 40%;
         height: 40%;
         margin: auto;
@@ -20,8 +20,54 @@ export const PaiChartContainer = styled.div`
 `;
 
 export const DiscriptionContainer = styled.div`
-        border: 2px solid blue;
+        border: 2px solid black;
         margin: 10px;
+`;
 
 
+export const DiscriptionHeading = styled.div`
+        border: 2px solid black;
+        margin: 5px;
+`;
+
+export const ParticipationDetails = styled.div`
+        border: 2px solid black;
+        margin: 5px;
+`;
+
+export const ParticipationDetailsHeading = styled.div`
+        border: 2px solid black;
+        margin: 5px;
+`;
+
+export const ParticipationDetailsBody = styled.div`
+        border: 2px solid black;
+        margin: 5px;
+`;
+
+
+export const CountdownContainer = styled.div`
+        border: 2px solid black;
+        margin: 5px;
+        align-self: center;
+        font-size: larger;
+`;
+
+
+export const GuideContainer = styled.div`
+        border: 2px solid black;
+        margin: 5px;
+        min-height: 300px;
+`;
+
+export const UpdatesContainer = styled.div`
+        border: 2px solid black;
+        margin: 5px;
+        min-height: 300px;
+
+`;
+
+export const UpdatesDiv = styled.div`
+        border: 2px solid black;
+        margin-bottom: 5px;
 `;
