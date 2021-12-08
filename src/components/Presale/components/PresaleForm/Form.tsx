@@ -31,10 +31,11 @@ import FormControl from '@mui/material/FormControl';
 
 function InputForm() {
     
-    const [loading, setLoading] = useState(true);
+    const [seleted, setSellected] = useState(0);
     
     const handleSelect = (event: any) => {
       console.log(event.target.value);
+      setSellected(event.target.value);
     };
 
     const [expanded, setExpanded] = React.useState<string | false>(false);
@@ -46,7 +47,7 @@ function InputForm() {
   
 
     const [time, setTime] = React.useState<Date | null>(
-        new Date('2014-08-18T21:11:54'),
+        new Date('2014-08-18T21:11:54')
     );
 
     const handleStartingTime = (newValue: Date | null) => {
@@ -58,8 +59,6 @@ function InputForm() {
         if(newValue)
         console.log(newValue?.getTime() / 1000);
     };
-
-
 
 
     return (
@@ -83,7 +82,7 @@ function InputForm() {
                                 id="panel1bh-header"
                             >
                                 <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                Token Information
+                                            Token Information
                                 </Typography>
                                 <Typography sx={{ color: 'text.secondary' }}>Provide the token address you want to put on crowdsale</Typography>
                             </AccordionSummary>
@@ -120,13 +119,13 @@ function InputForm() {
 
                             <Grid container spacing={1}>
 
-                                <Grid item xs={2} sx={{ margin: 0 }} >
+                                <Grid item xs={3} sx={{ margin: 0 }} >
                                     <FormControl fullWidth>
                                         <InputLabel id="demo-simple-select-label">Type</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            value={0}
+                                            value={seleted}
                                             label="Age"
                                             onChange={handleSelect}
                                         >
@@ -137,15 +136,20 @@ function InputForm() {
                                     </FormControl>
                                 </Grid>
 
-                                <Grid item xs={10} sx={{ margin: 0 }} >
-                                    <Field
-                                        component={TextField}
-                                        type="text"
-                                        name="address"
-                                        label="Criteria Conrtact Address"
-                                        fullWidth
-                                    />
-                                </Grid>
+                                <Grid item xs={9} sx={{ margin: 0 }} >
+                                    {
+                                    seleted == 2 ?
+                                        <Field
+                                            component={TextField}
+                                            type="text"
+                                            name="address"
+                                            label="Criteria Conrtact Address"
+                                            fullWidth
+                                        />
+                                        :
+                                        null
+                                    }
+                                    </Grid>
 
                                 <Grid item xs={6} sx={{ margin: 0 }} >
                                     <Field

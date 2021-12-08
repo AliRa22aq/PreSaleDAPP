@@ -28,6 +28,9 @@ export const DiscriptionContainer = styled.div`
 export const DiscriptionHeading = styled.div`
         border: 2px solid black;
         margin: 5px;
+        font-size: 15px; 
+        font-weight: 600;
+
 `;
 
 export const ParticipationDetails = styled.div`
@@ -38,6 +41,9 @@ export const ParticipationDetails = styled.div`
 export const ParticipationDetailsHeading = styled.div`
         border: 2px solid black;
         margin: 5px;
+        font-size: 15px; 
+        font-weight: 600;
+
 `;
 
 export const ParticipationDetailsBody = styled.div`
@@ -58,16 +64,25 @@ export const GuideContainer = styled.div`
         border: 2px solid black;
         margin: 5px;
         min-height: 300px;
+        font-size: 15px; 
+        font-weight: 600;
+
 `;
 
 export const UpdatesContainer = styled.div`
         border: 2px solid black;
         margin: 5px;
         min-height: 300px;
+        /* font-size: 15px; 
+        font-weight: 600; */
+
 
 `;
 
 export const UpdatesDiv = styled.div`
         border: 2px solid black;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
+        font-size: 15px; 
+        font-weight: 600;
+
 `;

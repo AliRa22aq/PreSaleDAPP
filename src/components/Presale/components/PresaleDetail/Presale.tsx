@@ -42,12 +42,12 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
     // const [ownerView, setOwnerView] = useState(false)
     const style = {display: "flex", justifyContent: "start", marginLeft: "5px"}
 
-    const Completionist = () => <span>The Sale has been ended. You can claim your tokens</span>;
+    // const Completionist = () => <span>The Sale has been ended. You can claim your tokens</span>;
     // Renderer callback with condition
     const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
         if (completed) {
         // Render a completed state
-        return <Completionist />;
+        return <div style={{fontSize: "20px", fontWeight: 700}}> The Sale has been ended </div>;
         } else {
         // Render a countdown
         return (
@@ -67,11 +67,11 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
 
             <CountdownContainer>
                 <Countdown 
-                    date={Date.now() + 50000000}
+                    date={saleEnded ? Date.now() : Date.now() + 50000000}
                     renderer={renderer}
-                    >
-                    <Completionist />
-                </Countdown>            
+                    />
+                    {/* <Completionist /> */}
+                {/* </Countdown>             */}
             </CountdownContainer>
             
             <ParticipationDetails>

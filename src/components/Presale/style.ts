@@ -52,7 +52,7 @@ export const RootContainer = styled.div`
         margin-top: 50px;
         margin-bottom: 50px;
         /* padding: 20px; */
-        background-color: white;
+        background-color: #f2f2f2;
 
 `;
 
@@ -80,6 +80,9 @@ export const FormHeader = styled.div`
         /* min-height: 100vh; */
         /* height: 100% */
         font-size: larger;
+        /* font-size: 20px; 
+        font-weight: 700; */
+
 `;
 
 export const FormBody = styled.div`
@@ -102,9 +105,11 @@ export const FormSubHeading = styled.div`
 
 
 export const SaleDetailHeader = styled.div`
-        border: 2px solid red;
-        margin-bottom: 10px
-        /* height: 100px */
+        border-style: solid;
+        border-width: 0px 0px 2px 0px; /* 25px top, 10px right, 4px bottom and 35px left */
+        margin-bottom: 10px;
+        font-size: 20px; 
+        font-weight: 700;
         /* margin-right: 50px;
         width: '100%'; */
 

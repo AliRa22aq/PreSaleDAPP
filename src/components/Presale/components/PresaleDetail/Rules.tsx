@@ -12,6 +12,8 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+
 
 const Rules: FC<RulesProps> = ({ownerView, saleEnded}) => {
     console.log("Owner2 => ", ownerView)
@@ -75,7 +77,7 @@ console.log(process.env.REACT_APP_BORDER)
                                                     component={TextField}
                                                     type="number"
                                                     name="priceOfEachToken"
-                                                    label="Price of Token iin BNB (e.g. 0.2 BNB)"
+                                                    label="Price of Token in BNB (e.g. 0.2 BNB)"
                                                     fullWidth
                                                     />
                                             </Grid>
@@ -141,7 +143,7 @@ console.log(process.env.REACT_APP_BORDER)
                                             <Grid container spacing= {0} 
                                             sx={{ border: process.env.REACT_BORDER, display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}
                                             >
-                                                <Grid item xs={12} sx={{ margin: 0.5}} >
+                                                <Grid item xs={12} sx={{ margin: 0.5, marginTop: 1, marginBottom: 1}} >
                                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                                         <Stack spacing={3}>
                                                                 <DateTimePicker
@@ -187,7 +189,7 @@ console.log(process.env.REACT_APP_BORDER)
                         </UpdatesDiv>
 
                         <UpdatesDiv>
-                            White List An Account
+                            White List Accounts
                             <Formik 
                                 initialValues={{ address: "" }}
                                 // validationSchema={schema1} 
@@ -201,15 +203,21 @@ console.log(process.env.REACT_APP_BORDER)
                                             sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}
                                             >
                                               <Grid item xs={12} sx={{ margin: 0.5 }} >
+
                                                 <Field
-                                                    component={TextField}
+                                                    component={TextareaAutosize}
                                                     type="text"
                                                     name="address"
-                                                    label="Account"
+                                                    label="Accounts"
+                                                    placeholder="In form of an array e.g.['0x90ee3Cf59FcDe2FE11838b9075Ea4681462362F1','0x8dd92dd186f05e3e9f1844cd9047617adad8a66d','0x8dd92dd186f05e3e9f1844cd9047617adad8a66d']"
                                                     fullWidth
-                                                />
-                                            </Grid>
+                                                    multiline
+                                                    // rowsMin={6}
+                                                    // rowsMax={10}
+                                                    style={{ width: "100%", minHeight: "50px" }}
 
+                                                />
+                                                </Grid>
                                                     <Button
                                                         variant="contained"
                                                         color="primary"
@@ -219,9 +227,7 @@ console.log(process.env.REACT_APP_BORDER)
                                                         disabled = {saleEnded ? true:false}
                                                         >
                                                         <div >White List</div>
-
                                                     </Button>
-
                                                 </Grid>
                                         </Form>
                                 )}
@@ -249,23 +255,23 @@ console.log(process.env.REACT_APP_BORDER)
                                                     type="text"
                                                     name="address"
                                                     label="Account"
-                                                    fullWidth
+                                                    fullWidth                                                  
                                                 />
                                             </Grid>
 
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        type="submit"
-                                                        className="form-button"
-                                                        sx={{ margin: 0.5}}
-                                                        disabled = {saleEnded ? true:false}
-                                                        >
-                                                        <div >Update</div>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                type="submit"
+                                                className="form-button"
+                                                sx={{ margin: 0.5}}
+                                                disabled = {saleEnded ? true:false}
+                                                >
+                                                <div >Update</div>
 
-                                                    </Button>
+                                            </Button>
 
-                                                </Grid>
+                                            </Grid>
                                         </Form>
                                 )}
                             </Formik>

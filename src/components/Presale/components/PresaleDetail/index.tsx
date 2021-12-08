@@ -47,7 +47,7 @@ function PresaleDetail() {
                         <FormControlLabel onChange={handleSaleEnded} control={<Switch />} label="Sale Ended" />
                         <FormControlLabel onChange={handleSwitch} control={<Switch />} label="Owner View" />
                     </div>
-                   <SaleDetailHeader> Welcome to Presale {params.presaleID} </SaleDetailHeader>
+                   <SaleDetailHeader > Welcome to Presale {params.presaleID} </SaleDetailHeader>
                 </Grid>
 
                 <Grid container spacing={0} sx={{border: process.env.REACT_APP_BORDER, minHeight: 600}}>

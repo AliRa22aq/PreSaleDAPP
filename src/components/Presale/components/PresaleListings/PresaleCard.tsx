@@ -15,8 +15,8 @@ interface CardPros {
 const PresaleCardd: FC<CardPros> = ({id}) => {
 
     return (
-            <Box sx={{margin: 1, height: 500}}>
-                <Card variant="outlined" sx={{border: "0.5px solid black", height: "100%", width: "100%"}}>
+            <Box sx={{margin: 1, height: 500, boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
+                <Card variant="outlined" sx={{border: "0.5px solid black", height: "100%", width: "100%", }}>
 
                     <React.Fragment>
                         
