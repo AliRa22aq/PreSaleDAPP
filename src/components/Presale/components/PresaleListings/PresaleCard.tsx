@@ -149,10 +149,10 @@ const PresaleCardd: FC<CardPros> = ({id}) => {
                                             variant="caption"
                                             component="div"
                                             color="text.secondary"
-                                            sx={{fontSize: "20px"}}
+                                            sx={{fontSize: "15px"}}
                                         >
                                         
-                                            {`${Math.round(progress)}%`}
+                                            {`Sold ${Math.round(progress)}%`}
                                             {/* <Chip variant="filled" label="Pending" size="small" /> */}
                                         
                                         </Typography>

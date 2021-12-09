@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
 import { Form, Formik, Field } from "formik";
 import { TextField } from 'formik-material-ui';
 import Button from "@mui/material/Button";
@@ -27,6 +28,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+
+
+import Divider from '@mui/material/Divider';
 
 
 function InputForm() {
@@ -101,6 +105,7 @@ function InputForm() {
                             </AccordionDetails>
                         </Accordion>
 
+
                         <Accordion expanded={expanded === 'panel2'} onChange={handleAccordionChange('panel2')}>
 
                             <AccordionSummary
@@ -170,8 +175,6 @@ function InputForm() {
                                         fullWidth
                                     />
                                 </Grid>
-
-
 
                             </Grid>
 
@@ -275,6 +278,8 @@ function InputForm() {
                             </AccordionDetails>
                         </Accordion>
 
+
+{/* 
                         <Accordion expanded={expanded === 'panel4'} onChange={handleAccordionChange('panel4')}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -307,12 +312,133 @@ function InputForm() {
                             </div>
 
                             </AccordionDetails>
-                        </Accordion>
+                        </Accordion> */}
+
 
                     </div>
+                        
 
-
+                        
                         <Grid container spacing={0} >
+
+                            <Grid item xs={12} sx={{ border: "0px solid black",  padding: "0px", }}>
+                                <Card>
+
+                                    <div style={{border: "0px solid black", paddingTop: "10px", fontSize: "20px", fontWeight: 600, display: "flex", justifyContent:"center"}}> Summary </div>
+                                    
+                                    <div style={{border: "0px solid black", margin: "10px", fontSize: "16px"}}>
+
+                                            <Grid item xs={12} sx={{paddingLeft: "10px", fontSize: "16px",  fontWeight: 600}} > Token's Data </Grid>
+
+                                            <Grid container spacing={1} sx={{padding: "10px", fontSize: "14px",  fontWeight: 600}}>  
+    
+                                                <Grid item xs={12}>
+                                                    Token: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 0x000000000000000000000000000000000000000000000</span>
+                                                </Grid>
+
+                                                <Grid item xs={3}>
+                                                    Name: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> Ali Coin</span>
+                                                </Grid>
+
+                                                <Grid item xs={3}>
+                                                    Symbol: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> ALIC</span>
+                                                </Grid>
+
+                                                <Grid item xs={3}>
+                                                    Total Supply: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 1,000,000 </span>
+                                                </Grid>
+
+                                                <Grid item xs={3}>
+                                                    You hold: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 50,000 </span>
+                                                </Grid>
+                                            </Grid>
+
+                                    </div>
+
+
+                                    <Divider sx={{margin: "20px"}}/>
+
+
+                                    <div style={{border: "0px solid black", margin: "10px", fontSize: "16px"}}>
+
+                                            <Grid item xs={12} sx={{paddingLeft: "10px", fontSize: "16px",  fontWeight: 600}} > Sale's Data </Grid>
+
+                                            <Grid container spacing={1} sx={{padding: "10px", fontSize: "14px",  fontWeight: 600}}>  
+    
+                                                <Grid item xs={12}>
+                                                    Type of sale: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> Open / Only White listed / Only Token Holders </span>
+                                                </Grid>
+
+                                                <Grid item xs={12}>
+                                                    Criteria Conrtact Address: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 0x000000000000000000000000000000000000000000000 </span>
+                                                </Grid>
+
+                                                <Grid item xs={4}>
+                                                    Tokens for sale: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 10,000 </span>
+                                                </Grid>
+
+                                                <Grid item xs={4}>
+                                                    Tokens for Liquidity: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 70% (7,000)</span>
+                                                </Grid>
+
+                                                <Grid item xs={4}>
+                                                    Total tokens to start project: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 17,000 </span>
+                                                </Grid>
+                                            </Grid>
+
+                                    </div>
+
+
+                                    <Divider sx={{margin: "20px"}}/>
+
+                                    <div style={{border: "0px solid black", margin: "10px", fontSize: "16px"}}>
+
+                                            <Grid item xs={12} sx={{paddingLeft: "10px", fontSize: "16px",  fontWeight: 600}} > Participation Criteria </Grid>
+
+                                            <Grid container spacing={1} sx={{padding: "10px", fontSize: "14px",  fontWeight: 600}}>  
+
+                                                <Grid item xs={6}>
+                                                    Price of each Token: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 0.02 BNB </span>
+                                                </Grid>
+                                                
+                                                <Grid item xs={6}>
+                                                    Soft Cap: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 8,000 </span>
+                                                </Grid>
+
+                                                <Grid item xs={12}>
+                                                    Minimum Tokens For Participation (Only TokenHolder case): <span style={{margin: "10px", fontSize: "inherit", color: "#5272ff"}}> 500 PICNIC </span>
+                                                </Grid>
+
+                                                <Grid item xs={6}>
+                                                    Minimum requested Tokens: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 100 (contribution: 2BNB) </span>
+                                                </Grid>
+
+                                                <Grid item xs={6}>
+                                                     Maximum requested Tokens: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 10,000 (contribution: 200BNB) </span>
+                                                </Grid>
+
+                                                <Grid item xs={6}>
+                                                    Start time: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 14 Auguest 2021, 15 00 (GMT) </span>
+                                                </Grid>
+
+                                                <Grid item xs={6}>
+                                                    Ending time: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 14 Auguest 2021, 15 00 (GMT) </span>
+                                                </Grid>
+
+                                            </Grid>
+
+                                    </div>
+
+
+                                </Card>
+
+
+
+                            </Grid>
+
+
+                            <Divider sx={{margin: "20px"}}/>
+
 
                             <Grid item xs={12} 
                                 sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}>

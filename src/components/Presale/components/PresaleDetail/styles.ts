@@ -81,7 +81,8 @@ export const UpdatesContainer = styled.div`
 
 export const UpdatesDiv = styled.div`
         border: 2px solid black;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
+        margin-top: 5px;
         font-size: 15px; 
         font-weight: 600;
 

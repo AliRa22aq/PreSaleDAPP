@@ -100,7 +100,7 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
                                 !saleEnded ?
 
                             <Formik 
-                                initialValues={{ tokens: 500 }}
+                                initialValues={{ tokens: 5000 }}
                                 // validationSchema={schema1} 
                                 onSubmit={async (values, { setFieldValue }) => {
                                     console.log(values);
@@ -124,7 +124,7 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
                                                     name="tokens"
                                                     label="Tokens"
                                                     // fullWidth
-                                                    sx={{width: "100px", height: "30px"}}
+                                                    sx={{width: "100px", height: "20px"}}
                                                 />
                                             {/* </Grid> */}
                                         </Form>

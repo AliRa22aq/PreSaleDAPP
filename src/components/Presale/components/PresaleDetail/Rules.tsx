@@ -54,11 +54,55 @@ console.log(process.env.REACT_APP_BORDER)
                     </GuideContainer>
 
                     <UpdatesContainer>
-                        Update Section
+                        Owner's Dashboard
 
+                        <UpdatesDiv> White List Accounts
+                            <Formik 
+                                initialValues={{ address: "" }}
+                                // validationSchema={schema1} 
+                                onSubmit={async (values, { setFieldValue }) => {
+                                    console.log(values);
+                                }}>
 
-                        <UpdatesDiv>
-                            Update Participation Criteria
+                                {() => (
+                                        <Form>
+                                            <Grid container spacing= {0} 
+                                            sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}
+                                            >
+                                              <Grid item xs={12} sx={{ margin: 0.5 }} >
+
+                                                <Field
+                                                    component={TextareaAutosize}
+                                                    type="text"
+                                                    name="address"
+                                                    label="Accounts"
+                                                    placeholder="In form of an array e.g.['0x90ee3Cf59FcDe2FE11838b9075Ea4681462362F1','0x8dd92dd186f05e3e9f1844cd9047617adad8a66d','0x8dd92dd186f05e3e9f1844cd9047617adad8a66d']"
+                                                    fullWidth
+                                                    multiline
+                                                    // rowsMin={6}
+                                                    // rowsMax={10}
+                                                    style={{ width: "100%", minHeight: "50px" }}
+
+                                                />
+                                                </Grid>
+                                                    <Button
+                                                        variant="contained"
+                                                        color="primary"
+                                                        type="submit"
+                                                        className="form-button"
+                                                        sx={{ margin: 0.5}}
+                                                        disabled = {saleEnded ? true:false}
+                                                        >
+                                                        <div >White List</div>
+                                                    </Button>
+                                                </Grid>
+                                        </Form>
+                                )}
+                            </Formik>
+
+                        </UpdatesDiv>
+
+                        <UpdatesDiv> Update Participation Criteria
 
                             <Formik 
                                 initialValues={{ tokens: 500 }}
@@ -128,9 +172,7 @@ console.log(process.env.REACT_APP_BORDER)
 
                         </UpdatesDiv>
 
-
-                        <UpdatesDiv>
-                            Update Project Time
+                        <UpdatesDiv> Update Project Time
                             <Formik 
                                 initialValues={{ tokens: 500 }}
                                 // validationSchema={schema1} 
@@ -188,55 +230,7 @@ console.log(process.env.REACT_APP_BORDER)
 
                         </UpdatesDiv>
 
-                        <UpdatesDiv>
-                            White List Accounts
-                            <Formik 
-                                initialValues={{ address: "" }}
-                                // validationSchema={schema1} 
-                                onSubmit={async (values, { setFieldValue }) => {
-                                    console.log(values);
-                                }}>
-
-                                {() => (
-                                        <Form>
-                                            <Grid container spacing= {0} 
-                                            sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}
-                                            >
-                                              <Grid item xs={12} sx={{ margin: 0.5 }} >
-
-                                                <Field
-                                                    component={TextareaAutosize}
-                                                    type="text"
-                                                    name="address"
-                                                    label="Accounts"
-                                                    placeholder="In form of an array e.g.['0x90ee3Cf59FcDe2FE11838b9075Ea4681462362F1','0x8dd92dd186f05e3e9f1844cd9047617adad8a66d','0x8dd92dd186f05e3e9f1844cd9047617adad8a66d']"
-                                                    fullWidth
-                                                    multiline
-                                                    // rowsMin={6}
-                                                    // rowsMax={10}
-                                                    style={{ width: "100%", minHeight: "50px" }}
-
-                                                />
-                                                </Grid>
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        type="submit"
-                                                        className="form-button"
-                                                        sx={{ margin: 0.5}}
-                                                        disabled = {saleEnded ? true:false}
-                                                        >
-                                                        <div >White List</div>
-                                                    </Button>
-                                                </Grid>
-                                        </Form>
-                                )}
-                            </Formik>
-
-                        </UpdatesDiv>
-
-                        <UpdatesDiv>
-                            Update Criteria Token
+                        <UpdatesDiv> Update Criteria Token
                             <Formik 
                                 initialValues={{ address: "" }}
                                 // validationSchema={schema1} 
@@ -277,6 +271,7 @@ console.log(process.env.REACT_APP_BORDER)
                             </Formik>
 
                         </UpdatesDiv>
+
                     </UpdatesContainer>
 
                 </DetailContainer> 
