@@ -10,11 +10,13 @@ function PresaleListings() {
 
     return (
         <Grid container  spacing={0} sx={{border:"0.5px solid black"}}>
-
+            {/* <Grid item xs={12}>
+                    Hello I am header, you can put any details in me
+            </Grid> */}
         {
                 ids.map((id: number) => {
                     return(
-                        <Grid item xs={12} lg={3}  sx={{border: "0.5px solid black"}}>
+                        <Grid item xs={12} lg={3}  sx={{border: "0px solid black"}}>
                             <PresaleCard id={id}/>
                         </Grid>
                     )

@@ -70,8 +70,6 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
                     date={saleEnded ? Date.now() : Date.now() + 50000000}
                     renderer={renderer}
                     />
-                    {/* <Completionist /> */}
-                {/* </Countdown>             */}
             </CountdownContainer>
             
             <ParticipationDetails>

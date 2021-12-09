@@ -60,7 +60,7 @@ export const HeaderContainer = styled.div`
         border: 2px solid black;
         margin: 5px;
         padding: 5px;
-        height: 50px;
+        height: "100%";
         font-size: larger;
 `;
 
