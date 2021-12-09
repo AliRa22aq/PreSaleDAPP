@@ -22,8 +22,8 @@ import Button from '@mui/material/Button';
 
 
 export const PreRootContainer = styled.div`
-        border: 2px solid black;
-        background-color: #000;
+        border: 1px solid black;
+        background: #f2f2f2;
         /* background: linear-gradient(to bottom right, #6600ff 0%, #ff99cc 100%); */
         width: 100%;
         height: 100%;
@@ -35,7 +35,7 @@ export const StyledButton = styled(Button)`
 `;
 
 export const ButtonContainer = styled.div`
-        border: 2px solid black;
+        /* border: 2px solid black; */
         display: flex;
         justify-content: right;
         justify-self: center;
@@ -45,7 +45,7 @@ export const ButtonContainer = styled.div`
 
 
 export const RootContainer = styled.div`
-        border: 2px solid black;
+        /* border: 2px solid black; */
         width: 90%;
         /* height: 40%; */
         margin: auto;
@@ -57,7 +57,7 @@ export const RootContainer = styled.div`
 `;
 
 export const HeaderContainer = styled.div`
-        border: 2px solid black;
+        /* border: 2px solid black; */
         margin: 5px;
         padding: 5px;
         height: "100%";
@@ -67,14 +67,14 @@ export const HeaderContainer = styled.div`
 
 
 export const FromContainer = styled.div`
-        border: 2px solid black;
+        /* border: 2px solid black; */
         /* height: 100%; */
 
 `;
 
 
 export const FormHeader = styled.div`
-        border: 2px solid black;
+        /* border: 2px solid black; */
         margin: 5px;
         padding: 5px;
         /* min-height: 100vh; */
@@ -86,7 +86,7 @@ export const FormHeader = styled.div`
 `;
 
 export const FormBody = styled.div`
-        border: 2px solid black;
+        /* border: 2px solid black; */
         margin: 5px;
         padding: 5px;
         /* min-height: 500px; */

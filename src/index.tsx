@@ -14,7 +14,7 @@ const theme = createTheme({
       main: "#000000",
     },
     secondary: {
-      main: "#ffffff",
+      main: "#6f6dff",
     },
   },
 });
@@ -26,9 +26,9 @@ ReactDOM.render(
       <ThemeProvider theme={theme}>
         <Provider store = {store}>
           <App /> 
-        </Provider>,
-      </ThemeProvider>,
-    </BrowserRouter>,
+        </Provider>
+      </ThemeProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -14,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
-
 import Stack from '@mui/material/Stack';
 import {TextField as TextF} from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -31,6 +30,8 @@ import FormControl from '@mui/material/FormControl';
 
 
 import Divider from '@mui/material/Divider';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import Avatar from '@mui/material/Avatar';
 
 
 function InputForm() {
@@ -64,6 +65,23 @@ function InputForm() {
         console.log(newValue?.getTime() / 1000);
     };
 
+
+    const [logo, setLogo] = useState<any>();
+
+    const handleCapture = (e: any) => {
+        const fileReader = new FileReader();
+        const name = e.target.accept.includes('image') ? 'images' : 'videos';
+
+        fileReader.readAsDataURL(e.target.files[0]);
+        fileReader.onload = (e) => {
+            
+             console.log(JSON.stringify(e?.target?.result))
+
+            if(e && e.target && e.target.result){
+                setLogo(e?.target?.result);
+            } 
+        };
+    };
 
     return (
         
@@ -195,6 +213,7 @@ function InputForm() {
                             </AccordionSummary>
 
                             <AccordionDetails>
+
                             <Grid container spacing={1}>
 
                                 <Grid item xs={6} sx={{ margin: 0 }} >
@@ -278,8 +297,6 @@ function InputForm() {
                             </AccordionDetails>
                         </Accordion>
 
-
-{/* 
                         <Accordion expanded={expanded === 'panel4'} onChange={handleAccordionChange('panel4')}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -287,42 +304,82 @@ function InputForm() {
                                 id="panel4bh-header"
                             >
                                 <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                Summary
+                                    General Information
                                 </Typography>
-                                <Typography sx={{ color: 'text.secondary' }}>Make sure everything is good. You won't be able to change anything later</Typography>
+                                <Typography sx={{ color: 'text.secondary' }}> Information about your team and your social presence </Typography>
                             </AccordionSummary>
 
                             <AccordionDetails>
 
-                            <div style={{display: "flex-box"}}>
+                            <Grid container spacing={1}>
 
-                                    <Typography sx={{ color: 'text.secondary', border: process.env.REACT_APP_BORDER, width: "33%" }} >
-                                        Hello World
-                                    </Typography> <br />
-                                    <Typography sx={{ color: 'text.secondary', border: process.env.REACT_APP_BORDER, width: "33%"  }} >
-                                        Hello World
-                                    </Typography> <br />
-                                    <Typography sx={{ color: 'text.secondary', border: process.env.REACT_APP_BORDER, width: "33%"   }} >
-                                        Hello World
-                                    </Typography> <br />
-                                    <Typography sx={{ color: 'text.secondary', border: process.env.REACT_APP_BORDER, width: "33%"   }} >
-                                        Hello World
-                                    </Typography> <br />
+                                    
+                                    <Grid item xs={1} sx={{border: "0px solid black"}}>
+                                        <Avatar sx={{ width: 70, height: 70 }} src={logo ? logo : ""} />
+                                    </Grid>
 
-                            </div>
+                                    <Grid item xs={9} sx={{border: "0px solid black", display: "flex", justifyContent:"flex-start", alignItems: "center"}}>
+                                        <Button variant="contained" component="label" > 
+                                            Upload Logo <input type="file" onChange={handleCapture} hidden/>
+                                        </Button>
+                                    </Grid>
+
+
+                                <Grid item xs={12} sx={{ margin: 0 }} >
+                                    <Field
+                                        component={TextField}
+                                        type="text"
+                                        name="description"
+                                        label="Description of Project"
+                                        fullWidth
+                                        multiline
+                                    />
+
+                                </Grid>
+
+                                <Grid item xs={12} sx={{ margin: 0 }} >
+                                    <Field
+                                        component={TextField}
+                                        type="text"
+                                        name="websiteLink"
+                                        label="Website Link"
+                                        fullWidth
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} sx={{ margin: 0 }} >
+                                    <Field
+                                        component={TextField}
+                                        type="text"
+                                        name="telegramLink"
+                                        label="Telegram Link"
+                                        fullWidth
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} sx={{ margin: 0 }} >
+                                    <Field
+                                        component={TextField}
+                                        type="text"
+                                        name="twitterLink"
+                                        label="Twitter Link"
+                                        fullWidth
+                                    />
+                                </Grid>
+
+                            </Grid>
+
 
                             </AccordionDetails>
-                        </Accordion> */}
+                        </Accordion>
 
 
                     </div>
-                        
-
-                        
+                                                
                         <Grid container spacing={0} >
+                            <Card sx={{ border: "0px solid black", margin: "5px"}}>
 
                             <Grid item xs={12} sx={{ border: "0px solid black",  padding: "0px", }}>
-                                <Card>
 
                                     <div style={{border: "0px solid black", paddingTop: "10px", fontSize: "20px", fontWeight: 600, display: "flex", justifyContent:"center"}}> Summary </div>
                                     
@@ -430,14 +487,60 @@ function InputForm() {
                                     </div>
 
 
-                                </Card>
+                                    <Divider sx={{margin: "20px"}}/>
+
+                                    <div style={{border: "0px solid black", margin: "10px", fontSize: "16px"}}>
+
+                                            <Grid item xs={12} sx={{paddingLeft: "10px", fontSize: "16px",  fontWeight: 600}} > Additional </Grid>
+
+                                            <Grid container spacing={1} sx={{padding: "10px", fontSize: "14px",  fontWeight: 600}}>  
+
+                                                <Grid item xs={0.8} sx={{display: "flex", justifyContent:"flex-start", alignItems: "center"}}>
+                                                    LOGO: 
+                                                </Grid>
+
+                                                <Grid item xs={9}>
+                                                    <Avatar sx={{ width: 70, height: 70 }} src={logo ? logo : ""}/>
+                                                </Grid>
+
+                                                <Grid item xs={12}>
+                                                    Descriotion: 
+                                                    <div style={{marginLeft: "10px", fontWeight:"inherit", fontSize: "inherit", color: "#5272ff"}}> 
+                                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                                                    </div>
+                                                </Grid>
+
+                                                <Grid item xs={12}>
+                                                    Website Link: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 
+                                                        <a style={{fontSize: "inherit", fontWeight:"inherit", color: "inherit" }} href="https://www.google.com" target="_blank"> www.google.com </a> 
+                                                    </span>
+                                                </Grid>
+
+                                                <Grid item xs={12}>
+                                                    Telegram Link: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 
+                                                        <a style={{fontSize: "inherit", fontWeight:"inherit", color: "inherit" }} href="https://www.telegram.com" target="_blank"> www.telegram.com </a> 
+                                                    </span>
+                                                </Grid>
+
+                                                <Grid item xs={12}>
+                                                    Twitter Link: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 
+                                                        <a style={{fontSize: "inherit", fontWeight:"inherit", color: "inherit" }} href="https://www.twitter.com" target="_blank"> www.twitter.com </a> 
+                                                    </span>
+                                                </Grid>
+                                            </Grid>
+
+                                    </div>
+
+
 
 
 
                             </Grid>
 
+                            </Card>
 
-                            <Divider sx={{margin: "20px"}}/>
+
+                            {/* <Divider sx={{margin: "20px"}}/> */}
 
 
                             <Grid item xs={12} 

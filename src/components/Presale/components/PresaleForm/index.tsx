@@ -9,9 +9,9 @@ function PresaleForm() {
         <PreRootContainer >
             <RootContainer >
 
-            <Grid container spacing={0} sx={{border: process.env.REACT_APP_BORDER}}>
+            <Grid container spacing={0} sx={{}}>
 
-                <Grid item xs ={12} lg={3} sx={{border: process.env.REACT_APP_BORDER, height: 650}}>
+                <Grid item xs ={12} lg={3} sx={{height: 650}}>
                 
                     <FormHeader >
                         Crowd Sale Rules
