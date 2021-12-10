@@ -1,7 +1,11 @@
 import React, {useState} from 'react'
 import { useParams } from "react-router-dom";
-import {RootContainer, PreRootContainer, FromContainer, SaleDetailHeader, FormBody} from '../../style';
+import {RootContainer, PreRootContainer, FromContainer, FormBody} from '../../style';
+import { SaleDetailHeader} from './styles';
+
 import Grid from '@mui/material/Grid';
+import Divider from '@mui/material/Divider';
+
 import Rules from './Rules';
 import PresaleInfo from './PresaleInfo';
 import Presale from './Presale';

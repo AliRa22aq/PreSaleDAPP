@@ -1,29 +1,11 @@
 import styled from 'styled-components'
 import Button from '@mui/material/Button';
-// import { MuiThemeProvider, createMuiTheme } from '@mui/material/styles';
-
-
-
-// declare module '@mui/material/styles' {
-//         interface Theme {
-//           status: {
-//             danger: string;
-//           };
-          
-//         }
-//         // allow configuration using `createTheme`
-//         interface ThemeOptions {
-//           status?: {
-//             danger?: string;
-//           };
-//         }
-//       }
-      
 
 
 export const PreRootContainer = styled.div`
-        border: 1px solid black;
+        border: 1px solid #f2f2f2;
         background: #f2f2f2;
+        background-color: #f2f2f2;
         /* background: linear-gradient(to bottom right, #6600ff 0%, #ff99cc 100%); */
         width: 100%;
         height: 100%;
@@ -41,7 +23,6 @@ export const ButtonContainer = styled.div`
         justify-self: center;
 
 `;
-
 
 
 export const RootContainer = styled.div`
@@ -104,14 +85,5 @@ export const FormSubHeading = styled.div`
 `;
 
 
-export const SaleDetailHeader = styled.div`
-        border-style: solid;
-        border-width: 0px 0px 2px 0px; /* 25px top, 10px right, 4px bottom and 35px left */
-        margin-bottom: 10px;
-        font-size: 20px; 
-        font-weight: 700;
-        /* margin-right: 50px;
-        width: '100%'; */
 
-`;
 

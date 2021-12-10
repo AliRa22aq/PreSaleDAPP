@@ -313,8 +313,7 @@ function InputForm() {
 
                             <Grid container spacing={1}>
 
-                                    
-                                    <Grid item xs={1} sx={{border: "0px solid black"}}>
+                                    <Grid item xs={3} lg={1} sx={{border: "0px solid black"}}>
                                         <Avatar sx={{ width: 70, height: 70 }} src={logo ? logo : ""} />
                                     </Grid>
 
@@ -506,8 +505,11 @@ function InputForm() {
                                                 <Grid item xs={12}>
                                                     Descriotion: 
                                                     <div style={{marginLeft: "10px", fontWeight:"inherit", fontSize: "inherit", color: "#5272ff"}}> 
-                                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                                                    </div>
+                                                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. 
+                                                        The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, 
+                                                        content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as 
+                                                        their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have 
+                                                        evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).                                                    </div>
                                                 </Grid>
 
                                                 <Grid item xs={12}>

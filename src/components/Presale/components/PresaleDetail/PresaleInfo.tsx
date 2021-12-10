@@ -2,6 +2,11 @@ import React, {FC} from 'react'
 import Grid from '@mui/material/Grid';
 import {DetailContainer, PaiChartContainer, DiscriptionContainer, DiscriptionHeading} from './styles';
 import {PresaleInfoProps} from './interfaces';
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
+
+
+
 
 const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
 
@@ -11,6 +16,7 @@ const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
 
     return (
         <DetailContainer>
+          <Card variant="outlined">
             <DiscriptionContainer>
                 <DiscriptionHeading> General Info </DiscriptionHeading>
                 <Grid container>
@@ -62,6 +68,7 @@ const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
                 </Grid>
             </DiscriptionContainer>
 
+            <Divider sx={{margin: 2}} />
 
             <DiscriptionContainer>
                 <DiscriptionHeading> Counts </DiscriptionHeading>
@@ -77,6 +84,8 @@ const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
 
                 </Grid>
             </DiscriptionContainer>
+
+            <Divider sx={{margin: 2}} />
 
             <DiscriptionContainer>
                 <DiscriptionHeading> Participation Criteria </DiscriptionHeading>
@@ -114,6 +123,7 @@ const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
             </DiscriptionContainer>
 
 
+            </Card> 
 
 
         </DetailContainer>
