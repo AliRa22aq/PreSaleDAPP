@@ -136,7 +136,7 @@ const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
 
         
             {
-                !ownerView && (
+                ownerView && (
                     <DetailContainer>
 
                         <Card variant="outlined" sx={{ marginTop: "10px" }}>

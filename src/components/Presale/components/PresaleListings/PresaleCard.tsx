@@ -5,6 +5,9 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+
+
 
 import { Link } from "react-router-dom";
 import Countdown from "react-countdown";
@@ -20,8 +23,8 @@ import { deepOrange, deepPurple } from '@mui/material/colors';
 import Chip from '@mui/material/Chip';
 
 import CircularProgress, {CircularProgressProps} from '@mui/material/CircularProgress';
-
-  
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LockIcon from '@mui/icons-material/Lock';
 
 interface CardPros {
     id: number
@@ -57,6 +60,22 @@ const PresaleCardd: FC<CardPros> = ({id}) => {
     };
 
 
+    const EllipsisText = (props: any) => {
+        const { children } = props
+      
+        return (
+          <div style={{
+            fontSize: "9px",
+            width: "100%",
+            
+            }}>
+            {children}
+          </div>
+        )
+      }
+
+
+
     return (
             <Box sx={{margin: 1, height: 500, borderRadius: "10px",  boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
                 <Card sx={{border: "0px solid blue", height: "500px", padding: 1, width: "100%", borderRadius: "10px"}}>
@@ -71,13 +90,13 @@ const PresaleCardd: FC<CardPros> = ({id}) => {
 
                             <Divider sx={{ margin: "5px"}}/>
 
-                            <div style={{border: "0px solid red", height: "15%", display: "flex"}}>
+                            <Grid container sx={{border: "0px solid red", height: "15%", display: "flex"}}>
 
-                                <div style={{border: "0px solid red", width: "25%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                <Grid item xs={1.5} lg={2.5} sx={{border: "0px solid red", width: "25%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                                     <Avatar sx={{ bgcolor: "#d65555" , width: 50, height: 50}}>A</Avatar>
-                                </div>
+                                </Grid>
 
-                                <div style={{border: "0px solid red", width: "50%"}}>
+                                <Grid item xs={8.5} lg={5.5} sx={{border: "0px solid red", width: "50%"}}>
 
                                     <div 
                                         style={{
@@ -104,21 +123,30 @@ const PresaleCardd: FC<CardPros> = ({id}) => {
                                             height: "15%", 
                                             }}>  </div>
 
-                                </div>
+                                </Grid>
 
-                                <div style={{border: "0px solid red", width: "25%"}}>
-                                        {/* <Chip 
-                                            // variant="outlined" 
-                                            color="info"
-                                            // sx={{ bgcolor: "#48e455", color: "black", width: 60, height: 20, fontSize: "2px", fontWeight: 1000 }} 
-                                            style={{fontSize: "2px", fontWeight: 1000}}
-                                            // icon={<FiberManualRecordIcon sx={{color: "red", width: 10, height: 10, fontSize: "2px"}}/>}
-                                            label="Type"
+                                <Grid item xs={2} lg={4} sx={{border: "0px solid red", width: "25%",  alignContent: "flex-end"}}>
+                                        <Chip 
+                                            variant="filled" 
+                                            color="success"
+                                            sx={{ width: 60, height: 20, border: "1px solid blue"}}
+                                            icon={<LockOpenIcon sx={{width: 10, height: 10}}/>}
+                                            label={<EllipsisText> Open </EllipsisText>}
                                             size="small"
-                                            /> */}
-                                </div>
+                                            />
 
-                            </div>
+                                        <Chip 
+                                            variant="filled" 
+                                            color="info"
+                                            sx={{ width: 95, height: 20}}
+                                            icon={<LockIcon sx={{width: 10, height: 10}}/>}
+                                            label={<EllipsisText> Only Whitelisted </EllipsisText>}
+                                            size="small"
+                                            />
+
+                                </Grid>
+
+                            </Grid>
 
                             <Divider />
 
@@ -169,6 +197,10 @@ const PresaleCardd: FC<CardPros> = ({id}) => {
                                 
                                     <div style={{border: "0px solid red", }} >
                                             Tokens on Sale: <span style={{fontSize: "inherit", color: "#5272ff"}}> 10,000 ALIC </span>
+                                    </div>
+
+                                    <div style={{border: "0px solid red", }} >
+                                            Price of 1 ALIC : <span style={{fontSize: "inherit", color: "#5272ff"}}> 0.02 BNB </span>
                                     </div>
                                     
                                     <div style={{border: "0px solid red", }} >
