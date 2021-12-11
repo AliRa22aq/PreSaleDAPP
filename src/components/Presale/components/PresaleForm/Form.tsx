@@ -66,7 +66,7 @@ function InputForm() {
     };
 
 
-    const [logo, setLogo] = useState<any>();
+    const [logo, setLogo] = useState<any>("https://www.rd.com/wp-content/uploads/2018/02/25_Hilarious-Photos-that-Will-Get-You-Through-the-Week_280228817_Doty911.jpg?fit=640,800");
 
     const handleCapture = (e: any) => {
         const fileReader = new FileReader();
@@ -412,7 +412,7 @@ function InputForm() {
                                     </div>
 
 
-                                    <Divider sx={{margin: "20px"}}/>
+                                    <Divider sx={{margin: "10px 20px 10px 20px"}}/>
 
 
                                     <div style={{border: "0px solid black", margin: "10px", fontSize: "16px"}}>
@@ -445,7 +445,7 @@ function InputForm() {
                                     </div>
 
 
-                                    <Divider sx={{margin: "20px"}}/>
+                                    <Divider sx={{margin: "10px 20px 10px 20px"}}/>
 
                                     <div style={{border: "0px solid black", margin: "10px", fontSize: "16px"}}>
 
@@ -485,32 +485,36 @@ function InputForm() {
 
                                     </div>
 
-
-                                    <Divider sx={{margin: "20px"}}/>
+                                    <Divider sx={{margin: "10px 20px 10px 20px"}}/>
 
                                     <div style={{border: "0px solid black", margin: "10px", fontSize: "16px"}}>
 
-                                            <Grid item xs={12} sx={{paddingLeft: "10px", fontSize: "16px",  fontWeight: 600}} > Additional </Grid>
+                                        {/* <Grid container>
+                                            <Grid item xs={2} sx={{border: "0px solid black", display: "flex", alignSelf: "end", paddingLeft: "10px", fontSize: "16px",  fontWeight: 600}} > Additional </Grid>
+                                            <Grid item xs={10} sx={{border: "0px solid black", display: "flex", justifyContent: "flex-end", paddingRight: "30px"}}>
+                                                <Avatar sx={{ width: 50, height: 50 , right: "0px" }} src={logo ? logo : ""}/>
+                                            </Grid>
+                                        </Grid> */}
 
+                                            <div style={{marginBottom: "-50px", marginRight: "20px", border: "0px solid black", display: "flex", justifyContent: "flex-end"}}>
+                                                <Avatar sx={{ width: 60, height: 60 , right: "0px" }} src={logo ? logo : ""}/>
+                                            </div>
+                                    
+                                            <Grid item xs={12} sx={{border: "0px solid black", paddingLeft: "10px", fontSize: "16px",  fontWeight: 600}} > Additional </Grid>
+                                    
                                             <Grid container spacing={1} sx={{padding: "10px", fontSize: "14px",  fontWeight: 600}}>  
-
-                                                <Grid item xs={0.8} sx={{display: "flex", justifyContent:"flex-start", alignItems: "center"}}>
-                                                    LOGO: 
-                                                </Grid>
-
-                                                <Grid item xs={9}>
-                                                    <Avatar sx={{ width: 70, height: 70 }} src={logo ? logo : ""}/>
-                                                </Grid>
 
                                                 <Grid item xs={12}>
                                                     Descriotion: 
-                                                    <div style={{marginLeft: "10px", fontWeight:"inherit", fontSize: "inherit", color: "#5272ff"}}> 
+                                                    <div style={{marginLeft: "10px", fontSize: "14px",  fontWeight: 500, color: "#5272ff"}}> 
                                                         It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. 
                                                         The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, 
                                                         content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as 
                                                         their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have 
-                                                        evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).                                                    </div>
+                                                        evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).                                                    
+                                                    </div> 
                                                 </Grid>
+
 
                                                 <Grid item xs={12}>
                                                     Website Link: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 

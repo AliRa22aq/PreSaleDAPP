@@ -25,6 +25,8 @@ import Chip from '@mui/material/Chip';
 import CircularProgress, {CircularProgressProps} from '@mui/material/CircularProgress';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
+import Tooltip from '@mui/material/Tooltip';
+
 
 interface CardPros {
     id: number
@@ -126,23 +128,34 @@ const PresaleCardd: FC<CardPros> = ({id}) => {
                                 </Grid>
 
                                 <Grid item xs={2} lg={4} sx={{border: "0px solid red", width: "25%",  alignContent: "flex-end"}}>
+                                    <Tooltip title="This project is open for everyone">
                                         <Chip 
                                             variant="filled" 
-                                            color="success"
-                                            sx={{ width: 60, height: 20, border: "1px solid blue"}}
-                                            icon={<LockOpenIcon sx={{width: 10, height: 10}}/>}
-                                            label={<EllipsisText> Open </EllipsisText>}
+                                            // color="success"
+                                            sx={{ width: 80, height: 20, bgcolor: "#00ff9dea"}}
+                                            icon={<LockOpenIcon sx={{width: 12, height: 12}}/>}
+                                            label={<EllipsisText> Open for all</EllipsisText>}
                                             size="small"
                                             />
+                                    </Tooltip>
 
-                                        <Chip 
+                                        {/* <Chip 
                                             variant="filled" 
                                             color="info"
                                             sx={{ width: 95, height: 20}}
                                             icon={<LockIcon sx={{width: 10, height: 10}}/>}
                                             label={<EllipsisText> Only Whitelisted </EllipsisText>}
                                             size="small"
-                                            />
+                                            /> */}
+
+                                        {/* <Chip 
+                                            variant="filled" 
+                                            color="info"
+                                            sx={{ width: 110, height: 20}}
+                                            icon={<LockIcon sx={{width: 10, height: 10}}/>}
+                                            label={<EllipsisText> Only Token holders </EllipsisText>}
+                                            size="small"
+                                            /> */}
 
                                 </Grid>
 

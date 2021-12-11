@@ -23,6 +23,8 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
 
+
+
 const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
 
     const style = {display: "flex", justifyContent: "start", marginLeft: "5px"}
@@ -41,6 +43,11 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
             </div>
         )}
     };
+
+
+
+
+
 
     const border = "0px solid black"
 
@@ -84,13 +91,22 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
                                 }}>  </div>
 
                     </Grid>
-                    <Grid item xs={5.25} lg={5.75} sx={{border}}> 
-                    </Grid>
+
+                    <Grid item xs={5.25} lg={5.75} sx={{border, display: "flex", justifyContent: "flex-end"}} />
 
                     <Grid item xs={3} sx={{border, display: "flex", justifyContent: "flex-end"}}> 
-                            <LanguageIcon fontSize="small" sx={{margin: 1}}/>  
-                            <TelegramIcon fontSize="small" sx={{margin: 1}}/>  
-                            <TwitterIcon fontSize="small" sx={{margin: 1}}/>  
+                            <a href="https://www.google.com" target="_blank">  
+                                <LanguageIcon fontSize="small" sx={{margin: 1}}/>  
+                            </a>
+                            
+                            <a href="https://www.telegram.com" target="_blank">  
+                                <TelegramIcon fontSize="small" sx={{margin: 1}}/>  
+                            </a>
+                            
+                            <a href="https://www.twitter.com" target="_blank">  
+                                <TwitterIcon fontSize="small" sx={{margin: 1}}/>  
+                            </a>
+                            
                     </Grid>
 
                     <Grid item component="p" xs={12} sx={{border, marginTop: 1, textAlign: "left"}}> 

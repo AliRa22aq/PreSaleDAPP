@@ -5,14 +5,29 @@ import {PresaleInfoProps} from './interfaces';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 
-
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LockIcon from '@mui/icons-material/Lock';
+import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
 
 
 const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
 
     const sx = {display: "flex", justifyContent: "flex-start"}
 
-
+    const EllipsisText = (props: any) => {
+        const { children } = props
+      
+        return (
+          <div style={{
+            fontSize: "9px",
+            width: "100%",
+            
+            }}>
+            {children}
+          </div>
+        )
+      }
 
     return (
         <DetailContainer>
@@ -33,8 +48,39 @@ const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
                         Status: In Progress
                     </Grid>
 
-                    <Grid item xs={12} sx={sx}>
-                        Type of Project: Open
+                    <Grid item xs={12} sx={{border: "0px solid black", display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
+                         <div>Type: </div>
+                         <div>
+                            <Tooltip title="This project is open for everyone">
+                                <Chip 
+                                    variant="filled" 
+                                    // color="success"
+                                    sx={{ width: 80, height: 20, bgcolor: "#00ff9dea", marginLeft: "5px"}}
+                                    icon={<LockOpenIcon sx={{width: 12, height: 12}}/>}
+                                    label={<EllipsisText> Open for all</EllipsisText>}
+                                    size="small"
+                                    />
+                            </Tooltip>
+
+                                {/* <Chip 
+                                    variant="filled" 
+                                    color="info"
+                                    sx={{ width: 95, height: 20}}
+                                    icon={<LockIcon sx={{width: 10, height: 10}}/>}
+                                    label={<EllipsisText> Only Whitelisted </EllipsisText>}
+                                    size="small"
+                                    /> */}
+
+                                {/* <Chip 
+                                    variant="filled" 
+                                    color="info"
+                                    sx={{ width: 110, height: 20}}
+                                    icon={<LockIcon sx={{width: 10, height: 10}}/>}
+                                    label={<EllipsisText> Only Token holders </EllipsisText>}
+                                    size="small"
+                                    /> */}
+
+                            </div>
                     </Grid>
 
                     <Grid item xs={12} sx={sx}>
