@@ -1,5 +1,5 @@
 import React from 'react'
-import {HeaderContainer} from "../../style"
+import { HeaderContainer } from "../../style"
 
 
 function PresaleHeader() {

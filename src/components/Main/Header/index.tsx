@@ -11,10 +11,10 @@ import TokenABI from "../../../abis/PICNIC.json";
 import {PICNIC as PICNICType} from '../../../../types/web3-v1-contracts/PICNIC';
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import Web3 from "web3";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setuserPicnicBalance, setNetworkID, setActiveUser, userWalletconnected, setPICNICContractFn } from '../../store';
-import Web3 from "web3";
 
 
 interface Provider {

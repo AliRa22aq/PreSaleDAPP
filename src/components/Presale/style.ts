@@ -3,14 +3,10 @@ import Button from '@mui/material/Button';
 
 
 export const PreRootContainer = styled.div`
-        border: 1px solid #f2f2f2;
-        background: #f2f2f2;
         background-color: #f2f2f2;
-        /* background: linear-gradient(to bottom right, #6600ff 0%, #ff99cc 100%); */
         width: 100%;
         height: 100%;
         min-height: 100vh;
-        
 `;
 
 export const StyledButton = styled(Button)`
@@ -21,7 +17,6 @@ export const ButtonContainer = styled.div`
         display: flex;
         justify-content: right;
         justify-self: center;
-
 `;
 
 
@@ -30,7 +25,7 @@ export const RootContainer = styled.div`
         width: 90%;
         /* height: 40%; */
         margin: auto;
-        margin-top: 50px;
+        /* margin-top: 50px; */
         margin-bottom: 50px;
         /* padding: 20px; */
         background-color: #f2f2f2;

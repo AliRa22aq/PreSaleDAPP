@@ -4,7 +4,7 @@ import {DetailContainer, PaiChartContainer, DiscriptionContainer, DiscriptionHea
 import {PresaleInfoProps} from './interfaces';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
-
+import CachedIcon from '@mui/icons-material/Cached';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
 import Chip from '@mui/material/Chip';
@@ -53,7 +53,7 @@ const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
                                     variant="filled" 
                                     // color="success"
                                     sx={{ width: 80, height: 20, bgcolor: "#d0ff00", marginLeft: "5px"}}
-                                    icon={<LockOpenIcon sx={{width: 12, height: 12}}/>}
+                                    icon={<CachedIcon sx={{width: 12, height: 12}}/>}
                                     label={<EllipsisText> In Progress </EllipsisText>}
                                     size="small"
                                     />

@@ -7,12 +7,11 @@ import InputForm from './Form'
 
 function PresaleForm() {
     return (
-        <PreRootContainer >
             <RootContainer >
 
             <Grid container spacing={0} sx={{}}>
 
-                <Grid item xs ={12} lg={3} >
+                {/* <Grid item xs ={12} lg={3} >
                     <FormHeader >
                         Crowd Sale Rules
                     </FormHeader >
@@ -23,9 +22,9 @@ function PresaleForm() {
                     </Card>
                     </FormBody>
                 
-                </ Grid>
+                </ Grid> */}
                 
-                <Grid item xs ={12} lg={9} sx={{border: "0px solid black"}}>
+                <Grid item xs ={12}  sx={{border: "0px solid black"}}>
                         <FormHeader >
                             Crowd Sale Form
                         </FormHeader >
@@ -39,7 +38,6 @@ function PresaleForm() {
             </ Grid>
 
             </RootContainer >
-        </PreRootContainer >
     )
 }
 

@@ -41,7 +41,6 @@ function PresaleDetail() {
 
   
     return (
-        <PreRootContainer >
             <RootContainer >
 
             <Grid container sx={{border: process.env.REACT_APP_BORDER}}>
@@ -76,7 +75,6 @@ function PresaleDetail() {
             
             
             </RootContainer >
-        </PreRootContainer >
     )
 }
 
