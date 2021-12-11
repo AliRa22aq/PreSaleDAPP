@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import { DetailContainer, UpdatesContainer, GuideContainer, UpdatesDiv, DiscriptionHeading, ParticipationDetails } from './styles';
 import { PaiChartContainer, ParticipationDetailsBody, ParticipationDetailsHeading} from './styles';
@@ -26,10 +26,11 @@ import { Chart, registerables, PieController, ArcElement, Legend, Tooltip, Title
 import { Doughnut } from 'react-chartjs-2';
 import Avatar from '@mui/material/Avatar';
 
+import LinearProgress from '@mui/material/LinearProgress';
 
 
 type LayoutPosition = 'left' | 'top' | 'right' | 'bottom' | 'center';
-
+type TitlePosition =  "left" | "top" | "right" | "bottom" | undefined;
 
 const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
 
@@ -37,22 +38,41 @@ const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
 
     const position:LayoutPosition = "bottom";
 
-    const option = {
+    const option1 = {
         radius: "90%",
-        cutout: "120",
+        cutout: "100",
         plugins: {
             legend: {
                 position: position
+            },
+            title: {
+                display: true,
+                text: "Tokenomics"
             }
         }
+
     }
     
-    const data = {
+    const option2 = {
+        radius: "90%",
+        cutout: "100",
+        plugins: {
+            legend: {
+                position: position
+            },
+            title: {
+                display: true,
+                text: "Fund Raised"
+            }
+        }
+
+    }
+
+    const data1 = {
         labels: ['sold', 'remaining', 'liquidity'],
-        // option: option,
         datasets: [
             {
-                label: '# of Votes',
+                label: 'Tokenomics',
                 data: [6666, 4444, 7777],
                 backgroundColor: [
                     'rgb(255, 64, 105)',
@@ -69,14 +89,12 @@ const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
         ],
     };
 
-    console.log("Owner2 => ", ownerView)
 
     const [expanded, setExpanded] = React.useState<string | false>(false);
 
-    const handleAccordionChange =
-        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    const handleAccordionChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
-        };
+    };
 
 
     const [time, setTime] = React.useState<Date | null>(
@@ -111,7 +129,25 @@ const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
     };
 
 
+    const [progress, setProgress] = useState(0);
 
+    useEffect(() => {
+      const timer = setInterval(() => {
+        setProgress((oldProgress) => {
+          if (oldProgress === 100) {
+            return 0;
+          }
+          const diff = Math.random() * 10;
+          return Math.min(oldProgress + diff, 100);
+        });
+      }, 500);
+  
+      return () => {
+        clearInterval(timer);
+      };
+    }, []);
+
+    
     return (
         <div style={{ margin: "0px" }}>
 
@@ -127,14 +163,31 @@ const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
                             marginBottom: "10px"
                         }}>
                             
-                            <Doughnut data={data} options={option}/>
+                            <Doughnut data={data1} options={option1}/>
                         
                         </PaiChartContainer>
                     </GuideContainer>
                 </Card>
             </DetailContainer>
 
-        
+                    {/* Doughnut */}
+            <DetailContainer>
+                <Card variant="outlined">
+                    <div style={{margin: "10px", height: "120px", padding: 5, fontSize: "12px", fontWeight: 700}}>
+
+                        <div style={{ margin: "10px"}}> Fund Raised</div>
+                        
+                        <div style={{ margin: "20px"}}>
+                                <LinearProgress variant="determinate" value={progress} sx={{bgcolor: "#ddc9c9"}} />
+                        </div>
+                        
+                        <div> 5 BNB / 50 BNB</div>
+
+                    </div>
+                </Card>
+            </DetailContainer>
+
+
             {
                 ownerView && (
                     <DetailContainer>

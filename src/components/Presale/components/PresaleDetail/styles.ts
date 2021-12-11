@@ -61,7 +61,7 @@ export const ParticipationDetailsBody = styled.div`
 
 export const PresaleSubContainer = styled.div`
         /* border: 2px solid black; */
-        margin: 5px;
+        margin: 10px;
         /* align-self: center; */
         /* font-size: larger; */
 `;

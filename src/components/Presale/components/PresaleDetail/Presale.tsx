@@ -27,7 +27,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 
 const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
 
-    const style = {display: "flex", justifyContent: "center"}
+    const style = {display: "flex", justifyContent: "center", fontWeight: 400, fontSize: "14px" }
 
 
     const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
@@ -56,7 +56,7 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
           <Card variant="outlined">
 
 
-          <PresaleSubContainer style={{minHeight: "200px"}}>
+            <PresaleSubContainer style={{minHeight: "200px"}}>
                 
                 <Grid container spacing= {0} sx={{padding: 1  }}> 
                   
@@ -131,169 +131,224 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
 
             <Divider sx={{margin: "10px"}}/>
 
-            
-            <PresaleSubContainer>
-                
-                    {
-                        !ownerView ?
+                {
+                    !ownerView ?
+                        <PresaleSubContainer style={{border: "0px solid black", padding: 5}}>       
+                        {
+                            !saleEnded ?
+                                    <Formik 
+                                        initialValues={{ tokens: 5000 }}
+                                        // validationSchema={schema1} 
+                                        onSubmit={async (values, { setFieldValue }) => {
+                                            console.log(values);
+                                        }}>
 
-                            <Grid container spacing= {0} sx={{border: `0px solid black`}}>
-
-                                <Grid item xs={12} sx={{border: "0px solid black", margin: 1}}>
-                                {
-                                    !saleEnded ?
-                                            <Formik 
-                                                initialValues={{ tokens: 5000 }}
-                                                // validationSchema={schema1} 
-                                                onSubmit={async (values, { setFieldValue }) => {
-                                                    console.log(values);
-                                                }}>
-
-                                                {() => (
-                                                        <Form>                                                                
-                                                                <div style={{ display: "flex",  justifyContent: "center", alignItems: "center"}}>
-                                                                    <div style={{
-                                                                            border:"1px solid #b1aeae", 
-                                                                            width: "205px", 
-                                                                            display: "flex", 
-                                                                            padding: 0.5,
-                                                                            borderRadius: "5px"
-                                                                        }}
-                                                                            >
-                                                                        <Field
-                                                                            type="number"
-                                                                            name="tokens"                                                                                
-                                                                            label="Tokens"
-                                                                            style={{width: "140px", height: "30px", border:"0px solid #b1aeae"}}
-                                                                        />
-                                                                        <Button 
-                                                                            size="small" 
-                                                                            style={{
-                                                                                width: "50px", 
-                                                                                height: "30px", 
-                                                                                border:"0px solid #b1aeae", 
-                                                                                display: "flex" , justifyContent: "center",
-                                                                                fontWeight: 500, fontSize: "12px" }}>
-                                                                            Max 
-                                                                    </Button> 
-                                                                    </div>
-                                                                    <span style={{display: "flex" , 
-                                                                                    justifyContent: "center", 
-                                                                                    alignSelf: "center",
-                                                                                    fontWeight: 700, 
-                                                                                    fontSize: "12px" 
-                                                                                    }}>   &nbsp; ALIC</span>
-                                                                </div>
-                                                                
-                                                                <Button
-                                                                    variant="contained"
-                                                                    color="primary"
-                                                                    type="submit"
-                                                                    size= "small"
-                                                                    sx={{ margin: 1}}
-                                                                >
-                                                                    Buy
-                                                                </Button>
-                                                        </Form>
-                                                )}
-                                            </Formik> 
-                                            :
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                type="submit"
-                                                size= "small"
-                                                sx={{ margin: 1}}
-                                                >
-                                                    Claim Tokens / Refund
-                                            </Button>
-                                    }
-                                </Grid>
-
-
-                                <Grid item xs={12} sx={{border: "0px solid black", margin: 1}}>
-                                    <Grid container>
-                                    
-                                        <Grid xs={6} item sx={{border: "1px solid black", }}> 
-                                            <div style={{fontSize: "16px", fontWeight: 600, margin: 1}}> Allowed </div>
-
-                                            <div>
-                                                <div style={style}> 
-                                                    Tokens: 1000 ALI
-                                                </div>
-                                            </div>
-                                        </Grid>
-                                        
-                                        {/* <Grid xs={1} item>   <Divider orientation="vertical" />    </Grid> */}
-                                        
-                                        <Grid xs={6} item sx={{border: "1px solid black", }}> 
-                                            
-                                            <div style={{fontSize: "16px", fontWeight: 600, margin: 1}}> Your Contributions </div>
-                                            
-                                            <div>
-                                                <div style={style}> 
-                                                    Value: 0 BNB
-                                                </div>
-
-                                                <div style={style}> 
-                                                    Tokens: 0 ALI
-                                                </div>
-
-                                                <div style={style}> 
-                                                    WhiteListed: False
-                                                </div> 
-                                            </div>
-
-                                        </Grid>
-                                    
-                                    </Grid>
-                                </Grid>
-                            
-                    </Grid>
-                
-                : 
-                <>
-
-                <ParticipationDetailsHeading> Owner Info </ParticipationDetailsHeading>
-
-                <ParticipationDetailsBody> 
-
-                    <Grid container sx={{border: process.env.REACT_APP_BORDER}}>
-                        <Grid item xs={3} sx={{border: process.env.REACT_APP_BORDER}}> A </Grid>
-                        <Grid item xs={6} sx={{border: process.env.REACT_APP_BORDER}}> B </Grid>
-                        <Grid item xs={3} sx={{border: process.env.REACT_APP_BORDER}}> 
-                        <ParticipationDetailsHeading>  </ParticipationDetailsHeading>
-                            <ParticipationDetailsBody>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                type="submit"
-                                sx={{ marginBottom: 1, width: "100%"}}
-                                disabled = {saleEnded ? true:false}
-                            >
-                                Pause Sale
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                type="submit"
-                                sx={{ marginBottom: 1, width: "100%"}}
-                                disabled = {saleEnded ? true:false}
-
-                            >
-                                End Sale
-                            </Button>
-                            </ParticipationDetailsBody>
-
-                        </Grid>
-                    </Grid>
-                </ParticipationDetailsBody>
-                </> 
+                                        {() => (
+                                                <Form>                                                                
+                                                        <div style={{ display: "flex",  justifyContent: "center", alignItems: "center"}}>
+                                                            <div style={{
+                                                                    border:"1px solid #b1aeae", 
+                                                                    width: "205px", 
+                                                                    display: "flex", 
+                                                                    padding: 0.5,
+                                                                    borderRadius: "5px"
+                                                                }}
+                                                                    >
+                                                                <Field
+                                                                    type="number"
+                                                                    name="tokens"                                                                                
+                                                                    label="Tokens"
+                                                                    style={{width: "140px", height: "30px", border:"0px solid #b1aeae"}}
+                                                                />
+                                                                <Button 
+                                                                    size="small" 
+                                                                    style={{
+                                                                        width: "50px", 
+                                                                        height: "30px", 
+                                                                        border:"0px solid #b1aeae", 
+                                                                        display: "flex" , justifyContent: "center",
+                                                                        fontWeight: 500, fontSize: "12px" }}>
+                                                                    Max 
+                                                            </Button> 
+                                                            </div>
+                                                            <span style={{display: "flex" , 
+                                                                            justifyContent: "center", 
+                                                                            alignSelf: "center",
+                                                                            fontWeight: 700, 
+                                                                            fontSize: "12px" 
+                                                                            }}>   &nbsp; ALIC</span>
+                                                        </div>
+                                                        
+                                                        <Button
+                                                            variant="contained"
+                                                            color="primary"
+                                                            type="submit"
+                                                            size= "small"
+                                                            sx={{ margin: 1}}
+                                                        >
+                                                            Buy
+                                                        </Button>
+                                                </Form>
+                                        )}
+                                    </Formik> 
+                                    :
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        type="submit"
+                                        size= "small"
+                                        sx={{ margin: 1}}
+                                        >
+                                            Claim Tokens / Refund
+                                    </Button>
+                            }
+                        </PresaleSubContainer>
+                        : 
+                        null
 
                 }
 
+                {
+                    !ownerView && (
+                        <Divider sx={{margin: "10px"}}/>
+                    )
+                }
+                
+                {
+                    !ownerView && !saleEnded ?
+                        <PresaleSubContainer>
+                            <Grid container>
+                                <Grid xs={6} item sx={{border: "0px solid black", }}> 
+                                    <div style={{fontSize: "16px", fontWeight: 600, margin: 1}}> Allowed </div>
 
-            </PresaleSubContainer>
+                                    <div>
+                                        <div style={style}> 
+                                            Tokens: 10,000 ALIC
+                                        </div>
+                                    </div>
+                                </Grid>
+                                
+                                <Grid xs={6} item sx={{border: "0px solid black", }}> 
+                                    
+                                    <div style={{fontSize: "16px", fontWeight: 600, margin: 1}}> Your Contributions </div>
+                                    
+                                    <div>
+                                        <div style={style}> 
+                                            Value: 2 BNB
+                                        </div>
+
+                                        <div style={style}> 
+                                            Tokens: 100,000 ALI
+                                        </div>
+
+                                        <div style={style}> 
+                                            WhiteListed: False
+                                        </div> 
+                                    </div>
+
+                                </Grid>
+                            </Grid>
+                        </PresaleSubContainer>
+                        :
+                        !ownerView && saleEnded ?
+                        <PresaleSubContainer>
+                                <Grid xs={12} item sx={{border: "0px solid black", }}> 
+                                    
+                                    <div style={{fontSize: "16px", fontWeight: 600, margin: 1}}> Your Controbution </div>
+                                    
+                                    <div>
+                                        <div style={style}> 
+                                            Value: 2 BNB
+                                        </div>
+
+                                        <div style={style}> 
+                                            Tokens: 100,000 ALI
+                                        </div>
+
+                                        {/* <div style={style}> 
+                                            WhiteListed: False
+                                        </div>  */}
+                                    </div>
+
+                                </Grid>
+                        </PresaleSubContainer>
+                        :
+                        null
+                }
+
+
+                {
+                    ownerView && !saleEnded ?
+                        <PresaleSubContainer>
+                            <Grid container>
+                                
+                                <Grid xs={12} item sx={{border: "0px solid black", }}> 
+
+                                <p style={{border: "1px solid black", margin: 5}}> 
+                                    Sale is still in progress. Once it is done, you can end it so participants can claim their tokens or a refund 
+                                </p>
+
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    sx={{ margin: 1}}
+                                >
+                                    End Sale
+                                </Button>    
+
+                                </Grid>
+                            </Grid>
+                        </PresaleSubContainer>
+                        :
+                        ownerView && saleEnded ?
+                        <PresaleSubContainer>
+                                <Grid xs={12} item sx={{border: "0px solid black", }}> 
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    sx={{ margin: 1}}
+                                    disabled
+                                >
+                                    End Sale
+                                </Button>    
+
+                                </Grid>
+                        </PresaleSubContainer>
+                        :
+                        null
+                }
+
+                {/* {
+                    ownerView && (
+                        <Divider sx={{margin: "10px"}}/>
+                    )
+                }
+
+                {
+                    ownerView ?
+                    <PresaleSubContainer>
+                        <Grid container>
+                            
+                            <Grid item xs={12}>
+                                Tokens Sold: 15000
+                            </Grid>
+                            
+                            <Grid item xs={12}>
+                                Tokens Sold: 15000
+                            </Grid>
+
+                        </Grid>
+                        <div> 
+                        </div>
+                    </PresaleSubContainer>:
+                    null
+                } */}
+
+
+
+
 
 
 
@@ -304,3 +359,43 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
 }
 
 export default Presale
+
+
+
+{/* <>
+
+<ParticipationDetailsHeading> Owner Info </ParticipationDetailsHeading>
+
+<ParticipationDetailsBody> 
+
+    <Grid container sx={{border: process.env.REACT_APP_BORDER}}>
+        <Grid item xs={3} sx={{border: process.env.REACT_APP_BORDER}}> A </Grid>
+        <Grid item xs={6} sx={{border: process.env.REACT_APP_BORDER}}> B </Grid>
+        <Grid item xs={3} sx={{border: process.env.REACT_APP_BORDER}}> 
+        <ParticipationDetailsHeading>  </ParticipationDetailsHeading>
+            <ParticipationDetailsBody>
+            <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                sx={{ marginBottom: 1, width: "100%"}}
+                disabled = {saleEnded ? true:false}
+            >
+                Pause Sale
+            </Button>
+            <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                sx={{ marginBottom: 1, width: "100%"}}
+                disabled = {saleEnded ? true:false}
+
+            >
+                End Sale
+            </Button>
+            </ParticipationDetailsBody>
+
+        </Grid>
+    </Grid>
+</ParticipationDetailsBody>
+</>  */}

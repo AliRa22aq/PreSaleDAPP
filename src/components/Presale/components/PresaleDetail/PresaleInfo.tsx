@@ -21,6 +21,7 @@ const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
         return (
           <div style={{
             fontSize: "9px",
+            fontWeight: 600,
             width: "100%",
             
             }}>
@@ -45,7 +46,39 @@ const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
                     </Grid>
 
                     <Grid item xs = {12}  sx={sx}>
-                        Status: In Progress
+                        <div>Status: </div>
+                         <div>
+                            <Tooltip title="This project is open for everyone">
+                                <Chip 
+                                    variant="filled" 
+                                    // color="success"
+                                    sx={{ width: 80, height: 20, bgcolor: "#d0ff00", marginLeft: "5px"}}
+                                    icon={<LockOpenIcon sx={{width: 12, height: 12}}/>}
+                                    label={<EllipsisText> In Progress </EllipsisText>}
+                                    size="small"
+                                    />
+                            </Tooltip>
+
+                                {/* <Chip 
+                                    variant="filled" 
+                                    color="info"
+                                    sx={{ width: 95, height: 20}}
+                                    icon={<LockIcon sx={{width: 10, height: 10}}/>}
+                                    label={<EllipsisText> Only Whitelisted </EllipsisText>}
+                                    size="small"
+                                    /> */}
+
+                                {/* <Chip 
+                                    variant="filled" 
+                                    color="info"
+                                    sx={{ width: 110, height: 20}}
+                                    icon={<LockIcon sx={{width: 10, height: 10}}/>}
+                                    label={<EllipsisText> Only Token holders </EllipsisText>}
+                                    size="small"
+                                    /> */}
+
+                            </div>
+
                     </Grid>
 
                     <Grid item xs={12} sx={{border: "0px solid black", display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
@@ -96,21 +129,29 @@ const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
                     </Grid>
 
                     <Grid item xs = {12} sx={sx}>
-                        Total on sale: 10000
+                        Total on sale: 10,000
                     </Grid>
 
                     <Grid item xs = {12}  sx={sx}>
-                        Reserved Tokens for Liquidity: 7000
+                        Liquidity: 70%
                     </Grid>
+
+                    {/* <Grid item xs = {12}  sx={sx}>
+                        Listing On: Pancakeswap
+                    </Grid> */}
 
                     <Grid item xs = {12}  sx={sx}>
-                        Remaining Tokens: 2000
+                        Remaining Tokens: 2,000
                     </Grid>
-
+                    
                     <Grid item xs = {12}  sx={sx}>
-                        Accumulated Banalcce: 5.68 BNB
+                        Target Funds: 50 BNB
                     </Grid>
-
+                    
+                    <Grid item xs = {12}  sx={sx}>
+                        Fund Raised: 5 BNB
+                    </Grid>
+                
                 </Grid>
             </DiscriptionContainer>
 
