@@ -34,6 +34,13 @@ import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Avatar from '@mui/material/Avatar';
 
 
+
+import Box from '@mui/material/Box';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+
+
 function InputForm() {
     
     const [seleted, setSellected] = useState(0);
@@ -43,7 +50,7 @@ function InputForm() {
       setSellected(event.target.value);
     };
 
-    const [expanded, setExpanded] = React.useState<string | false>(false);
+    const [expanded, setExpanded] = React.useState<string | false>("panel1");
 
     const handleAccordionChange =
       (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -83,6 +90,29 @@ function InputForm() {
         };
     };
 
+
+    const [activeStep, setActiveStep] = useState(0);
+    const [submit, setSubmit] = useState(false);
+
+    const steps = ['Token Information', 'Sales Information', 'Criteria Information', 'General Information'];
+
+    const handleNextStep = (window: string, step: number) => {
+            setExpanded(window)
+            setActiveStep(step)
+    }
+
+    const handlePreveousStep = (window: string, step: number) => {
+        setExpanded(window)
+        setActiveStep(step)
+}
+
+    const handleSubmit = (window: string, step: number) => {
+        setExpanded(window)
+        setActiveStep(step)
+        setSubmit(true)
+
+    }
+
     return (
         
         <Formik initialValues={{ address: '' }}
@@ -94,8 +124,17 @@ function InputForm() {
                 {() => (
                     <FromContainer>
                     <Form>
-
                     <div style={{margin: "5px"}}>
+
+                        <Box sx={{ width: '100%', marginBottom: "10px" }}>
+                            <Stepper activeStep={activeStep} alternativeLabel >
+                                {steps.map((label) => (
+                                    <Step key={label} >
+                                        <StepLabel> {label} </StepLabel>
+                                    </Step>
+                                ))}
+                            </Stepper>
+                        </Box>
 
                         <Accordion expanded={expanded === 'panel1'} onChange={handleAccordionChange('panel1')}>
                             <AccordionSummary
@@ -110,16 +149,22 @@ function InputForm() {
                             </AccordionSummary>
 
                             <AccordionDetails>
-                            <Grid item xs={12} sx={{ margin: 0 }} >
-                                    <Field
-                                        component={TextField}
-                                        type="text"
-                                        name="address"
-                                        label="Conrtact Address"
-                                        fullWidth
-                                    />
-                                </Grid>
+                                <Grid container>
+                                    <Grid item xs={12} sx={{ margin: 0 }} >
+                                        <Field
+                                            component={TextField}
+                                            type="text"
+                                            name="address"
+                                            label="Conrtact Address"
+                                            fullWidth
+                                        />
+                                    </Grid>
 
+                                    <Grid item xs={12} sx={{ margin: 1, display:"flex", justifyContent: "flex-end" }} >
+                                        <Button size="small" variant="contained" onClick={() => handleNextStep("panel2", 1)}> Next </Button>
+                                    </Grid>
+
+                                </Grid>
                             </AccordionDetails>
                         </Accordion>
 
@@ -192,6 +237,12 @@ function InputForm() {
                                         label="Additional tokens for Liquidity pool in % "
                                         fullWidth
                                     />
+                                </Grid>
+
+
+                                <Grid item xs={12} sx={{ margin: 1, display:"flex", justifyContent: "space-between" }} >
+                                        <Button size="small" variant="contained" onClick={() => handlePreveousStep("panel1",0)}> Preveous </Button>
+                                        <Button size="small" variant="contained" onClick={() => handleNextStep('panel3', 2)}> Next </Button>
                                 </Grid>
 
                             </Grid>
@@ -292,6 +343,12 @@ function InputForm() {
                                     />
                                 </Grid>
 
+
+                                <Grid item xs={12} sx={{ margin: 1, display:"flex", justifyContent: "space-between" }} >
+                                        <Button size="small" variant="contained" onClick={() => handlePreveousStep("panel2", 1)}> Preveous </Button>
+                                        <Button size="small" variant="contained" onClick={() => handleNextStep('panel4', 3)}> Next </Button>
+                                </Grid>
+
                             </Grid>
 
                             </AccordionDetails>
@@ -366,6 +423,12 @@ function InputForm() {
                                     />
                                 </Grid>
 
+                                <Grid item xs={12} sx={{ margin: 1, display:"flex", justifyContent: "space-between" }} >
+                                        <Button size="small"  variant="contained" onClick={() => handlePreveousStep("panel3", 2)}> Preveous </Button>
+                                        <Button size="small"  variant="contained" onClick={() => handleSubmit("done", 4)}> Submit </Button>
+                                </Grid>
+
+
                             </Grid>
 
 
@@ -374,10 +437,12 @@ function InputForm() {
 
 
                     </div>
-                                                
-                        <Grid container spacing={0} >
-                            <Card sx={{ border: "0px solid black", margin: "5px"}}>
 
+                    <Grid container spacing={0} >
+
+                    {
+                      submit ? 
+                        <Card sx={{ border: "0px solid black", margin: "5px"}}>
                             <Grid item xs={12} sx={{ border: "0px solid black",  padding: "0px", }}>
 
                                     <div style={{border: "0px solid black", paddingTop: "10px", fontSize: "20px", fontWeight: 600, display: "flex", justifyContent:"center"}}> Summary </div>
@@ -411,9 +476,7 @@ function InputForm() {
 
                                     </div>
 
-
                                     <Divider sx={{margin: "10px 20px 10px 20px"}}/>
-
 
                                     <div style={{border: "0px solid black", margin: "10px", fontSize: "16px"}}>
 
@@ -443,7 +506,6 @@ function InputForm() {
                                             </Grid>
 
                                     </div>
-
 
                                     <Divider sx={{margin: "10px 20px 10px 20px"}}/>
 
@@ -489,13 +551,6 @@ function InputForm() {
 
                                     <div style={{border: "0px solid black", margin: "10px", fontSize: "16px"}}>
 
-                                        {/* <Grid container>
-                                            <Grid item xs={2} sx={{border: "0px solid black", display: "flex", alignSelf: "end", paddingLeft: "10px", fontSize: "16px",  fontWeight: 600}} > Additional </Grid>
-                                            <Grid item xs={10} sx={{border: "0px solid black", display: "flex", justifyContent: "flex-end", paddingRight: "30px"}}>
-                                                <Avatar sx={{ width: 50, height: 50 , right: "0px" }} src={logo ? logo : ""}/>
-                                            </Grid>
-                                        </Grid> */}
-
                                             <div style={{marginBottom: "-50px", marginRight: "20px", border: "0px solid black", display: "flex", justifyContent: "flex-end"}}>
                                                 <Avatar sx={{ width: 60, height: 60 , right: "0px" }} src={logo ? logo : ""}/>
                                             </div>
@@ -537,49 +592,43 @@ function InputForm() {
 
                                     </div>
 
-
-
-
-
                             </Grid>
+                        </Card>
+                        :
+                        null
+                    }   
 
-                            </Card>
+                        <Grid item xs={12} 
+                            sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}>
+                            
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                className="form-button"
+                                sx={{ margin: 2}}
+                                disabled = {expanded === "done" ? false: true}
 
+                            >
+                                <div >Approve Tokens</div>
 
-                            {/* <Divider sx={{margin: "20px"}}/> */}
+                            </Button>
 
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                className="form-button"
+                                sx={{ margin: 2}}
+                                disabled = {expanded === "done" ? false: true}
+                            >
+                                <div >Start Presale</div>
 
-                            <Grid item xs={12} 
-                                sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}>
-                                
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    type="submit"
-                                    className="form-button"
-                                    sx={{ margin: 2}}
-                                    // disabled
-
-                                >
-                                    <div >Approve Tokens</div>
-
-                                </Button>
-
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    type="submit"
-                                    className="form-button"
-                                    sx={{ margin: 2}}
-                                    // disabled
-                                >
-                                    <div >Start Presale</div>
-
-                                </Button>
-
-                            </Grid>
+                            </Button>
 
                         </Grid>
+
+                    </Grid>
                 </Form>
                     </FromContainer>
                 )}
