@@ -442,6 +442,7 @@ function InputForm() {
 
                     {
                       submit ? 
+                      <>
                         <Card sx={{ border: "0px solid black", margin: "5px"}}>
                             <Grid item xs={12} sx={{ border: "0px solid black",  padding: "0px", }}>
 
@@ -457,26 +458,30 @@ function InputForm() {
                                                     Token: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 0x000000000000000000000000000000000000000000000</span>
                                                 </Grid>
 
-                                                <Grid item xs={3}>
+                                                <Grid item xs={2.4}>
                                                     Name: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> Ali Coin</span>
                                                 </Grid>
 
-                                                <Grid item xs={3}>
+                                                <Grid item xs={2.4}>
                                                     Symbol: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> ALIC</span>
                                                 </Grid>
+                                                
+                                                <Grid item xs={2.4}>
+                                                    Decimal: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 18</span>
+                                                </Grid>
 
-                                                <Grid item xs={3}>
+                                                <Grid item xs={2.4}>
                                                     Total Supply: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 1,000,000 </span>
                                                 </Grid>
 
-                                                <Grid item xs={3}>
+                                                <Grid item xs={2.4}>
                                                     You hold: <span style={{margin: "0px", fontSize: "inherit", color: "#5272ff"}}> 50,000 </span>
                                                 </Grid>
                                             </Grid>
 
                                     </div>
 
-                                    <Divider sx={{margin: "10px 20px 10px 20px"}}/>
+                                    <Divider sx={{margin: "10px 20px 10px 20px" }}/>
 
                                     <div style={{border: "0px solid black", margin: "10px", fontSize: "16px"}}>
 
@@ -594,20 +599,18 @@ function InputForm() {
 
                             </Grid>
                         </Card>
-                        :
-                        null
-                    }   
 
                         <Grid item xs={12} 
-                            sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}>
+                        sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent:"center", alignItems: "center", alignSelf: "center"}}>
                             
                             <Button
                                 variant="contained"
                                 color="primary"
                                 type="submit"
                                 className="form-button"
+                                size="small"
                                 sx={{ margin: 2}}
-                                disabled = {expanded === "done" ? false: true}
+                                // disabled = {expanded === "done" ? false: true}
 
                             >
                                 <div >Approve Tokens</div>
@@ -618,15 +621,21 @@ function InputForm() {
                                 variant="contained"
                                 color="primary"
                                 type="submit"
+                                size="small"
                                 className="form-button"
                                 sx={{ margin: 2}}
-                                disabled = {expanded === "done" ? false: true}
+                                // disabled = {expanded === "done" ? false: true}
                             >
                                 <div >Start Presale</div>
 
                             </Button>
 
                         </Grid>
+
+                    </>
+                    :
+                    null
+                    }   
 
                     </Grid>
                 </Form>
