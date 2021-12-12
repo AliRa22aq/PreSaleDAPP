@@ -7,8 +7,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
-
-
 import { Link } from "react-router-dom";
 import Countdown from "react-countdown";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -27,12 +25,15 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
 import Tooltip from '@mui/material/Tooltip';
 
+import {Sale} from '../../interfaces';
 
-interface CardPros {
-    id: number
+interface PresaleCarddProp {
+    sale: Sale
 }
 
-const PresaleCardd: FC<CardPros> = ({ id }) => {
+const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
+
+    console.log(Date.now())
 
 
     const [progress, setProgress] = useState(10);
@@ -55,7 +56,13 @@ const PresaleCardd: FC<CardPros> = ({ id }) => {
             // Render a countdown
             return (
                 <div>
-                    <div style={{ fontSize: "16px", fontWeight: 400, marginBottom: "-5px" }}> Presale Ends in </div>
+                    {
+                        Number(sale.startTime) > Date.now() ? 
+                        <div style={{ fontSize: "16px", fontWeight: 400, marginBottom: "-5px" }}> Presale Starts In </div> :
+                        <div style={{ fontSize: "16px", fontWeight: 400, marginBottom: "-5px" }}> Presale Ends In </div>
+
+                    }
+
                     <div style={{ fontSize: "16px", fontWeight: 600 }}> {days}:{hours}:{minutes}:{seconds} </div>
                 </div>
             )
@@ -65,7 +72,6 @@ const PresaleCardd: FC<CardPros> = ({ id }) => {
 
     const EllipsisText = (props: any) => {
         const { children } = props
-
         return (
             <div style={{
                 fontSize: "9px",
@@ -88,39 +94,44 @@ const PresaleCardd: FC<CardPros> = ({ id }) => {
                     <CardContent sx={{ border: "0px solid red", height: "85%", padding: 0 }}>
 
                         <div style={{ border: "0px solid red", height: "5%" }}>
-                            Presale # {id}
+                            Presale # {sale.id}
                         </div>
 
                         <Divider sx={{ margin: "5px" }} />
 
                         <Grid container sx={{ border: "0px solid red", height: "15%", display: "flex" }}>
 
-                            <Grid item xs={1.5} lg={2.5} sx={{ border: "0px solid red", width: "25%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                <Avatar sx={{ bgcolor: "#d65555", width: 50, height: 50 }}>A</Avatar>
+                            <Grid item xs={2} lg={2.5} sx={{ border: "0px solid red", width: "25%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                {
+                                    sale.image ?
+                                    <Avatar sx={{ bgcolor: "#d65555", width: 50, height: 50 }} src={sale.image} /> :
+                                    <Avatar sx={{ bgcolor: "#d65555", width: 50, height: 50 }}> {sale.name.slice(0,1)} </Avatar>
+                                }
+                                
                             </Grid>
 
-                            <Grid item xs={8.5} lg={5.5} sx={{ border: "0px solid red", width: "50%" }}>
+                            <Grid item xs={8} lg={4.5} sx={{ border: "0px solid red", width: "50%" }}>
 
                                 <div
                                     style={{
-                                        // border: "1px solid blue", 
+                                        border: "0px solid black", 
                                         height: "10%",
                                     }}> </div>
 
                                 <div
                                     style={{
-                                        // border: "1px solid blue", 
+                                        border: "0px solid black", 
                                         height: "40%",
                                         display: "flex",
                                         fontSize: "16px", fontWeight: 600
-                                    }}> Ali Coin </div>
+                                    }}> {sale.name} </div>
 
                                 <div style={{
-                                    // border: "1px solid blue",
-                                    height: "35%",
-                                    display: "flex",
-                                    fontSize: "12px", fontWeight: 400
-                                }}>  ALIC </div>
+                                        border: "0px solid black", 
+                                        height: "35%",
+                                        display: "flex",
+                                        fontSize: "12px", fontWeight: 400
+                                }}>  {sale.symbol} </div>
 
                                 <div style={{
                                     height: "15%",
@@ -128,35 +139,49 @@ const PresaleCardd: FC<CardPros> = ({ id }) => {
 
                             </Grid>
 
-                            <Grid item xs={2} lg={4} sx={{ border: "0px solid red", width: "25%", alignContent: "flex-end" }}>
-                                <Tooltip title="This project is open for everyone">
-                                    <Chip
-                                        variant="filled"
-                                        // color="success"
-                                        sx={{ width: 80, height: 20, bgcolor: "#00ff9dea" }}
-                                        icon={<LockOpenIcon sx={{ width: 12, height: 12 }} />}
-                                        label={<EllipsisText> Open for all</EllipsisText>}
-                                        size="small"
-                                    />
-                                </Tooltip>
+                            <Grid item xs={2} lg={5} sx={{ border: "0px solid red", width: "25%", display: "flex", justifyContent: "flex-end", paddingRight: 1 }}>
 
-                                {/* <Chip 
-                                            variant="filled" 
-                                            color="info"
-                                            sx={{ width: 95, height: 20}}
-                                            icon={<LockIcon sx={{width: 10, height: 10}}/>}
-                                            label={<EllipsisText> Only Whitelisted </EllipsisText>}
-                                            size="small"
-                                            /> */}
-
-                                {/* <Chip 
-                                            variant="filled" 
-                                            color="info"
-                                            sx={{ width: 110, height: 20}}
-                                            icon={<LockIcon sx={{width: 10, height: 10}}/>}
-                                            label={<EllipsisText> Only Token holders </EllipsisText>}
-                                            size="small"
-                                            /> */}
+                                    {
+                                        sale.typeOfSale === "Open" && (
+                                            <Tooltip title="This project is open for everyone">
+                                            <Chip
+                                                variant="filled"
+                                                sx={{ width: 60, height: 20, bgcolor: "#00ff9dea" }}
+                                                icon={<LockOpenIcon sx={{ width: 12, height: 12 }} />}
+                                                label={<EllipsisText> {sale.typeOfSale} </EllipsisText>}
+                                                size="small"
+                                            />
+                                             </Tooltip>
+                                        )
+                                    }
+                                    
+                                    {
+                                        sale.typeOfSale === "OnlyWhiteListed" && (
+                                            <Tooltip title="This project is open for only white listed participants">
+                                            <Chip
+                                                variant="filled"
+                                                sx={{ width: 95, height: 20, bgcolor: "#f8f551fb" }}
+                                                icon={<LockIcon sx={{width: 12, height: 12}}/>}
+                                                label={<EllipsisText> {sale.typeOfSale} </EllipsisText>}
+                                                size="small"
+                                            />
+                                             </Tooltip>
+                                        )
+                                    }
+                                    
+                                    {
+                                        sale.typeOfSale === "OnlyTokenHolders" && (
+                                            <Tooltip title={`This project is open for participants who hold at least ${sale.minimumTokens} Tokens`} >
+                                            <Chip
+                                                variant="filled"
+                                                sx={{ width: 110, height: 20, bgcolor: "#4551fc9d" }}
+                                                icon={<LockIcon sx={{width: 12, height: 12}}/>}
+                                                label={<EllipsisText> {sale.typeOfSale} </EllipsisText>}
+                                                size="small"
+                                            />
+                                             </Tooltip>
+                                        )
+                                    }
 
                             </Grid>
 
@@ -170,7 +195,7 @@ const PresaleCardd: FC<CardPros> = ({ id }) => {
                             <Box sx={{ padding: 0, position: 'relative', display: 'inline-flex', border: "0px solid red", }}>
                                 <CircularProgress
                                     variant="determinate"
-                                    value={progress}
+                                    value={sale.status=== "pending" ? 0 : progress}
                                     thickness={5}
                                     size={150}
                                     sx={{ bgcolor: "#e4e4e4", borderRadius: 20, color: "#5272ff" }}
@@ -194,8 +219,24 @@ const PresaleCardd: FC<CardPros> = ({ id }) => {
                                         sx={{ fontSize: "15px" }}
                                     >
 
-                                        {`Sold ${Math.round(progress)}%`}
-                                        {/* <Chip variant="filled" label="Pending" size="small" /> */}
+                                    {
+                                        sale.status=== "pending" ?
+                                        // <Chip variant="filled" label="Pending" size="small" />  
+                                        <>
+                                            <Tooltip title="This project is yet to start">
+                                            <Chip
+                                                variant="filled"
+                                                sx={{ width: 60, height: 20, bgcolor: "#ffffffea" }}
+                                                // icon={<LockOpenIcon sx={{ width: 12, height: 12 }} />}
+                                                label={<EllipsisText> Pending </EllipsisText>}
+                                                size="small"
+                                            />
+                                             </Tooltip>
+                                        </>
+                                        
+                                        :
+                                        <> {`Sold ${Math.round(progress)}%`} </>                                        
+                                    }
 
                                     </Typography>
                                 </Box>
@@ -210,19 +251,19 @@ const PresaleCardd: FC<CardPros> = ({ id }) => {
                             <div style={{ border: "0px solid red", height: "100%", padding: "30px" }}>
 
                                 <div style={{ border: "0px solid red", }} >
-                                    Tokens on Sale: <span style={{ fontSize: "inherit", color: "#5272ff" }}> 10,000 ALIC </span>
+                                    Tokens on Sale: <span style={{ fontSize: "inherit", color: "#5272ff" }}> {`${sale.tokensForSale} ${sale.symbol}`} </span>
                                 </div>
 
                                 <div style={{ border: "0px solid red", }} >
-                                    Price of 1 ALIC : <span style={{ fontSize: "inherit", color: "#5272ff" }}> 0.02 BNB </span>
+                                    Price of 1 {sale.symbol} : <span style={{ fontSize: "inherit", color: "#5272ff" }}> {`${sale.price} BNB`} </span>
                                 </div>
 
                                 <div style={{ border: "0px solid red", }} >
-                                    Soft Cap: <span style={{ fontSize: "inherit", color: "#5272ff" }}> 8,000 ALIC </span>
+                                    Soft Cap: <span style={{ fontSize: "inherit", color: "#5272ff" }}> {`${sale.softCap} ${sale.symbol}`} </span>
                                 </div>
 
                                 <div style={{ border: "0px solid red", }} >
-                                    Liquidity: <span style={{ fontSize: "inherit", color: "#5272ff" }}> 70% </span>
+                                    Liquidity: <span style={{ fontSize: "inherit", color: "#5272ff" }}> {sale.liquidity} </span>
                                 </div>
 
                             </div>
@@ -240,13 +281,13 @@ const PresaleCardd: FC<CardPros> = ({ id }) => {
 
                         <div style={{ border: "0px solid red", height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
                             <Countdown
-                                date={Date.now() + 50000000}
+                                date={Number(sale.startTime)}
                                 renderer={renderer}
                             />
                         </div>
 
                         <div style={{ border: "0px solid red", width: "10%" }}>
-                            <Link to={String(id)} style={{ textDecoration: 'none' }}>
+                            <Link to={String(sale.id)} style={{ textDecoration: 'none' }}>
                                 <OpenInNewIcon fontSize="small" />
                             </Link>
                         </div>

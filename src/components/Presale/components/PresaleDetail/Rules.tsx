@@ -40,7 +40,7 @@ const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
 
     const option1 = {
         radius: "90%",
-        cutout: "100",
+        cutout: "80",
         plugins: {
             legend: {
                 position: position
@@ -50,22 +50,6 @@ const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
                 text: "Tokenomics"
             }
         }
-
-    }
-    
-    const option2 = {
-        radius: "90%",
-        cutout: "100",
-        plugins: {
-            legend: {
-                position: position
-            },
-            title: {
-                display: true,
-                text: "Fund Raised"
-            }
-        }
-
     }
 
     const data1 = {

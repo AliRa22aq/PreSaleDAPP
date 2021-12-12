@@ -100,15 +100,13 @@ const Layout = () => {
         );
       }
 
-
-
-
 }
 
 
 
     return (
       <PreRootContainer >
+
           <div style={{ height: "75px", background: "#f2f2f2", border: "0px solid black", display: "flex", justifyContent: "space-between" }}>  
 
             <div style={{ border: "0px solid black", height: "100%", width: "20%", fontSize:"14px", fontWeight: 600, display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -124,7 +122,7 @@ const Layout = () => {
                 </Box> */}
 
                 <Box sx={{border: "0px solid black", width: "40%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                  <Button variant="text" sx={{width: "80%", fontSize:"14px", fontWeight: 600, bgcolor: "#fff", textTransform:  "none"}}> 
+                  <Button variant="text" sx={{width: "90%", fontSize:"14px", fontWeight: 600, bgcolor: "#fff", textTransform:  "none"}}> 
                   {
                     data.chainID === 97 ?
                     <>BNC Testnet</> :
@@ -136,7 +134,7 @@ const Layout = () => {
                 </Box>
 
                 <Box sx={{border: "0px solid black", width: "40%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                  <Button onClick= {ConnectWallet} variant="text" sx={{width: "80%", fontSize:"14px", fontWeight: 600, bgcolor: "#fff", textTransform:  "none"}}> 
+                  <Button onClick= {ConnectWallet} variant="text" sx={{width: "90%", fontSize:"14px", fontWeight: 600, bgcolor: "#fff", textTransform:  "none"}}> 
                       {
                         data.account ?  <>  {`${data.account.slice(0,5)}...${data.account.slice(38,43)}`} </> : <> Connect Wallet </>
                       }
@@ -145,7 +143,7 @@ const Layout = () => {
 
                 <div style={{border: "0px solid black", width: "20%", display: "flex", justifyContent: "center", alignItems: "center"}}>
 
-                  <MoreHorizIcon onClick={handleClick} sx={{width: "40px", height: "30px", background: "#fff", borderRadius: "5px", cursor: "pointer"}} />
+                  <MoreHorizIcon onClick={handleClick} sx={{width: "80%", height: "30px", background: "#fff", borderRadius: "5px", cursor: "pointer"}} />
 
                   <Menu id="basic-menu" anchorEl={anchorEl} open={open} onClose={handleClose} MenuListProps={{ 'aria-labelledby': 'basic-button'}}>
                     <Link to='form' style={{ textDecoration: 'none', color: "black" }}>

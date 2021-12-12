@@ -1,6 +1,9 @@
 import React from 'react'
 import PresaleCard from './PresaleCard';
 import Grid from '@mui/material/Grid';
+import {sales} from '../../dummyData';
+import {Sale} from '../../interfaces';
+
 
 function PresaleListings() {
 
@@ -8,13 +11,15 @@ function PresaleListings() {
 
 
 
+
+
     return (
         <Grid container spacing={0} sx={{ border: "0px solid black" }}>
             {
-                ids.map((id: number) => {
+                sales.map((sale: Sale) => {
                     return (
                         <Grid item xs={12} lg={3} sx={{ border: "0px solid black" }}>
-                            <PresaleCard id={id} />
+                            <PresaleCard sale={sale} />
                         </Grid>
                     )
                 })

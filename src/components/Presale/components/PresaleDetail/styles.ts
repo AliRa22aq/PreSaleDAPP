@@ -22,7 +22,7 @@ export const DiscriptionContainer = styled.div`
 
 export const SaleDetailHeader = styled.div`
         border-style: solid;
-        border-width: 0px 0px 2px 0px; 
+        border-width: 0px 0px 0px 0px; 
         /* 25px top, 10px right, 4px bottom and 35px left */
         padding-bottom: 10px;
         font-size: 20px; 
