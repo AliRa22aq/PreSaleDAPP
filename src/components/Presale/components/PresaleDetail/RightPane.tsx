@@ -11,7 +11,7 @@ import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 
 
-const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
+const RightPane: FC<PresaleInfoProps> = ({saleID}) => {
 
     const sx = {display: "flex", justifyContent: "flex-start"}
 
@@ -217,6 +217,6 @@ const PresaleInfo: FC<PresaleInfoProps> = ({saleID}) => {
     )
 }
 
-export default PresaleInfo
+export default RightPane
 
 

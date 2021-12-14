@@ -6,7 +6,7 @@ export interface Sale {
     symbol: string,
     decimal: number,
     totalSupply: number,
-    typeOfSale: "Open"|"OnlyWhiteListed"|"OnlyTokenHolders",
+    typeOfSale: "OpenForAll"|"OnlyWhiteListed"|"OnlyTokenHolders",
     criteriaToken: string,
     tokensForSale: number,
     liquidity: string,

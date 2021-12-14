@@ -32,7 +32,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 type LayoutPosition = 'left' | 'top' | 'right' | 'bottom' | 'center';
 type TitlePosition =  "left" | "top" | "right" | "bottom" | undefined;
 
-const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
+const LeftPane: FC<RulesProps> = ({ ownerView, saleEnded }) => {
 
     Chart.register(...registerables, PieController, ArcElement, Title, Legend, Tooltip);
 
@@ -233,6 +233,17 @@ const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
                                                                     multiline
                                                                 />
 
+                                                            </Grid>
+
+
+                                                            <Grid item xs={12} sx={{ margin: "auto", marginTop: 0.5 }}>
+                                                                <Field
+                                                                    component={TextField}
+                                                                    type="text"
+                                                                    name="discordLink"
+                                                                    label="Discord Link"
+                                                                    fullWidth
+                                                                />
                                                             </Grid>
 
                                                             <Grid item xs={12} sx={{ margin: "auto", marginTop: 0.5 }}>
@@ -586,4 +597,4 @@ const Rules: FC<RulesProps> = ({ ownerView, saleEnded }) => {
     )
 }
 
-export default Rules
+export default LeftPane

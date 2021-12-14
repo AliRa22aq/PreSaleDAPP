@@ -6,8 +6,8 @@ import { SaleDetailHeader} from './styles';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 
-import Rules from './Rules';
-import PresaleInfo from './PresaleInfo';
+import LeftPane from './LeftPane';
+import RightPane from './RightPane';
 import Presale from './Presale';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -56,7 +56,7 @@ function PresaleDetail() {
                 <Grid container spacing={0} sx={{border: process.env.REACT_APP_BORDER, minHeight: 600}}>
 
                     <Grid item xs={12} lg={3} sx={{border: process.env.REACT_APP_BORDER }}>
-                        <Rules ownerView={ownerView} saleEnded= {saleEnded}/>
+                        <LeftPane ownerView={ownerView} saleEnded= {saleEnded}/>
                     </Grid>
 
                     <Grid item xs={12} lg={6} sx={{border: process.env.REACT_APP_BORDER}}>
@@ -64,7 +64,7 @@ function PresaleDetail() {
                     </Grid>
 
                     <Grid item xs={12} lg={3} sx={{border: process.env.REACT_APP_BORDER}}>
-                        <PresaleInfo saleID = {params.presaleID ? params.presaleID: "0"} />
+                        <RightPane saleID = {params.presaleID ? params.presaleID: "0"} />
                     </Grid>
     
                 </Grid>

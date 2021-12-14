@@ -23,7 +23,11 @@ import Chip from '@mui/material/Chip';
 import CircularProgress, { CircularProgressProps } from '@mui/material/CircularProgress';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
+import PendingIcon from '@mui/icons-material/Pending';
 import Tooltip from '@mui/material/Tooltip';
+import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+
 
 import {Sale} from '../../interfaces';
 
@@ -31,44 +35,75 @@ interface PresaleCarddProp {
     sale: Sale
 }
 
+const currentTime = Date.now();
+
+
 const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
 
-    console.log(Date.now())
-
-
-    const [progress, setProgress] = useState(10);
+    const [progress, setProgress] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
-        }, 2000);
+            setProgress((prevProgress) => ( 
+                
+                Number(sale.startTime) > Date.now() ?  prevProgress :
+                Number(sale.endingTime) > Date.now() && prevProgress < 100 ? prevProgress + 1 : prevProgress
+
+                ));
+
+        }, 400);
         return () => {
             clearInterval(timer);
         };
     }, []);
+   
+    const CountDownComponent = () => {
+        return (
+            <>
+            {
+              progress == 100 ?
+                <div style={{ fontSize: "16px", fontWeight: 400 }}> Sold Out</div> :
+                <Countdown
+                    date={Number(sale.startTime) > Date.now() ?  Number(sale.startTime) :   Number(sale.endingTime)}
+                    renderer={renderer}
+                    />
+            }
+            </>
+            )
+        }
+
+    // useEffect(() => {
+    //     CountDownComponent();
+    // }, [Number(sale.startTime) > Date.now()])
 
 
     const renderer = ({ days, hours, minutes, seconds, completed }: any) => {
         if (completed) {
             // Render a completed state
-            return <div style={{ fontSize: "20px", fontWeight: 700 }}> The Sale has been ended </div>;
+            return <div style={{ fontSize: "16px", fontWeight: 400 }}> The Sale has been ended </div>;
         } else {
             // Render a countdown
             return (
                 <div>
                     {
                         Number(sale.startTime) > Date.now() ? 
-                        <div style={{ fontSize: "16px", fontWeight: 400, marginBottom: "-5px" }}> Presale Starts In </div> :
-                        <div style={{ fontSize: "16px", fontWeight: 400, marginBottom: "-5px" }}> Presale Ends In </div>
+                        <>
+                            <div style={{ fontSize: "16px", fontWeight: 400, marginBottom: "-5px" }}> Presale Starts In </div> 
+                            <div style={{ fontSize: "16px", fontWeight: 600 }}> {days}:{hours}:{minutes}:{seconds} </div>
+                        </>
+                        :
+                        <>
+                            <div style={{ fontSize: "16px", fontWeight: 400, marginBottom: "-5px" }}> Presale Ends In </div>
+                            <div style={{ fontSize: "16px", fontWeight: 600 }}> {days}:{hours}:{minutes}:{seconds} </div>
+                        </>
 
                     }
 
-                    <div style={{ fontSize: "16px", fontWeight: 600 }}> {days}:{hours}:{minutes}:{seconds} </div>
+                    {/* <div style={{ fontSize: "16px", fontWeight: 600 }}> {days}:{hours}:{minutes}:{seconds} </div> */}
                 </div>
             )
         }
     };
-
 
     const EllipsisText = (props: any) => {
         const { children } = props
@@ -83,7 +118,71 @@ const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
         )
     }
 
+    const PendingText = () => {
+        return(
+            <>
+                <Tooltip title="This project is yet to start">
+                <Chip
+                    variant="filled"
+                    sx={{ width: 60, height: 20, bgcolor: "#ffffffea" }}
+                    icon={<PendingIcon sx={{ width: 12, height: 12 }} />}
+                    label={<EllipsisText> Pending </EllipsisText>}
+                    size="small"
+                />
+                </Tooltip>
+            </>
+        )
+    }
 
+    const SuccessText = () => {
+        return (
+            <>
+            <Tooltip title={`This sale is successful. You can claim your tokens`} >
+                <Chip
+                    variant="filled"
+                    sx={{ width: 80, height: 20, bgcolor: "#00ff9dea" }}
+                    icon={<ThumbUpAltOutlinedIcon  sx={{width: 12, height: 12}}/>}
+                    label={<EllipsisText> Successful </EllipsisText>}
+                    size="small"
+                />
+                 </Tooltip>
+        </> 
+        )
+    }
+
+    const FailourText = () => {
+        return(
+            <>
+            <Tooltip title={`This sale is failed. You can claim your refund`} >
+                <Chip
+                    variant="filled"
+                    sx={{ width: 80, height: 20, bgcolor: "#ec1e1eb5" }}
+                    icon={<ThumbDownOutlinedIcon  sx={{width: 12, height: 12}}/>}
+                    label={<EllipsisText> Falied </EllipsisText>}
+                    size="small"
+                />
+                 </Tooltip>
+        </>
+        )
+    }
+
+    const CircularProgressComp = () => {
+        return(
+            <CircularProgress
+            variant="determinate"
+            value={Number(sale.startTime) > Date.now() ? 0 : progress}
+            thickness={1}
+            size={150}
+            sx={{ bgcolor: "#e4e4e4", borderRadius: 20, 
+            color: "#5272ff" 
+        
+        }}
+        />
+        )
+    }
+
+    console.log(`OK ${Date.now()} -  ${Number(sale.endingTime)} => ${Date.now() >= Number(sale.endingTime)}`)
+    // console.log(`OK ${currentTime} -  ${Number(sale.endingTime)}}`)
 
     return (
         <Box sx={{ margin: 1, height: 500, borderRadius: "10px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}>
@@ -110,7 +209,7 @@ const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
                                 
                             </Grid>
 
-                            <Grid item xs={8} lg={4.5} sx={{ border: "0px solid red", width: "50%" }}>
+                            <Grid item xs={8} lg={4.5} sx={{ border: "0px solid blue", width: "50%" }}>
 
                                 <div
                                     style={{
@@ -139,14 +238,15 @@ const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
 
                             </Grid>
 
-                            <Grid item xs={2} lg={5} sx={{ border: "0px solid red", width: "25%", display: "flex", justifyContent: "flex-end", paddingRight: 1 }}>
+                            <Grid item xs={2} lg={5} sx={{ border: "0px solid blue", width: "25%", paddingRight: 1 }}>
 
+                                <div style={{border: "0px solid red", display: "flex", justifyContent: "flex-end"}}>
                                     {
-                                        sale.typeOfSale === "Open" && (
-                                            <Tooltip title="This project is open for everyone">
+                                        sale.typeOfSale === "OpenForAll" && (
+                                            <Tooltip title="This sale is open for everyone">
                                             <Chip
                                                 variant="filled"
-                                                sx={{ width: 60, height: 20, bgcolor: "#00ff9dea" }}
+                                                sx={{ width: 80, height: 20, bgcolor: "#00ff9dea" }}
                                                 icon={<LockOpenIcon sx={{ width: 12, height: 12 }} />}
                                                 label={<EllipsisText> {sale.typeOfSale} </EllipsisText>}
                                                 size="small"
@@ -157,7 +257,7 @@ const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
                                     
                                     {
                                         sale.typeOfSale === "OnlyWhiteListed" && (
-                                            <Tooltip title="This project is open for only white listed participants">
+                                            <Tooltip title="This sale is open for only white listed participants">
                                             <Chip
                                                 variant="filled"
                                                 sx={{ width: 95, height: 20, bgcolor: "#f8f551fb" }}
@@ -171,7 +271,7 @@ const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
                                     
                                     {
                                         sale.typeOfSale === "OnlyTokenHolders" && (
-                                            <Tooltip title={`This project is open for participants who hold at least ${sale.minimumTokens} Tokens`} >
+                                            <Tooltip title={`This sale is open for participants who hold at least ${sale.minimumTokens} Tokens`} >
                                             <Chip
                                                 variant="filled"
                                                 sx={{ width: 110, height: 20, bgcolor: "#4551fc9d" }}
@@ -183,6 +283,14 @@ const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
                                         )
                                     }
 
+
+                                </div>
+                                
+                                <div style={{border: "0px solid red", display: "flex", justifyContent: "flex-end", marginTop: "3px"}}>
+
+                                </div>
+
+                                
                             </Grid>
 
                         </Grid>
@@ -193,13 +301,9 @@ const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
 
 
                             <Box sx={{ padding: 0, position: 'relative', display: 'inline-flex', border: "0px solid red", }}>
-                                <CircularProgress
-                                    variant="determinate"
-                                    value={sale.status=== "pending" ? 0 : progress}
-                                    thickness={5}
-                                    size={150}
-                                    sx={{ bgcolor: "#e4e4e4", borderRadius: 20, color: "#5272ff" }}
-                                />
+                                
+                                <CircularProgressComp />
+
                                 <Box
                                     sx={{
                                         top: 0,
@@ -220,22 +324,14 @@ const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
                                     >
 
                                     {
-                                        sale.status=== "pending" ?
-                                        // <Chip variant="filled" label="Pending" size="small" />  
-                                        <>
-                                            <Tooltip title="This project is yet to start">
-                                            <Chip
-                                                variant="filled"
-                                                sx={{ width: 60, height: 20, bgcolor: "#ffffffea" }}
-                                                // icon={<LockOpenIcon sx={{ width: 12, height: 12 }} />}
-                                                label={<EllipsisText> Pending </EllipsisText>}
-                                                size="small"
-                                            />
-                                             </Tooltip>
-                                        </>
-                                        
-                                        :
-                                        <> {`Sold ${Math.round(progress)}%`} </>                                        
+                                        Number(sale.startTime) > Date.now() ?
+                                        <PendingText />  :
+                                        Number(sale.endingTime) < Date.now() && progress < 70 ?
+                                        <FailourText />  :
+                                        (Number(sale.endingTime) < Date.now()  &&  progress >= 70) || (progress === 100) ?
+                                        <SuccessText />  :
+                                        <div> {`Sold ${Math.round(progress)}%`} </div> 
+                                    
                                     }
 
                                     </Typography>
@@ -275,15 +371,13 @@ const PresaleCardd: FC<PresaleCarddProp> = ({sale}) => {
                     </CardContent>
 
 
-                    <CardActions sx={{ border: "0px solid blue", height: "15%", padding: 1, margin: 1 }}>
+                    <CardActions sx={{ border: "0px solid blue", height: "15%",  padding: 1, margin: 1 }}>
 
                         <div style={{ border: "0px solid red", width: "10%" }} />
 
-                        <div style={{ border: "0px solid red", height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                            <Countdown
-                                date={Number(sale.startTime)}
-                                renderer={renderer}
-                            />
+                        <div style={{ 
+                            border: "0px solid red", height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                <CountDownComponent />
                         </div>
 
                         <div style={{ border: "0px solid red", width: "10%" }}>

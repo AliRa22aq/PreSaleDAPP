@@ -21,11 +21,12 @@ import Divider from '@mui/material/Divider';
 import LanguageIcon from '@mui/icons-material/Language';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import { SvgIcon } from '@mui/material';
+
+import Discord from '../assets/Disord.svg';
 
 
-
-
-const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
+const LeftPane: FC<PresaleProps> = ({ownerView, saleEnded}) => {
 
     const style = {display: "flex", justifyContent: "center", fontWeight: 400, fontSize: "14px" }
 
@@ -43,11 +44,6 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
             </div>
         )}
     };
-
-
-
-
-
 
     const border = "0px solid black"
 
@@ -98,7 +94,11 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
                             <a href="https://www.google.com" target="_blank">  
                                 <LanguageIcon fontSize="small" sx={{margin: 1}}/>  
                             </a>
-                            
+                            <a href="https://www.google.com" target="_blank">  
+                                {/* <DiscordIcon fontSize="small" sx={{margin: 1}}/>   */}
+                                discord
+
+                            </a>
                             <a href="https://www.telegram.com" target="_blank">  
                                 <TelegramIcon fontSize="small" sx={{margin: 1}}/>  
                             </a>
@@ -358,7 +358,7 @@ const Presale: FC<PresaleProps> = ({ownerView, saleEnded}) => {
     )
 }
 
-export default Presale
+export default LeftPane
 
 
 

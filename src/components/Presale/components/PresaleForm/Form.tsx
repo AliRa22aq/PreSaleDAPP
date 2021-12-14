@@ -380,7 +380,6 @@ function InputForm() {
                                             </Button>
                                         </Grid>
 
-
                                         <Grid item xs={12} sx={{ margin: 0 }} >
                                             <Field
                                                 component={TextField}
@@ -399,6 +398,16 @@ function InputForm() {
                                                 type="text"
                                                 name="websiteLink"
                                                 label="Website Link"
+                                                fullWidth
+                                            />
+                                        </Grid>
+
+                                        <Grid item xs={12} sx={{ margin: 0 }} >
+                                            <Field
+                                                component={TextField}
+                                                type="text"
+                                                name="discordLink"
+                                                label="Discord Link"
                                                 fullWidth
                                             />
                                         </Grid>
@@ -579,6 +588,12 @@ function InputForm() {
                                                         <Grid item xs={12}>
                                                             Website Link: <span style={{ margin: "0px", fontSize: "inherit", color: "#5272ff" }}>
                                                                 <a style={{ fontSize: "inherit", fontWeight: "inherit", color: "inherit" }} href="https://www.google.com" target="_blank"> www.google.com </a>
+                                                            </span>
+                                                        </Grid>
+
+                                                        <Grid item xs={12}>
+                                                            Discoed Link: <span style={{ margin: "0px", fontSize: "inherit", color: "#5272ff" }}>
+                                                                <a style={{ fontSize: "inherit", fontWeight: "inherit", color: "inherit" }} href="https://www.discord.com/" target="_blank"> www.discord.com </a>
                                                             </span>
                                                         </Grid>
 
