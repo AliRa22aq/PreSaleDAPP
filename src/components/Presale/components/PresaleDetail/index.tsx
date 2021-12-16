@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
-import { useParams } from "react-router-dom";
 import {RootContainer, PreRootContainer, FromContainer, FormBody} from '../../style';
 import { SaleDetailHeader} from './styles';
+import { useParams } from "react-router-dom"; 
+import { useSelector } from 'react-redux';
+import {Sale} from '../../../store';
 
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
@@ -15,10 +17,15 @@ import Switch from '@mui/material/Switch';
 const borderWidth = 0;
 
 
-function PresaleDetail() {
+const PresaleDetail = () => {
 
   let params = useParams();
-  console.log(params);
+  const {salesData} = useSelector((state: any) => state)
+  const sale: Sale = salesData.filter((sale: Sale) => sale.id === Number(params.presaleID))[0];
+//   console.log("params", sale);
+
+
+
   const [ownerView, setOwnerView] = useState(false)
   const [saleEnded, setSaleEnded] = useState(false)
 
@@ -36,8 +43,6 @@ function PresaleDetail() {
     console.log("Owner => ", ownerView)
 
   }
-
-  
 
   
     return (
@@ -64,7 +69,7 @@ function PresaleDetail() {
                     </Grid>
 
                     <Grid item xs={12} lg={3} sx={{border: process.env.REACT_APP_BORDER}}>
-                        <RightPane saleID = {params.presaleID ? params.presaleID: "0"} />
+                        <RightPane />
                     </Grid>
     
                 </Grid>

@@ -22,11 +22,20 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+//@ts-ignore
 import { Chart, registerables, PieController, ArcElement, Legend, Tooltip, Title} from 'chart.js';
+
 import { Doughnut } from 'react-chartjs-2';
 import Avatar from '@mui/material/Avatar';
 
 import LinearProgress from '@mui/material/LinearProgress';
+
+
+import { useParams } from "react-router-dom"; 
+import { useSelector } from 'react-redux';
+import {Sale} from '../../../store';
+import {  setSaleProgress, setStatus } from '../../../store';
 
 
 type LayoutPosition = 'left' | 'top' | 'right' | 'bottom' | 'center';
@@ -34,13 +43,42 @@ type TitlePosition =  "left" | "top" | "right" | "bottom" | undefined;
 
 const LeftPane: FC<RulesProps> = ({ ownerView, saleEnded }) => {
 
-    Chart.register(...registerables, PieController, ArcElement, Title, Legend, Tooltip);
+
+    let params = useParams();
+    const {salesData} = useSelector((state: any) => state)
+    const sale: Sale = salesData.filter((sale: Sale) => sale.id === Number(params.presaleID))[0];
+
+    
+    const [progress, setProgress] = useState(0);
+    
+    useEffect(() => {
+        
+        const timer = setInterval(() => {
+            setSaleProgress({id: sale.id, saleProgress: progress})
+            
+            console.log("progress", progress)
+            console.log("Progress of the project", sale.id, sale.saleProgress);
+            setProgress((prevProgress) => ( 
+                
+                Date.now() < Number(sale.startTime) ?  0 :
+                Date.now() > Number(sale.startTime) && Date.now() < Number(sale.endingTime) && prevProgress < 100 ? 
+                prevProgress + 1 : prevProgress
+                
+                ));
+                
+            }, 500);
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
+
+    Chart.register(...registerables, PieController, ArcElement, Title, Legend, Tooltip );
 
     const position:LayoutPosition = "bottom";
 
-    const option1 = {
+    const option = {
         radius: "90%",
-        cutout: "80",
+        cutout: "90",
         plugins: {
             legend: {
                 position: position
@@ -49,15 +87,15 @@ const LeftPane: FC<RulesProps> = ({ ownerView, saleEnded }) => {
                 display: true,
                 text: "Tokenomics"
             }
-        }
+        },
     }
 
-    const data1 = {
+    const data = {
         labels: ['sold', 'remaining', 'liquidity'],
         datasets: [
             {
                 label: 'Tokenomics',
-                data: [6666, 4444, 7777],
+                data: [progress*Number(sale.tokensForSale)/100, (100-progress)*Number(sale.tokensForSale)/100, Number(sale.tokensForSale) * Number(sale.liquidity.replace("%", "")) / 100 ],
                 backgroundColor: [
                     'rgb(255, 64, 105)',
                     'rgba(89, 241, 102, 0.979)',
@@ -79,7 +117,6 @@ const LeftPane: FC<RulesProps> = ({ ownerView, saleEnded }) => {
     const handleAccordionChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
     };
-
 
     const [time, setTime] = React.useState<Date | null>(
         new Date('2014-08-18T21:11:54'),
@@ -112,25 +149,6 @@ const LeftPane: FC<RulesProps> = ({ ownerView, saleEnded }) => {
         };
     };
 
-
-    const [progress, setProgress] = useState(0);
-
-    useEffect(() => {
-      const timer = setInterval(() => {
-        setProgress((oldProgress) => {
-          if (oldProgress === 100) {
-            return 0;
-          }
-          const diff = Math.random() * 10;
-          return Math.min(oldProgress + diff, 100);
-        });
-      }, 500);
-  
-      return () => {
-        clearInterval(timer);
-      };
-    }, []);
-
     
     return (
         <div style={{ margin: "0px" }}>
@@ -146,8 +164,19 @@ const LeftPane: FC<RulesProps> = ({ ownerView, saleEnded }) => {
                             marginTop: "10px",
                             marginBottom: "10px"
                         }}>
-                            
-                            <Doughnut data={data1} options={option1}/>
+                            <div style={{position: "relative"}}>
+                                <Doughnut data={data} options={option} />
+                            <div style={{ position:"absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", fontSize: "12px", fontWeight: 600}}>
+                                
+                                <div style={{}}>
+                                    Sold: {progress*Number(sale.tokensForSale)/100}
+                                </div>
+
+                                <div style={{}}>
+                                    Remaining: {(100-progress)*Number(sale.tokensForSale)/100}
+                                </div>
+                            </div>
+                            </div>
                         
                         </PaiChartContainer>
                     </GuideContainer>
@@ -159,13 +188,13 @@ const LeftPane: FC<RulesProps> = ({ ownerView, saleEnded }) => {
                 <Card variant="outlined">
                     <div style={{margin: "10px", height: "120px", padding: 5, fontSize: "12px", fontWeight: 700}}>
 
-                        <div style={{ margin: "10px"}}> Fund Raised</div>
+                        <div style={{ margin: "10px"}}> Funds Raised</div>
                         
                         <div style={{ margin: "20px"}}>
                                 <LinearProgress variant="determinate" value={progress} sx={{bgcolor: "#ddc9c9"}} />
                         </div>
                         
-                        <div> 5 BNB / 50 BNB</div>
+                        <div> {progress * 50 / 100} BNB / 50 BNB</div>
 
                     </div>
                 </Card>

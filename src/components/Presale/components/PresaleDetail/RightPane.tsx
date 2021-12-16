@@ -10,25 +10,40 @@ import LockIcon from '@mui/icons-material/Lock';
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 
+import { useParams } from "react-router-dom"; 
+import { useSelector } from 'react-redux';
+import {Sale} from '../../../store';
+import {PendingChip, FailourChip, SuccessChip, InProgressChip} from '../../common';
+import {OnlyTokenHoldersChip, OnlyWhitelistedChip, OpenForAllChip} from '../../common';
 
-const RightPane: FC<PresaleInfoProps> = ({saleID}) => {
+
+const RightPane = () => {
+
+    let params = useParams();
+    const {salesData} = useSelector((state: any) => state)
+    const sale: Sale = salesData.filter((sale: Sale) => sale.id === Number(params.presaleID))[0];
+
+
 
     const sx = {display: "flex", justifyContent: "flex-start"}
 
-    const EllipsisText = (props: any) => {
-        const { children } = props
+    // const EllipsisText = (props: any) => {
+    //     const { children } = props
       
-        return (
-          <div style={{
-            fontSize: "9px",
-            fontWeight: 600,
-            width: "100%",
+    //     return (
+    //       <div style={{
+    //         fontSize: "9px",
+    //         fontWeight: 600,
+    //         width: "100%",
             
-            }}>
-            {children}
-          </div>
-        )
-      }
+    //         }}>
+    //         {children}
+    //       </div>
+    //     )
+    // }
+
+
+
 
     return (
         <DetailContainer>
@@ -38,102 +53,69 @@ const RightPane: FC<PresaleInfoProps> = ({saleID}) => {
                 <Grid container>
 
                     <Grid item xs={12} sx={sx}>
-                        Project ID: {saleID}
+                        Project ID: {sale.id}
                     </Grid>
 
                     <Grid item xs={12} sx={sx}>
-                        Contract Address: 0x000000000000
+                        Contract Address: {sale.tokenaddr}
                     </Grid>
 
-                    <Grid item xs = {12}  sx={sx}>
+                    <Grid item xs={12} sx={{border: "0px solid black", display: "flex", alignItems: "center"}}>
                         <div>Status: </div>
-                         <div>
-                            <Tooltip title="This project is open for everyone">
-                                <Chip 
-                                    variant="filled" 
-                                    // color="success"
-                                    sx={{ width: 80, height: 20, bgcolor: "#d0ff00", marginLeft: "5px"}}
-                                    icon={<CachedIcon sx={{width: 12, height: 12}}/>}
-                                    label={<EllipsisText> In Progress </EllipsisText>}
-                                    size="small"
-                                    />
-                            </Tooltip>
-
-                                {/* <Chip 
-                                    variant="filled" 
-                                    color="info"
-                                    sx={{ width: 95, height: 20}}
-                                    icon={<LockIcon sx={{width: 10, height: 10}}/>}
-                                    label={<EllipsisText> Only Whitelisted </EllipsisText>}
-                                    size="small"
-                                    /> */}
-
-                                {/* <Chip 
-                                    variant="filled" 
-                                    color="info"
-                                    sx={{ width: 110, height: 20}}
-                                    icon={<LockIcon sx={{width: 10, height: 10}}/>}
-                                    label={<EllipsisText> Only Token holders </EllipsisText>}
-                                    size="small"
-                                    /> */}
-
+                        <div style={{border: "0px solid black", marginLeft: "3px", display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
+                            {
+                                Number(sale.startTime) > Date.now() ?
+                                <PendingChip />  
+                                :
+                                Number(sale.endingTime) < Date.now() && sale.saleProgress < 70 ?
+                                <FailourChip />  
+                                :
+                                (Number(sale.endingTime) < Date.now()  &&  sale.saleProgress >= 70) || (sale.saleProgress === 100) ?
+                                <SuccessChip />  
+                                : 
+                                <InProgressChip />
+                            }
                             </div>
 
                     </Grid>
 
-                    <Grid item xs={12} sx={{border: "0px solid black", display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
+                    <Grid item xs={12} sx={{border: "0px solid black", display: "flex", alignItems: "center"}}>
                          <div>Type: </div>
-                         <div>
-                            <Tooltip title="This project is open for everyone">
-                                <Chip 
-                                    variant="filled" 
-                                    // color="success"
-                                    sx={{ width: 80, height: 20, bgcolor: "#00ff9dea", marginLeft: "5px"}}
-                                    icon={<LockOpenIcon sx={{width: 12, height: 12}}/>}
-                                    label={<EllipsisText> Open for all</EllipsisText>}
-                                    size="small"
-                                    />
-                            </Tooltip>
+                         <div style={{border: "0px solid black", marginLeft: "3px", display: "flex", justifyContent: "flex-start", alignItems: "center"}}>
 
-                                {/* <Chip 
-                                    variant="filled" 
-                                    color="info"
-                                    sx={{ width: 95, height: 20}}
-                                    icon={<LockIcon sx={{width: 10, height: 10}}/>}
-                                    label={<EllipsisText> Only Whitelisted </EllipsisText>}
-                                    size="small"
-                                    /> */}
-
-                                {/* <Chip 
-                                    variant="filled" 
-                                    color="info"
-                                    sx={{ width: 110, height: 20}}
-                                    icon={<LockIcon sx={{width: 10, height: 10}}/>}
-                                    label={<EllipsisText> Only Token holders </EllipsisText>}
-                                    size="small"
-                                    /> */}
+                                    {
+                                        sale.typeOfSale === "OpenForAll" && ( <OpenForAllChip /> )
+                                    }
+                                    
+                                    {
+                                        sale.typeOfSale === "OnlyWhiteListed" && ( <OnlyWhitelistedChip />  )
+                                    }
+                                    
+                                    {
+                                        sale.typeOfSale === "OnlyTokenHolders" && ( <OnlyTokenHoldersChip tokenName={sale.minimumTokens} /> )
+                                    }
 
                             </div>
                     </Grid>
 
                     <Grid item xs={12} sx={sx}>
-                        Name: Ali Coin
+                        Name: {sale.name}
                     </Grid>
 
                     <Grid item xs={12} sx={sx}>
-                        Symbol: ALI
+                        Symbol: {sale.symbol}
                     </Grid>
 
                     <Grid item xs={12} sx={sx}>
-                        Price of Each Token: 0.2 BNB
+                        Price of Each Token: {sale.price}
                     </Grid>
 
                     <Grid item xs = {12} sx={sx}>
-                        Total on sale: 10,000
+                        Total on sale: {sale.tokensForSale}
                     </Grid>
 
                     <Grid item xs = {12}  sx={sx}>
-                        Liquidity: 70%
+                        Liquidity: {sale.liquidity}
                     </Grid>
 
                     {/* <Grid item xs = {12}  sx={sx}>
@@ -179,31 +161,31 @@ const RightPane: FC<PresaleInfoProps> = ({saleID}) => {
                 <Grid container>
 
                     <Grid item xs={12} sx={sx}>
-                        Criteria Token: 0x000000000000
+                        Criteria Token: {sale.criteriaToken}
                     </Grid>
 
                     <Grid item xs = {12}  sx={sx}>
-                        Min TokenFor Participation : 0
+                        Min TokenFor Participation : {sale.minimumTokens}
                     </Grid>
 
                     <Grid item xs={12} sx={sx}>
-                        Minimum Requested Tokens : 500
+                        Minimum Requested Tokens : {sale.minimumReq}
                     </Grid>
 
                     <Grid item xs={12} sx={sx}>
-                        Maximum Requested Tokens : 10000
+                        Maximum Requested Tokens : {sale.maximumReq}
                     </Grid>
 
                     <Grid item xs={12} sx={sx}>
-                        Softcap : 5000
+                        Softcap : {sale.softCap}
                     </Grid>
 
                     <Grid item xs={12} sx={sx}>
-                        Starting Time: 2/2/2020 5 A.M. (GMT)
+                        Starting Time: {new Date(Number(sale.startTime)).toLocaleString("en-US")}
                     </Grid>
 
                     <Grid item xs = {12} sx={sx}>
-                        Ending Time: 2/2/2020 5 A.M. (GMT)
+                        Ending Time: {new Date(Number(sale.endingTime)).toLocaleString("en-US")}
                     </Grid>
 
                 </Grid>

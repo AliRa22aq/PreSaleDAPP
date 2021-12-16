@@ -10,11 +10,17 @@ import { Link } from "react-router-dom";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3 from "web3";
+import { useDispatch, useSelector } from 'react-redux';
+import { setuserPicnicBalance, setNetworkID, setActiveUser, userWalletconnected, setPICNICContractFn } from '../../../store';
 
 
 function Header() {
+    const dispatch = useDispatch();
 
-    const [data, setData] = useState({account: "", chainID: 0});
+    // const [data, setData] = useState({account: "", chainID: 0});
+    const {userAddress, networkID} = useSelector((state: any) => state)
+    console.log("networkID", networkID)
+
 
     const [anchorEl, setAnchorEl] = useState<any | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -28,13 +34,21 @@ function Header() {
     };
   
     const ConnectWallet = async () => {
-          
+        
       if (window.ethereum) {
           window.web3 = new Web3(window.ethereum);
-  
+
           const providerOptions = {
               walletconnect: {
                 package: WalletConnectProvider,
+                options: {
+                    rpc: {
+                        56: 'https://bsc-dataseed.binance.org/:80'
+                      },
+                      network: 'binance',
+                      chainId: 56,
+                      infuraId: "5ba68febfb4b4ebc8b591b41f79ba72c",
+                 }
               }
             };
           
@@ -45,44 +59,41 @@ function Header() {
               // theme: {
               //     background: "rgb(39, 49, 56)",
               //     main: "rgb(199, 199, 199)",
-              //     secondary: "rgb(168, 78, 78)",
+              //     secondary: "rgb(136, 136, 136)",
               //     border: "rgba(195, 195, 195, 0.14)",
               //     hover: "rgb(16, 26, 32)"
               //   }
               
             });
-  
+
           // await web3Modal.updateTheme("dark");
-  
+
           await web3Modal.connect();
           // setProvider(web3Modal)
           // console.log(provider)
-  
-          // dispatch(userWalletconnected(true));
-  
+
+          dispatch(userWalletconnected(true));
+
           const chainId = await web3.eth.getChainId();
-          console.log("chainId", chainId);
-  
-          // dispatch(setNetworkID(Number(chainId)));
+          dispatch(setNetworkID(Number(chainId)));
         
           // Get list of accounts of the connected wallet
           const accounts = await web3.eth.getAccounts();
           
           // MetaMask does not give you all accounts, only the selected account
-          console.log("accounts", accounts);
+          console.log("Got accounts", accounts);
           const selectedAccount = accounts[0];
           console.log(selectedAccount)
-          // dispatch(setActiveUser(selectedAccount));
+          dispatch(setActiveUser(selectedAccount));
           
-          setData({account: selectedAccount, chainID: chainId})
-  
+
           // Load Contract Data
           // const tokenContract = (new web3.eth.Contract(TokenABI as any, "0x96D91c8f5eE3C4478854944A7523d8975094D2B3") as any) as PICNICType;
           // console.log(tokenContract)
           // dispatch(setPICNICContractFn(tokenContract))
-  
+
           // const PICNICBalance = await tokenContract.methods.balanceOf(selectedAccount).call()
-  
+
           // console.log("PICNICBalance ", PICNICBalance)
           // dispatch(setuserPicnicBalance(PICNICBalance))
       
@@ -94,8 +105,11 @@ function Header() {
             "Non-Ethereum browser detected. You should consider trying MetaMask!"
           );
         }
+
+
+
   
-    }
+  }
 
     return (
       <Grid container sx={{ height: "75px", background: "#f2f2f2", border: "0px solid black", display: "flex", justifyContent: "space-between" }}>  
@@ -109,14 +123,19 @@ function Header() {
                 
                 <Box sx={{border: "0px solid black", width: "40%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 {
-                    data.account && data.chainID === 97 ?
+                    userAddress && networkID === 97 ?
                     <Button variant="text" sx={{width: "90%", fontSize:"14px", fontWeight: 600, bgcolor: "#fff", textTransform:  "none"}}> 
                     BNC Testnet
                     </Button> :
-                    data.account && data.chainID === 56 ?
+                    userAddress && networkID === 56 ?
                     <Button variant="text" sx={{width: "90%", fontSize:"14px", fontWeight: 600, bgcolor: "#fff", textTransform:  "none"}}>
                     BNC Mainnet
                     </Button>
+                    :
+                    userAddress && networkID !== 56 && networkID !== 97 ?
+                    <Button variant="text" sx={{width: "90%", fontSize:"14px", fontWeight: 600, bgcolor: "#fff", textTransform:  "none"}}>
+                    Not BSC
+                    </Button> 
                     :
                     null
                 }
@@ -125,7 +144,7 @@ function Header() {
                 <Box sx={{border: "0px solid black", width: "40%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <Button onClick= {ConnectWallet} variant="text" sx={{width: "90%", fontSize:"14px", fontWeight: 600, bgcolor: "#fff", textTransform:  "none"}}> 
                     {
-                        data.account ?  <>  {`${data.account.slice(0,5)}...${data.account.slice(38,43)}`} </> : <> Connect Wallet </>
+                        userAddress ?  <>  {`${userAddress.slice(0,5)}...${userAddress.slice(38,43)}`} </> : <> Connect Wallet </>
                     }
                 </Button>
                 </Box>

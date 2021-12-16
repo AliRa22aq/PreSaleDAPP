@@ -1,18 +1,20 @@
-import {Sale} from './interfaces';
+import {Sale} from './index';
 
 const currentTime = Date.now();
+
 
 export const sales: Sale[] = [
     {
         id: 1,
+        saleProgress: 0,
         status: "pending",
-        tokenaddr: "0x000000000000000000000000000000000000000000000",
+        tokenaddr: "0x0000000000000...0000000000000000",
         name: "Ali Coin",
         symbol: "ALIC",
         decimal: 18,
         totalSupply: 1000000,
         typeOfSale: "OpenForAll",
-        criteriaToken: "0x000000000000000000000000000000000000000000000",
+        criteriaToken: "0x0000000000000...0000000000000000",
         tokensForSale: 10000, 
         liquidity: "51%",
         totalTokens: 17000,
@@ -31,14 +33,15 @@ export const sales: Sale[] = [
     },
     {
         id: 2,
+        saleProgress: 0,
         status: "pending",
-        tokenaddr: "0x000000000000000000000000000000000000000000000",
+        tokenaddr: "0x0000...0000",
         name: "New Coin",
         symbol: "NEWC",
         decimal: 18,
         totalSupply: 50000000,
         typeOfSale: "OnlyWhiteListed",
-        criteriaToken: "0x000000000000000000000000000000000000000000000",
+        criteriaToken: "0x0000...0000",
         tokensForSale: 5500000, 
         liquidity: "70%",
         totalTokens: 17000,
@@ -57,14 +60,15 @@ export const sales: Sale[] = [
     },
     {
         id: 3,
+        saleProgress: 0,
         status: "pending",
-        tokenaddr: "0x000000000000000000000000000000000000000000000",
+        tokenaddr: "0x0000...0000",
         name: "Shit Coin",
         symbol: "STC",
         decimal: 18,
         totalSupply: 1000000,
         typeOfSale: "OnlyTokenHolders",
-        criteriaToken: "0x000000000000000000000000000000000000000000000",
+        criteriaToken: "0x0000...0000",
         tokensForSale: 10000, 
         liquidity: "75%",
         totalTokens: 17000,
@@ -83,14 +87,15 @@ export const sales: Sale[] = [
     },
     {
         id: 4,
+        saleProgress: 0,
         status: "inProgress",
-        tokenaddr: "0x000000000000000000000000000000000000000000000",
+        tokenaddr: "0x0000...0000",
         name: "ABC Coin",
         symbol: "ABC",
         decimal: 18,
         totalSupply: 1000000,
         typeOfSale: "OpenForAll",
-        criteriaToken: "0x000000000000000000000000000000000000000000000",
+        criteriaToken: "0x0000...0000",
         tokensForSale: 10000, 
         liquidity: "75%",
         totalTokens: 17000,

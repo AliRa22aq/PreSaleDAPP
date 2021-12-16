@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import BN from "bn.js";
-import {Contract} from "web3-eth-contract";
-import {EventLog, PromiEvent, TransactionReceipt} from "web3-core/types";
-import {EventEmitter} from "events";
+import { Contract } from "web3-eth-contract";
+import { EventLog, PromiEvent, TransactionReceipt } from "web3-core/types";
+import { EventEmitter } from "events";
 
 interface EstimateGasOptions {
   from?: string;

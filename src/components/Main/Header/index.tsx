@@ -90,14 +90,14 @@ const Header = () => {
             
 
             // Load Contract Data
-            const tokenContract = (new web3.eth.Contract(TokenABI as any, "0x96D91c8f5eE3C4478854944A7523d8975094D2B3") as any) as PICNICType;
-            console.log(tokenContract)
-            dispatch(setPICNICContractFn(tokenContract))
+            // const tokenContract = (new web3.eth.Contract(TokenABI as any, "0x96D91c8f5eE3C4478854944A7523d8975094D2B3") as any) as PICNICType;
+            // console.log(tokenContract)
+            // dispatch(setPICNICContractFn(tokenContract))
 
-            const PICNICBalance = await tokenContract.methods.balanceOf(selectedAccount).call()
+            // const PICNICBalance = await tokenContract.methods.balanceOf(selectedAccount).call()
 
-            console.log("PICNICBalance ", PICNICBalance)
-            dispatch(setuserPicnicBalance(PICNICBalance))
+            // console.log("PICNICBalance ", PICNICBalance)
+            // dispatch(setuserPicnicBalance(PICNICBalance))
         
       
           } else if (window.web3) {
