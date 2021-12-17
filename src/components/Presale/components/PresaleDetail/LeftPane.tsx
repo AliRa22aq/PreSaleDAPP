@@ -254,14 +254,16 @@ const LeftPane: FC<RulesProps> = ({ ownerView, saleEnded }) => {
 
                                                             <Grid item xs={12} sx={{ margin: "auto", marginTop: 1 }} >
                                                                 <Field
-                                                                    component={TextField}
+                                                                    component={TextareaAutosize}
                                                                     type="text"
-                                                                    name="description"
-                                                                    label="Description of Project"
+                                                                    name="detail"
+                                                                    label="detail"
+                                                                    placeholder=" Tell somthing about your project"
                                                                     fullWidth
                                                                     multiline
-                                                                />
+                                                                    style={{ width: "100%", minHeight: "50px" }}
 
+                                                                />
                                                             </Grid>
 
 
@@ -313,7 +315,7 @@ const LeftPane: FC<RulesProps> = ({ ownerView, saleEnded }) => {
                                                                 sx={{ margin: "auto", marginTop: 1 }}
                                                                 disabled={saleEnded ? true : false}
                                                             >
-                                                                <div >White List</div>
+                                                                <div >Update</div>
 
                                                             </Button>
 

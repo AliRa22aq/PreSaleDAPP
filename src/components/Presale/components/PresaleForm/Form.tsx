@@ -381,13 +381,25 @@ function InputForm() {
                                         </Grid>
 
                                         <Grid item xs={12} sx={{ margin: 0 }} >
-                                            <Field
+                                            {/* <Field
                                                 component={TextField}
                                                 type="text"
                                                 name="description"
                                                 label="Description of Project"
                                                 fullWidth
                                                 multiline
+                                            /> */}
+                                            
+                                            <Field
+                                                component={TextareaAutosize}
+                                                type="text"
+                                                name="description"
+                                                label="description"
+                                                placeholder=" Tell something about your project"
+                                                fullWidth
+                                                multiline
+                                                style={{ width: "100%", minHeight: "50px" }}
+
                                             />
 
                                         </Grid>

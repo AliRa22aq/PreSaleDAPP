@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../IERC20.sol";
-import "../Context.sol";
+import "./interfaces/IERC20.sol";
+import "./Context.sol";
 
-contract ERC20 {
+contract PICNIC {
 
     mapping(address => uint256) private _balances;
 
@@ -14,10 +14,6 @@ contract ERC20 {
 
     string private _name = "Picnic Token";
     string private _symbol = "PICNIC";
-
-    constructor(){
-
-    }
 
     function totalSupply() public view virtual returns (uint256) {
         return _totalSupply;
