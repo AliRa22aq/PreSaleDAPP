@@ -9,11 +9,12 @@ import "./interfaces/IPancakeFactory.sol";
 
 
 contract Presale is Ownable{
+    
     using SafeMath for uint256;
 
     uint public count = 0;
     uint public upfrontfee = 100;
-    uint8 public salesFeeInPercent = 100;
+    uint8 public salesFeeInPercent = 2;
     
     address public teamAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
     address public devAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
@@ -25,10 +26,13 @@ contract Presale is Ownable{
   
       
     //# PancakeSwap on BSC testnet:
-    address pancakeSwapFactoryAddr = 0x6725F303b657a9451d8BA641348b6761A6CC7a17;
-    address pancakeSwapRouterAddr = 0xD99D1c33F9fC3444f8101754aBC46c52416550D1;
-    address WBNBAddr = 0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd;
+    address public pancakeSwapFactoryAddr = 0x6725F303b657a9451d8BA641348b6761A6CC7a17;
+    address public pancakeSwapRouterAddr = 0xD99D1c33F9fC3444f8101754aBC46c52416550D1;
+    address public WBNBAddr = 0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd;
     
+
+    ////////////////////////////// MAPPINGS ///////////////////////////////////
+
     mapping(uint256 => PresaleInfo) public presaleInfo;
     mapping(uint256 => PresalectCounts) public presalectCounts;
     mapping(uint256 => PresaleParticipationCriteria) public presaleParticipationCriteria;
@@ -36,11 +40,17 @@ contract Presale is Ownable{
 
     mapping(uint256 => InternalData) public internalData;
     mapping(address => bool) public isUserWhitelistedToStartProject;
-    mapping(uint256 => mapping(address => Partipant)) public participant;
+    mapping(uint256 => mapping(address => Participant)) public participant;
+
+
+    ////////////////////////////// ENUMS ///////////////////////////////////
 
     enum PresaleType {open, onlyWhiteListed, onlyTokenHolders}
-    enum PreSaleStatus {paused, inProgress, succeed, failed, closed}
+    enum PreSaleStatus {paused, inProgress, succeed, failed, consluded}
     enum Withdrawtype {burn, withdraw}
+
+
+    ////////////////////////////// STRUCTS ///////////////////////////////////
 
     struct InternalData {
         uint totalTokensSold;
@@ -51,7 +61,7 @@ contract Presale is Ownable{
         uint ownersShareBNB;
     }
 
-    struct Partipant {
+    struct Participant {
         uint256 value;
         uint256 tokens;
         bool whiteListed;
@@ -100,14 +110,17 @@ contract Presale is Ownable{
         PresaleTimes presaleTimes;  
     }    
 
+
+    ////////////////////////////// MODIFIRES //////////////////////////////
+
     modifier isIDValid(uint _id) {
         require (presaleInfo[_id].preSaleContractAddr != address(0), "Not a valid ID");
         _;
     }
 
     modifier isPresaleActive(uint _id) {
-        require( block.timestamp < presaleParticipationCriteria[_id].presaleTimes.expiredAt, "Presale is over. Try next time");
         require (block.timestamp >= presaleParticipationCriteria[_id].presaleTimes.startedAt, "Presale hasn't begin yet. please wait");
+        require( block.timestamp < presaleParticipationCriteria[_id].presaleTimes.expiredAt, "Presale is over. Try next time");
         require(presaleInfo[_id].preSaleStatus == PreSaleStatus.inProgress, "Presale is not in progress");
         _;
     }
@@ -115,6 +128,17 @@ contract Presale is Ownable{
     modifier onlyPresaleOwner(uint _id) {
         require(presaleInfo[_id].presaleOwnerAddr == _msgSender(), "Ownable: caller is not the owner of this presale");
         _;
+    }
+
+
+    ////////////////////////////// FUNCTIONS ///////////////////////////////////
+
+    function setPancakeSwapFactoryAddr(address _address) public onlyOwner {
+        pancakeSwapFactoryAddr = _address;
+    } 
+
+    function setPancakeSwapRouterAdd(address _address) public onlyOwner {
+        pancakeSwapRouterAddr = _address;
     }
 
     function whiteListUsersToStartProject(address _address) public onlyOwner {
@@ -125,7 +149,7 @@ contract Presale is Ownable{
         participant[_id][_address].whiteListed = true;
     }
 
-    function updateFees(uint8 _upfrontFee, uint8 _salesFeeInPercent) public onlyOwner {
+    function updateFees(uint _upfrontFee, uint8 _salesFeeInPercent) public onlyOwner {
         upfrontfee = _upfrontFee;
         salesFeeInPercent = _salesFeeInPercent;
     }
@@ -169,8 +193,13 @@ contract Presale is Ownable{
         require( _tokensForSale > 0, "tokens for sale must be more than 0");
         require( _softCap < _tokensForSale, "softcap should be less than the tokan tokens on sale");
         require( _reqestedTokens.maxTokensReq > _reqestedTokens.minTokensReq, "_maxTokensReq > _minTokensReq");
-        // require( _presaleTimes.startedAt > block.timestamp && _presaleTimes.expiredAt > block.timestamp, "_maxTokensReq > _minTokensReq");
-
+        require( _presaleTimes.expiredAt > _presaleTimes.startedAt, "expiredAt > startedAt");
+        require( 
+            _presaleTimes.startedAt > block.timestamp && 
+            _presaleTimes.expiredAt > block.timestamp,
+            "expiredAt and startedAt should be more than now"
+            );
+            
 
         count++;
         
@@ -190,7 +219,6 @@ contract Presale is Ownable{
             // _address,
             PreSaleStatus.inProgress
         );
-
 
         presaleParticipationCriteria[count] = PresaleParticipationCriteria(
             _preSaleContractAddress,
@@ -217,12 +245,12 @@ contract Presale is Ownable{
         delete presaleParticipationCriteria[_id];
     }
                                                                                     // isPresaleActive(_id)
-    function buyTokensOnPresale(uint256 _id, uint256 _numOfTokensRequested) payable public isIDValid(_id) {
+    function buyTokensOnPresale(uint256 _id, uint256 _numOfTokensRequested) payable public isIDValid(_id) isPresaleActive(_id)  {
 
         PresaleInfo memory info = presaleInfo[_id];
         PresaleParticipationCriteria memory criteria = presaleParticipationCriteria[_id];
+        Participant memory currentParticipant = participant[_id][msg.sender];
 
-        Partipant memory currentParticipant = participant[_id][msg.sender];
 
         if(info.typeOfPresale == PresaleType.onlyWhiteListed){
             require( currentParticipant.whiteListed == true, "Only whitelisted users are allowed to participate");
@@ -246,13 +274,13 @@ contract Presale is Ownable{
         uint newValue = currentParticipant.value.add(msg.value);
         uint newTokens = currentParticipant.tokens.add(_numOfTokensRequested);
 
-        participant[_id][msg.sender] = Partipant(newValue, newTokens, currentParticipant.whiteListed);
+        participant[_id][msg.sender] = Participant(newValue, newTokens, currentParticipant.whiteListed);
         
     }
 
     function claimTokensOrARefund(uint _id) public isIDValid(_id) {
         
-        Partipant memory _participant = participant[_id][msg.sender];
+        Participant memory _participant = participant[_id][msg.sender];
 
         PreSaleStatus _status = presaleInfo[_id].preSaleStatus;
         uint totalBalance = preSaleTokenBalanceOfContract(_id);
@@ -264,14 +292,14 @@ contract Presale is Ownable{
             require(_participant.tokens <= totalBalance, "Not enough tokens are available");
             bool tokenDistribution = IERC20(presaleParticipationCriteria[_id].preSaleContractAddr).transfer(msg.sender, _participant.tokens);
             require(tokenDistribution, "Unable to transfer tokens to the participant");
-            participant[_id][msg.sender] = Partipant(0, 0, _participant.whiteListed);
+            participant[_id][msg.sender] = Participant(0, 0, _participant.whiteListed);
             presalectCounts[_id].claimsCount++;
         }
         else if(_status == PreSaleStatus.failed){
             require(_participant.value > 0, "No amount to refund");
             bool refund = payable(msg.sender).send(_participant.value);
             require(refund, "Unable to refund amount to the participant");
-            participant[_id][msg.sender] = Partipant(0, 0, _participant.whiteListed);
+            participant[_id][msg.sender] = Participant(0, 0, _participant.whiteListed);
             presalectCounts[_id].claimsCount++;
 
         }
@@ -281,8 +309,13 @@ contract Presale is Ownable{
     function endPresale(uint _id) public onlyPresaleOwner(_id) isIDValid(_id) returns (uint, uint, uint){
         
         PresaleInfo memory info = presaleInfo[_id];
-        
-        // require(block.timestamp > criteria.presaleTimes.expiredAt, "Presale is not over yet");
+        // PresaleParticipationCriteria memory criteria = presaleParticipationCriteria[_id];
+
+        require(
+            block.timestamp > presaleParticipationCriteria[_id].presaleTimes.expiredAt ||
+            info.remainingTokensForSale == 0, 
+            "Presale is not over yet"
+            );
         
         uint256 totalTokensSold = info.tokensForSale.sub(info.remainingTokensForSale);
         
@@ -290,10 +323,8 @@ contract Presale is Ownable{
             
             uint256 tokensToAddLiquidity = totalTokensSold.mul(info.reservedTokensPCForLP).div(100);
             
-            if(tokensToAddLiquidity >= 1000){
+            // if(tokensToAddLiquidity >= 1000){
 
-                internalData[_id].totalTokensSold = totalTokensSold;
-                internalData[_id].tokensToAddLiquidity = tokensToAddLiquidity;
 
                 uint256 poolShareBNB = distributeRevenue(_id);
 
@@ -311,18 +342,21 @@ contract Presale is Ownable{
                 );
 
                 // successful presale
+                internalData[_id].totalTokensSold = totalTokensSold;
+                internalData[_id].tokensToAddLiquidity = tokensToAddLiquidity;
+
                 presaleInfo[_id].preSaleStatus = PreSaleStatus.succeed;
                 presaleInfo[_id].accumulatedBalance = 0;
 
                 return (amountToken, amountETH, liquidity);
 
-            } 
-            else {
-                // Failed Presale
-                presaleInfo[_id].preSaleStatus = PreSaleStatus.failed;
-                return (0,0,0);
+            // } 
+            // else {
+            //     // Failed Presale
+            //     presaleInfo[_id].preSaleStatus = PreSaleStatus.failed;
+            //     return (0,0,0);
 
-            }
+            // }
             
         }
         else {
@@ -346,10 +380,10 @@ contract Presale is Ownable{
         require(payable(info.presaleOwnerAddr).send(ownersShareBNB), "cannot send owner's share");
 
         uint devShare = devTeamShareBNB.mul(75).div(100);
-        require(payable(devAddr).send(devShare), "cannot send owner's share"); 
+        require(payable(devAddr).send(devShare), "cannot send dev's share"); 
 
         uint teamShare = devTeamShareBNB.sub(devShare);
-        require(payable(teamAddr).send(teamShare), "cannot send owner's share");
+        require(payable(teamAddr).send(teamShare), "cannot send devTeam's share");
         
         internalData[_id].revenueFromPresale = revenueFromPresale;
         internalData[_id].poolShareBNB = poolShareBNB;
@@ -359,11 +393,6 @@ contract Presale is Ownable{
         return  poolShareBNB;
 
     }
-
-    // function approveTokensToContract(address _tokenAddr, uint _amount) public {
-    //     bool approval = IERC20(_tokenAddr).approve(address(this) , _amount);
-    //     require(approval, "unable to approve tokens to the contract. Make sure you have this amount");
-    // }
 
     function BNBbalanceOfContract() public view returns(uint){
         return address(this).balance;
@@ -422,7 +451,7 @@ contract Presale is Ownable{
         }
         presaleInfo[_id].tokensForSale = 0;
         presaleInfo[_id].remainingTokensForSale = 0;
-        presaleInfo[_id].preSaleStatus = PreSaleStatus.closed;
+        presaleInfo[_id].preSaleStatus = PreSaleStatus.consluded;
     }
 
     // function pausePresale(uint _id) public onlyPresaleOwner(_id) isIDValid(_id) {
