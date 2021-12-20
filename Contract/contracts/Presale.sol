@@ -9,7 +9,7 @@ import "./interfaces/IPancakeFactory.sol";
 
 
 contract Presale is Ownable{
-    
+
     using SafeMath for uint256;
 
     uint public count = 0;
@@ -46,7 +46,7 @@ contract Presale is Ownable{
     ////////////////////////////// ENUMS ///////////////////////////////////
 
     enum PresaleType {open, onlyWhiteListed, onlyTokenHolders}
-    enum PreSaleStatus {paused, inProgress, succeed, failed, consluded}
+    enum PreSaleStatus {pending, inProgress, succeed, failed, consluded}
     enum Withdrawtype {burn, withdraw}
 
 
@@ -121,6 +121,9 @@ contract Presale is Ownable{
     modifier isPresaleActive(uint _id) {
         require (block.timestamp >= presaleParticipationCriteria[_id].presaleTimes.startedAt, "Presale hasn't begin yet. please wait");
         require( block.timestamp < presaleParticipationCriteria[_id].presaleTimes.expiredAt, "Presale is over. Try next time");
+        if(presaleInfo[_id].preSaleStatus == PreSaleStatus.pending){
+            presaleInfo[_id].preSaleStatus = PreSaleStatus.inProgress;
+        }
         require(presaleInfo[_id].preSaleStatus == PreSaleStatus.inProgress, "Presale is not in progress");
         _;
     }
@@ -185,13 +188,12 @@ contract Presale is Ownable{
             require( _criteriaTokenAddr != address(0), "Criteria token address shouldn't be a null address");
         }
 
-        uint reservedTokens = _tokensForSale.mul(_reservedTokensPCForLP).div(100);
-        bool transfer = IERC20(_preSaleContractAddress).transferFrom(msg.sender, address(this), _tokensForSale.add(reservedTokens));
-        require( transfer, "Unable to transfer presale tokens to the contract");
-
+        require( _reservedTokensPCForLP >= 50, "Tokens for liquidity should be at least 50% of the total tokens offered on sale");
+        require( _softCap >= _tokensForSale.div(2), "softcap should be at least 50% of the total tokens offered on sale");
+        
         require( _preSaleContractAddress != address(0), "Presale project address can't be null");
         require( _tokensForSale > 0, "tokens for sale must be more than 0");
-        require( _softCap < _tokensForSale, "softcap should be less than the tokan tokens on sale");
+
         require( _reqestedTokens.maxTokensReq > _reqestedTokens.minTokensReq, "_maxTokensReq > _minTokensReq");
         require( _presaleTimes.expiredAt > _presaleTimes.startedAt, "expiredAt > startedAt");
         require( 
@@ -199,7 +201,10 @@ contract Presale is Ownable{
             _presaleTimes.expiredAt > block.timestamp,
             "expiredAt and startedAt should be more than now"
             );
-            
+        
+        uint reservedTokens = _tokensForSale.mul(_reservedTokensPCForLP).div(100);
+        bool transfer = IERC20(_preSaleContractAddress).transferFrom(msg.sender, address(this), _tokensForSale.add(reservedTokens));
+        require( transfer, "Unable to transfer presale tokens to the contract");
 
         count++;
         
@@ -217,7 +222,7 @@ contract Presale is Ownable{
             0,
             address(0),
             // _address,
-            PreSaleStatus.inProgress
+            PreSaleStatus.pending
         );
 
         presaleParticipationCriteria[count] = PresaleParticipationCriteria(
@@ -239,11 +244,13 @@ contract Presale is Ownable{
         return count;
     }
 
-    function deletePresaleContractInfo (uint256 _id) public onlyOwner isIDValid(_id){
+    function deletePresaleContractInfo (uint256 _id) public onlyPresaleOwner(_id) isIDValid(_id){
+        require(presaleInfo[_id].preSaleStatus == PreSaleStatus.pending, "Presale is in progress, can't delete it now");
         delete presaleInfo[_id];
         delete presalectCounts[_id];
         delete presaleParticipationCriteria[_id];
     }
+
                                                                                     // isPresaleActive(_id)
     function buyTokensOnPresale(uint256 _id, uint256 _numOfTokensRequested) payable public isIDValid(_id) isPresaleActive(_id)  {
 
@@ -399,18 +406,16 @@ contract Presale is Ownable{
     }
 
     function updatePresaleTime(uint _id, uint _starttime, uint _endTime) public onlyPresaleOwner(_id) isIDValid(_id){
+        require(presaleInfo[_id].preSaleStatus == PreSaleStatus.pending, "Presale is in progress, you can't change criteria now");
         presaleParticipationCriteria[_id].presaleTimes.startedAt = _starttime;
         presaleParticipationCriteria[_id].presaleTimes.expiredAt = _endTime;
     }
 
     function updateParticipationCriteria (
-            uint _id, 
-            uint _priceOfEachToken, 
-            uint _minTokensReq, 
-            uint _maxTokensReq, 
-            uint _softCap
+            uint _id, uint _priceOfEachToken, uint _minTokensReq, uint _maxTokensReq, uint _softCap
         ) public onlyPresaleOwner(_id) isIDValid(_id) {
 
+        require(presaleInfo[_id].preSaleStatus != PreSaleStatus.pending, "Presale is in progress, you can't change criteria now");
         presaleInfo[_id].priceOfEachToken = _priceOfEachToken;
         presaleParticipationCriteria[_id].reqestedTokens.minTokensReq = _minTokensReq;
         presaleParticipationCriteria[_id].reqestedTokens.maxTokensReq = _maxTokensReq;

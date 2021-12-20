@@ -89,7 +89,7 @@ module.exports = {
     reporter: "eth-gas-reporter",
     reporterOptions: {
       currency: "CAD",
-      coinmarketcap: "fc271b40-94b0-4605-8d66-675171124d18"
+      // coinmarketcap: "fc271b40-94b0-4605-8d66-675171124d18"
     },
   },
 
