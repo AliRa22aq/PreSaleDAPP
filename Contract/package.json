@@ -1,5 +1,5 @@
 {
-  "name": "presale",
+  "name": "contract",
   "version": "1.0.0",
   "description": "",
   "main": "truffle-config.js",
@@ -12,14 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@almanack/pancake-swap-core": "^0.1.2",
-    "@openzeppelin/contracts": "^4.3.2",
-    "@theanthill/pancake-swap-periphery": "^1.1.0-beta.1",
-    "@truffle/hdwallet-provider": "^1.7.0",
-    "dotenv": "^10.0.0",
+    "@truffle/hdwallet-provider": "^2.0.0",
     "eth-gas-reporter": "^0.2.23"
-  },
-  "devDependencies": {
-    "@nomiclabs/buidler": "^1.4.8"
   }
 }

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./interfaces/IERC20.sol";
+import "./interfaces/IERC20Metadata.sol";
 import "./Context.sol";
 
-contract PICNIC {
+contract PICNIC is IERC20Metadata{
 
     mapping(address => uint256) private _balances;
 
@@ -94,5 +94,27 @@ contract PICNIC {
 
         _allowances[owner][spender] = amount;
     }
+
+
+    function name() public view returns (string memory) {
+        return _name;
+    }
+
+    /**
+     * @dev Returns the symbol of the token.
+     */
+    function symbol() public view returns (string memory){
+        return _symbol;
+    }
+
+    /**
+     * @dev Returns the decimals places of the token.
+     */
+    function decimals() public pure returns (uint8){
+        return 18;
+    }
+
+
+
 
 }

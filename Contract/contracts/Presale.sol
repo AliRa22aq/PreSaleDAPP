@@ -55,7 +55,7 @@ contract Presale is Ownable{
     struct InternalData {
         uint totalTokensSold;
         uint revenueFromPresale;
-        uint tokensToAddLiquidity;
+        uint tokensAddedToLiquidity;
         uint poolShareBNB;
         uint devTeamShareBNB;
         uint ownersShareBNB;
@@ -110,7 +110,6 @@ contract Presale is Ownable{
         PresaleTimes presaleTimes;  
     }    
 
-
     ////////////////////////////// MODIFIRES //////////////////////////////
 
     modifier isIDValid(uint _id) {
@@ -136,11 +135,11 @@ contract Presale is Ownable{
 
     ////////////////////////////// FUNCTIONS ///////////////////////////////////
 
-    function setPancakeSwapFactoryAddr(address _address) public onlyOwner {
+    function setFactoryAddr(address _address) public onlyOwner {
         pancakeSwapFactoryAddr = _address;
     } 
 
-    function setPancakeSwapRouterAdd(address _address) public onlyOwner {
+    function setRouterAddr(address _address) public onlyOwner {
         pancakeSwapRouterAddr = _address;
     }
 
@@ -250,7 +249,6 @@ contract Presale is Ownable{
         delete presalectCounts[_id];
         delete presaleParticipationCriteria[_id];
     }
-
                                                                                     // isPresaleActive(_id)
     function buyTokensOnPresale(uint256 _id, uint256 _numOfTokensRequested) payable public isIDValid(_id) isPresaleActive(_id)  {
 
@@ -258,6 +256,7 @@ contract Presale is Ownable{
         PresaleParticipationCriteria memory criteria = presaleParticipationCriteria[_id];
         Participant memory currentParticipant = participant[_id][msg.sender];
 
+        require(info.remainingTokensForSale > 0 , "the sale is sold out");
 
         if(info.typeOfPresale == PresaleType.onlyWhiteListed){
             require( currentParticipant.whiteListed == true, "Only whitelisted users are allowed to participate");
@@ -270,11 +269,12 @@ contract Presale is Ownable{
         require(msg.value >= _numOfTokensRequested*info.priceOfEachToken, "insufficient funds");
         
         if(currentParticipant.tokens == 0){
+            presalectCounts[_id].participantsCount++;
             require(_numOfTokensRequested >= criteria.reqestedTokens.minTokensReq, "Request for tokens is low, Please request more than minTokensReq");
         }
         require(_numOfTokensRequested + currentParticipant.tokens <= criteria.reqestedTokens.maxTokensReq, "Request for tokens is high, Please request less than maxTokensReq");
         
-        presalectCounts[_id].participantsCount++;
+
         presaleInfo[_id].accumulatedBalance = info.accumulatedBalance.add(msg.value);
         presaleInfo[_id].remainingTokensForSale = info.remainingTokensForSale.sub(_numOfTokensRequested);
 
@@ -315,8 +315,9 @@ contract Presale is Ownable{
     
     function endPresale(uint _id) public onlyPresaleOwner(_id) isIDValid(_id) returns (uint, uint, uint){
         
+        require(presaleInfo[_id].preSaleStatus == PreSaleStatus.inProgress, "Presale is not in progress");
+
         PresaleInfo memory info = presaleInfo[_id];
-        // PresaleParticipationCriteria memory criteria = presaleParticipationCriteria[_id];
 
         require(
             block.timestamp > presaleParticipationCriteria[_id].presaleTimes.expiredAt ||
@@ -330,9 +331,6 @@ contract Presale is Ownable{
             
             uint256 tokensToAddLiquidity = totalTokensSold.mul(info.reservedTokensPCForLP).div(100);
             
-            // if(tokensToAddLiquidity >= 1000){
-
-
                 uint256 poolShareBNB = distributeRevenue(_id);
 
                 // Approval
@@ -350,20 +348,11 @@ contract Presale is Ownable{
 
                 // successful presale
                 internalData[_id].totalTokensSold = totalTokensSold;
-                internalData[_id].tokensToAddLiquidity = tokensToAddLiquidity;
+                internalData[_id].tokensAddedToLiquidity = tokensToAddLiquidity;
 
                 presaleInfo[_id].preSaleStatus = PreSaleStatus.succeed;
-                presaleInfo[_id].accumulatedBalance = 0;
 
                 return (amountToken, amountETH, liquidity);
-
-            // } 
-            // else {
-            //     // Failed Presale
-            //     presaleInfo[_id].preSaleStatus = PreSaleStatus.failed;
-            //     return (0,0,0);
-
-            // }
             
         }
         else {
@@ -373,7 +362,7 @@ contract Presale is Ownable{
         
     }
 
-    function distributeRevenue(uint _id) internal returns (uint256) {
+    function distributeRevenue(uint _id) private returns (uint256) {
 
         PresaleInfo memory info = presaleInfo[_id];
 
@@ -422,26 +411,12 @@ contract Presale is Ownable{
         presaleParticipationCriteria[_id].softCap = _softCap;
     }
 
-    // function updateTokensForSale( uint _id, uint _tokensForSale, uint _reservedTokensPCForLP ) public onlyPresaleOwner(_id) isIDValid(_id) {
-    //     presaleInfo[_id].tokensForSale = _tokensForSale;
-    //     presaleInfo[_id].remainingTokensForSale = _tokensForSale;
-    //     presaleInfo[_id].reservedTokensPCForLP = _reservedTokensPCForLP;
-    // }
-
-    // function setCriteriaToken(
-    //     uint _id, 
-    //     address _criteriaToken, 
-    //     uint _minTokensForParticipation
-    // ) public onlyPresaleOwner(_id) {
-    //     presaleParticipationCriteria[_id].minTokensForParticipation = _minTokensForParticipation;
-    //     presaleParticipationCriteria[_id].criteriaTokenAddr = _criteriaToken;
-    // }
-    
     function updateteamAddr(address _teamAddr) public onlyOwner {
         teamAddr = _teamAddr;
     }
 
     function concludeSale(uint _id, Withdrawtype _withdrawtype ) public onlyPresaleOwner(_id) isIDValid(_id){
+
         IERC20 _token = IERC20(presaleInfo[_id].preSaleContractAddr);
         uint totalTokens = _token.balanceOf(address(this));
         require( totalTokens > 0, "Contract has no presale tokens");
@@ -459,14 +434,6 @@ contract Presale is Ownable{
         presaleInfo[_id].preSaleStatus = PreSaleStatus.consluded;
     }
 
-    // function pausePresale(uint _id) public onlyPresaleOwner(_id) isIDValid(_id) {
-    //     presaleInfo[_id].preSaleStatus = PreSaleStatus.paused;
-    // }
-    
-    // function unpausePresale(uint _id) public onlyPresaleOwner(_id) isIDValid(_id) {
-    //     presaleInfo[_id].preSaleStatus = PreSaleStatus.inProgress;
-    // }
-
     // // Helping functions;
     function preSaleTokenBalanceOfContract (uint _id) public view returns(uint256){
         return IERC20(presaleParticipationCriteria[_id].preSaleContractAddr).balanceOf(address(this));
@@ -481,3 +448,27 @@ contract Presale is Ownable{
     }
 
 }
+
+    // function updateTokensForSale( uint _id, uint _tokensForSale, uint _reservedTokensPCForLP ) public onlyPresaleOwner(_id) isIDValid(_id) {
+    //     presaleInfo[_id].tokensForSale = _tokensForSale;
+    //     presaleInfo[_id].remainingTokensForSale = _tokensForSale;
+    //     presaleInfo[_id].reservedTokensPCForLP = _reservedTokensPCForLP;
+    // }
+
+    // function setCriteriaToken(
+    //     uint _id, 
+    //     address _criteriaToken, 
+    //     uint _minTokensForParticipation
+    // ) public onlyPresaleOwner(_id) {
+    //     presaleParticipationCriteria[_id].minTokensForParticipation = _minTokensForParticipation;
+    //     presaleParticipationCriteria[_id].criteriaTokenAddr = _criteriaToken;
+    // }
+
+
+    // function pausePresale(uint _id) public onlyPresaleOwner(_id) isIDValid(_id) {
+    //     presaleInfo[_id].preSaleStatus = PreSaleStatus.paused;
+    // }
+    
+    // function unpausePresale(uint _id) public onlyPresaleOwner(_id) isIDValid(_id) {
+    //     presaleInfo[_id].preSaleStatus = PreSaleStatus.inProgress;
+    // }
