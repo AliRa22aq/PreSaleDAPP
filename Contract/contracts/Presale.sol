@@ -16,8 +16,8 @@ contract Presale is Ownable{
     uint public upfrontfee = 100;
     uint8 public salesFeeInPercent = 2;
     
-    address public teamAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
-    address public devAddr = 0xE813d775f33a97BDA25D71240525C724423D4Cd0;
+    address public teamAddr = 0x2D46C1eC25E1dB2A630150693121E67e67918Dc5;
+    address public devAddr = 0x2142d14085e48eDbE0C92522bf41Bc8Fd687f4Ac;
     
     //# PancakeSwap on BSC mainnet
     // address pancakeSwapFactoryAddr = 0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73;
@@ -46,7 +46,7 @@ contract Presale is Ownable{
     ////////////////////////////// ENUMS ///////////////////////////////////
 
     enum PresaleType {open, onlyWhiteListed, onlyTokenHolders}
-    enum PreSaleStatus {pending, inProgress, succeed, failed, consluded}
+    enum PreSaleStatus {pending, inProgress, succeed, failed}
     enum Withdrawtype {burn, withdraw}
 
 
@@ -56,6 +56,7 @@ contract Presale is Ownable{
         uint totalTokensSold;
         uint revenueFromPresale;
         uint tokensAddedToLiquidity;
+        uint extraTokens;
         uint poolShareBNB;
         uint devTeamShareBNB;
         uint ownersShareBNB;
@@ -132,7 +133,6 @@ contract Presale is Ownable{
         _;
     }
 
-
     ////////////////////////////// FUNCTIONS ///////////////////////////////////
 
     function setFactoryAddr(address _address) public onlyOwner {
@@ -187,7 +187,7 @@ contract Presale is Ownable{
             require( _criteriaTokenAddr != address(0), "Criteria token address shouldn't be a null address");
         }
 
-        require( _reservedTokensPCForLP >= 50, "Tokens for liquidity should be at least 50% of the total tokens offered on sale");
+        require( _reservedTokensPCForLP >= 50 && _reservedTokensPCForLP <= 100, "Tokens for liquidity should be at least 50% of the total tokens offered on sale");
         require( _softCap >= _tokensForSale.div(2), "softcap should be at least 50% of the total tokens offered on sale");
         
         require( _preSaleContractAddress != address(0), "Presale project address can't be null");
@@ -249,7 +249,7 @@ contract Presale is Ownable{
         delete presalectCounts[_id];
         delete presaleParticipationCriteria[_id];
     }
-                                                                                    // isPresaleActive(_id)
+
     function buyTokensOnPresale(uint256 _id, uint256 _numOfTokensRequested) payable public isIDValid(_id) isPresaleActive(_id)  {
 
         PresaleInfo memory info = presaleInfo[_id];
@@ -323,7 +323,7 @@ contract Presale is Ownable{
             block.timestamp > presaleParticipationCriteria[_id].presaleTimes.expiredAt ||
             info.remainingTokensForSale == 0, 
             "Presale is not over yet"
-            );
+        );
         
         uint256 totalTokensSold = info.tokensForSale.sub(info.remainingTokensForSale);
         
@@ -333,8 +333,6 @@ contract Presale is Ownable{
             
                 uint256 poolShareBNB = distributeRevenue(_id);
 
-                // Approval
-                // bool approval = IERC20(info.preSaleContractAddr).approve(pancakeSwapRouterAddr, tokensToAddLiquidity);
                 require(IERC20(info.preSaleContractAddr).approve(pancakeSwapRouterAddr, tokensToAddLiquidity), "unable to approve token tranfer to pancakeSwapRouterAddr");
 
                 (uint amountToken, uint amountETH, uint liquidity) = IPancakeRouter02(pancakeSwapRouterAddr).addLiquidityETH{value : poolShareBNB}(
@@ -346,18 +344,20 @@ contract Presale is Ownable{
                     block.timestamp + 5*60
                 );
 
-                // successful presale
                 internalData[_id].totalTokensSold = totalTokensSold;
                 internalData[_id].tokensAddedToLiquidity = tokensToAddLiquidity;
-
+                internalData[_id].extraTokens = info.remainingTokensForSale +  info.remainingTokensForSale.mul(info.reservedTokensPCForLP).div(100) ;
                 presaleInfo[_id].preSaleStatus = PreSaleStatus.succeed;
 
                 return (amountToken, amountETH, liquidity);
             
         }
         else {
+
+            internalData[_id].extraTokens = info.tokensForSale +  info.tokensForSale.mul(info.reservedTokensPCForLP).div(100);
             presaleInfo[_id].preSaleStatus = PreSaleStatus.failed;
             return (0,0,0);
+
         }
         
     }
@@ -373,13 +373,17 @@ contract Presale is Ownable{
         uint256 poolShareBNB = revenueFromPresale.mul(info.reservedTokensPCForLP).div(100);
         uint256 ownersShareBNB = revenueFromPresale.sub(poolShareBNB.add(devTeamShareBNB));
 
-        require(payable(info.presaleOwnerAddr).send(ownersShareBNB), "cannot send owner's share");
+        // require(payable(info.presaleOwnerAddr).send(ownersShareBNB), "cannot send owner's share");
+        payable(info.presaleOwnerAddr).transfer(ownersShareBNB);
+
 
         uint devShare = devTeamShareBNB.mul(75).div(100);
-        require(payable(devAddr).send(devShare), "cannot send dev's share"); 
+        // require(payable(devAddr).send(devShare), "cannot send dev's share"); 
+        payable(devAddr).transfer(devShare);
 
         uint teamShare = devTeamShareBNB.sub(devShare);
-        require(payable(teamAddr).send(teamShare), "cannot send devTeam's share");
+        // require(payable(teamAddr).send(teamShare), "cannot send devTeam's share");
+        payable(teamAddr).transfer(teamShare);
         
         internalData[_id].revenueFromPresale = revenueFromPresale;
         internalData[_id].poolShareBNB = poolShareBNB;
@@ -390,12 +394,44 @@ contract Presale is Ownable{
 
     }
 
+    function burnOrWithdrawTokens(uint _id, Withdrawtype _withdrawtype ) public onlyPresaleOwner(_id) isIDValid(_id){
+
+        require(internalData[_id].extraTokens > 0, "No tokens to withdraw");
+
+        PresaleInfo memory info = presaleInfo[_id];
+
+        // require( 
+        //     info.remainingTokensForSale != 0 && info.remainingTokensForSale != 1, "Can't withdraw before concluding the sales"
+        //     );
+
+        IERC20 _token = IERC20(info.preSaleContractAddr);
+        uint totalTokens = _token.balanceOf(address(this));
+
+        require( totalTokens >= internalData[_id].extraTokens, "Contract has no presale tokens");
+
+        if(_withdrawtype == Withdrawtype.withdraw ){
+            bool tokenDistribution = _token.transfer(msg.sender, internalData[_id].extraTokens);
+            require( tokenDistribution, "unable to send tokens to the owner");
+            internalData[_id].extraTokens = 0;
+        }
+        else{
+            bool tokenDistribution = _token.transfer(0x000000000000000000000000000000000000dEaD , internalData[_id].extraTokens);
+            require( tokenDistribution, "unable to send tokens to the owner");
+            internalData[_id].extraTokens = 0;
+        }
+        // presaleInfo[_id].tokensForSale = 0;
+        // presaleInfo[_id].remainingTokensForSale = 0;
+        // // presaleInfo[_id].preSaleStatus = PreSaleStatus.consluded;
+    }
+
     function BNBbalanceOfContract() public view returns(uint){
         return address(this).balance;
     }
 
     function updatePresaleTime(uint _id, uint _starttime, uint _endTime) public onlyPresaleOwner(_id) isIDValid(_id){
+        
         require(presaleInfo[_id].preSaleStatus == PreSaleStatus.pending, "Presale is in progress, you can't change criteria now");
+
         presaleParticipationCriteria[_id].presaleTimes.startedAt = _starttime;
         presaleParticipationCriteria[_id].presaleTimes.expiredAt = _endTime;
     }
@@ -404,7 +440,7 @@ contract Presale is Ownable{
             uint _id, uint _priceOfEachToken, uint _minTokensReq, uint _maxTokensReq, uint _softCap
         ) public onlyPresaleOwner(_id) isIDValid(_id) {
 
-        require(presaleInfo[_id].preSaleStatus != PreSaleStatus.pending, "Presale is in progress, you can't change criteria now");
+        require(presaleInfo[_id].preSaleStatus == PreSaleStatus.pending, "Presale is in progress, you can't change criteria now");
         presaleInfo[_id].priceOfEachToken = _priceOfEachToken;
         presaleParticipationCriteria[_id].reqestedTokens.minTokensReq = _minTokensReq;
         presaleParticipationCriteria[_id].reqestedTokens.maxTokensReq = _maxTokensReq;
@@ -413,25 +449,6 @@ contract Presale is Ownable{
 
     function updateteamAddr(address _teamAddr) public onlyOwner {
         teamAddr = _teamAddr;
-    }
-
-    function concludeSale(uint _id, Withdrawtype _withdrawtype ) public onlyPresaleOwner(_id) isIDValid(_id){
-
-        IERC20 _token = IERC20(presaleInfo[_id].preSaleContractAddr);
-        uint totalTokens = _token.balanceOf(address(this));
-        require( totalTokens > 0, "Contract has no presale tokens");
-
-        if(_withdrawtype == Withdrawtype.withdraw ){
-            bool tokenDistribution = _token.transfer(msg.sender, totalTokens);
-            require( tokenDistribution, "unable to send tokens to the owner");
-        }
-        else{
-            bool tokenDistribution = _token.transfer(0x000000000000000000000000000000000000dEaD , totalTokens);
-            require( tokenDistribution, "unable to send tokens to the owner");
-        }
-        presaleInfo[_id].tokensForSale = 0;
-        presaleInfo[_id].remainingTokensForSale = 0;
-        presaleInfo[_id].preSaleStatus = PreSaleStatus.consluded;
     }
 
     // // Helping functions;
