@@ -38,23 +38,14 @@ export type Transfer = ContractEventLog<{
   2: string;
 }>;
 
-export interface PICNIC extends BaseContract {
+export interface IERC20Metadata extends BaseContract {
   constructor(
     jsonInterface: any[],
     address?: string,
     options?: ContractOptions
-  ): PICNIC;
-  clone(): PICNIC;
+  ): IERC20Metadata;
+  clone(): IERC20Metadata;
   methods: {
-    totalSupply(): NonPayableTransactionObject<string>;
-
-    balanceOf(account: string): NonPayableTransactionObject<string>;
-
-    transfer(
-      recipient: string,
-      amount: number | string | BN
-    ): NonPayableTransactionObject<boolean>;
-
     allowance(
       owner: string,
       spender: string
@@ -62,19 +53,23 @@ export interface PICNIC extends BaseContract {
 
     approve(
       spender: string,
-      amount: number | string | BN
+      value: number | string | BN
+    ): NonPayableTransactionObject<boolean>;
+
+    balanceOf(owner: string): NonPayableTransactionObject<string>;
+
+    totalSupply(): NonPayableTransactionObject<string>;
+
+    transfer(
+      to: string,
+      value: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     transferFrom(
-      sender: string,
-      recipient: string,
-      amount: number | string | BN
+      from: string,
+      to: string,
+      value: number | string | BN
     ): NonPayableTransactionObject<boolean>;
-
-    _mint(
-      account: string,
-      amount: number | string | BN
-    ): NonPayableTransactionObject<void>;
 
     /**
      * Returns the name of the token.

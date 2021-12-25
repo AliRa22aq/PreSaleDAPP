@@ -1,12 +1,13 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import "./SafeMath.sol";
 import "./Ownable.sol";
 import "./interfaces/IERC20.sol";
 import "./interfaces/IPancakeRouter02.sol";
 import "./interfaces/IPancakeFactory.sol";
+import "./library/SafeMath.sol";
 
+// import "./SalesTracker.sol";
 
 contract Presale is Ownable{
 
@@ -15,7 +16,8 @@ contract Presale is Ownable{
     uint public count = 0;
     uint public upfrontfee = 100;
     uint8 public salesFeeInPercent = 2;
-    
+
+    // Declare a set state variable    
     address public teamAddr = 0x2D46C1eC25E1dB2A630150693121E67e67918Dc5;
     address public devAddr = 0x2142d14085e48eDbE0C92522bf41Bc8Fd687f4Ac;
     
@@ -23,13 +25,11 @@ contract Presale is Ownable{
     // address pancakeSwapFactoryAddr = 0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73;
     // address pancakeSwapRouterAddr = 0x10ED43C718714eb63d5aA57B78B54704E256024E;
     // address WBNBAddr = 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c;
-  
       
     //# PancakeSwap on BSC testnet:
     address public pancakeSwapFactoryAddr = 0x6725F303b657a9451d8BA641348b6761A6CC7a17;
     address public pancakeSwapRouterAddr = 0xD99D1c33F9fC3444f8101754aBC46c52416550D1;
-    address public WBNBAddr = 0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd;
-    
+    address public WBNBAddr = 0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd;    
 
     ////////////////////////////// MAPPINGS ///////////////////////////////////
 
@@ -42,13 +42,11 @@ contract Presale is Ownable{
     mapping(address => bool) public isUserWhitelistedToStartProject;
     mapping(uint256 => mapping(address => Participant)) public participant;
 
-
     ////////////////////////////// ENUMS ///////////////////////////////////
 
     enum PresaleType {open, onlyWhiteListed, onlyTokenHolders}
     enum PreSaleStatus {pending, inProgress, succeed, failed}
     enum Withdrawtype {burn, withdraw}
-
 
     ////////////////////////////// STRUCTS ///////////////////////////////////
 
@@ -238,8 +236,7 @@ contract Presale is Ownable{
             0
         );
 
-        salesFeeInPercentForAProject[count] = salesFeeInPercent;
-
+        salesFeeInPercentForAProject[count] = salesFeeInPercent;       
         return count;
     }
 
@@ -248,6 +245,7 @@ contract Presale is Ownable{
         delete presaleInfo[_id];
         delete presalectCounts[_id];
         delete presaleParticipationCriteria[_id];
+        // removeActiveSale(_id);
     }
 
     function buyTokensOnPresale(uint256 _id, uint256 _numOfTokensRequested) payable public isIDValid(_id) isPresaleActive(_id)  {
@@ -356,6 +354,7 @@ contract Presale is Ownable{
 
             internalData[_id].extraTokens = info.tokensForSale +  info.tokensForSale.mul(info.reservedTokensPCForLP).div(100);
             presaleInfo[_id].preSaleStatus = PreSaleStatus.failed;
+            // removeActiveSale(_id);
             return (0,0,0);
 
         }
@@ -441,6 +440,8 @@ contract Presale is Ownable{
         ) public onlyPresaleOwner(_id) isIDValid(_id) {
 
         require(presaleInfo[_id].preSaleStatus == PreSaleStatus.pending, "Presale is in progress, you can't change criteria now");
+        require( _softCap >= presaleInfo[_id].tokensForSale.div(2), "softcap should be at least 50% of the total tokens offered on sale");
+        
         presaleInfo[_id].priceOfEachToken = _priceOfEachToken;
         presaleParticipationCriteria[_id].reqestedTokens.minTokensReq = _minTokensReq;
         presaleParticipationCriteria[_id].reqestedTokens.maxTokensReq = _maxTokensReq;

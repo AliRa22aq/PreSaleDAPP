@@ -38,22 +38,23 @@ export type Transfer = ContractEventLog<{
   2: string;
 }>;
 
-export interface PICNIC extends BaseContract {
+export interface IERC20 extends BaseContract {
   constructor(
     jsonInterface: any[],
     address?: string,
     options?: ContractOptions
-  ): PICNIC;
-  clone(): PICNIC;
+  ): IERC20;
+  clone(): IERC20;
   methods: {
+    name(): NonPayableTransactionObject<string>;
+
+    symbol(): NonPayableTransactionObject<string>;
+
+    decimals(): NonPayableTransactionObject<string>;
+
     totalSupply(): NonPayableTransactionObject<string>;
 
-    balanceOf(account: string): NonPayableTransactionObject<string>;
-
-    transfer(
-      recipient: string,
-      amount: number | string | BN
-    ): NonPayableTransactionObject<boolean>;
+    balanceOf(owner: string): NonPayableTransactionObject<string>;
 
     allowance(
       owner: string,
@@ -62,34 +63,19 @@ export interface PICNIC extends BaseContract {
 
     approve(
       spender: string,
-      amount: number | string | BN
+      value: number | string | BN
+    ): NonPayableTransactionObject<boolean>;
+
+    transfer(
+      to: string,
+      value: number | string | BN
     ): NonPayableTransactionObject<boolean>;
 
     transferFrom(
-      sender: string,
-      recipient: string,
-      amount: number | string | BN
+      from: string,
+      to: string,
+      value: number | string | BN
     ): NonPayableTransactionObject<boolean>;
-
-    _mint(
-      account: string,
-      amount: number | string | BN
-    ): NonPayableTransactionObject<void>;
-
-    /**
-     * Returns the name of the token.
-     */
-    name(): NonPayableTransactionObject<string>;
-
-    /**
-     * Returns the symbol of the token.
-     */
-    symbol(): NonPayableTransactionObject<string>;
-
-    /**
-     * Returns the decimals places of the token.
-     */
-    decimals(): NonPayableTransactionObject<string>;
   };
   events: {
     Approval(cb?: Callback<Approval>): EventEmitter;

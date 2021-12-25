@@ -6,8 +6,8 @@ const PancakeRouter = artifacts.require("PancakeRouter.sol");
 
 module.exports = function (deployer) {
   deployer.deploy(Presale);
-  deployer.deploy(PICNIC);
-  deployer.deploy(PresaleToken);
-  deployer.deploy(PancakeRouter);
+  // deployer.deploy(PICNIC);
+  // deployer.deploy(PresaleToken);
+  // deployer.deploy(PancakeRouter);
 
 };

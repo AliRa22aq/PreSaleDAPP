@@ -38,13 +38,13 @@ export type Transfer = ContractEventLog<{
   2: string;
 }>;
 
-export interface PICNIC extends BaseContract {
+export interface PresaleToken extends BaseContract {
   constructor(
     jsonInterface: any[],
     address?: string,
     options?: ContractOptions
-  ): PICNIC;
-  clone(): PICNIC;
+  ): PresaleToken;
+  clone(): PresaleToken;
   methods: {
     totalSupply(): NonPayableTransactionObject<string>;
 

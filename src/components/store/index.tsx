@@ -35,6 +35,84 @@ export interface Sale {
   twitterLink: string
 }
 
+export interface ContractInfo {
+    address: string | null;
+    name: string | null;
+    symbol: string | null;
+    decimal: string | null;
+    totalSupply: string | null;
+    youhold: string | null;
+}
+
+export interface SaleInfo {
+  tokensForLiquidity: number | null,
+  tokensForSale: number | null
+  criteriaAddress: string | null
+  type: number | null
+}
+
+export interface ParticipationCriteria {
+  maxReqTokens: number | null,
+  minReqTokens: number | null,
+  minTokensForParticipation: number | null,
+  priceOfToken: number | null,
+  softCap: number | null,
+  startingTime: number | null,
+  endingTime: number | null
+}
+
+export interface GeneralInfo {
+  logo: string | null,
+  description: string | null,
+  discordLink: string | null,
+  telegramLink: string | null,
+  twitterLink: string | null,
+  websiteLink: string | null,
+
+}
+
+export interface FormData {
+  contractInfo: ContractInfo,
+  saleInfo: SaleInfo,
+  participationCriteria: ParticipationCriteria,
+  generalInfo: GeneralInfo
+}
+
+
+
+const formData: FormData = {
+  contractInfo: {
+    address: null,
+    name: null,
+    symbol: null,
+    decimal: null,
+    totalSupply: null,
+    youhold: null
+  },
+  saleInfo: {
+    tokensForLiquidity: null,
+    tokensForSale: null,
+    criteriaAddress: null,
+    type: null
+  },
+  participationCriteria: {
+    maxReqTokens: null,
+    minReqTokens: null,
+    minTokensForParticipation: null,
+    priceOfToken: null,
+    softCap: null,
+    startingTime: null,
+    endingTime: null  
+  },
+  generalInfo: {
+    logo: null,
+    description: null,
+    discordLink: null,
+    telegramLink: null,
+    twitterLink: null,
+    websiteLink: null,
+  }
+}
 
 
 interface DataType {
@@ -48,9 +126,12 @@ interface DataType {
   contractAddress: string | null,
   isWaletConnect: boolean,
   isSignedIn: boolean,
-  userPincicInfo: { balance: string }
+  userPincicInfo: { balance: string },
+  formData: FormData
 
 }
+
+
 
 const initialState: DataType = {
   networkID: 0,
@@ -63,7 +144,8 @@ const initialState: DataType = {
   contractAddress: "",
   isWaletConnect: false,
   isSignedIn: false,
-  userPincicInfo: { balance: "0" }
+  userPincicInfo: { balance: "0" },
+  formData : formData
 
 }
 
@@ -120,8 +202,24 @@ const dataSlice = createSlice({
 
     setuserPicnicBalance(state, { payload }: PayloadAction<string>) {
       state.userPincicInfo.balance = payload
-    }
+    },
 
+    setFormcontractInfo(state, { payload }: PayloadAction<ContractInfo>) {
+      state.formData.contractInfo = payload
+    },
+    
+    setSaleInfo(state, { payload }: PayloadAction<SaleInfo>) {
+      state.formData.saleInfo = payload
+    },
+    
+    setParticipationCriteria(state, { payload }: PayloadAction<ParticipationCriteria>) {
+      state.formData.participationCriteria = payload
+    },
+
+    setGeneralInfo(state, { payload }: PayloadAction<GeneralInfo>) {
+      state.formData.generalInfo = payload
+    },
+    
 
   }
 
@@ -134,6 +232,6 @@ const dataSlice = createSlice({
 // Extract the action creators object and the reducer
 const { actions, reducer } = dataSlice
 // Extract and export each action creator by name
-export const { setStatus, setSaleProgress, setuserPicnicBalance, setPICNICContractFn, setLoading, clearState, setNetworkID, setActiveUser, userWalletconnected } = actions
+export const {setGeneralInfo,  setParticipationCriteria, setSaleInfo, setFormcontractInfo, setStatus, setSaleProgress, setuserPicnicBalance, setPICNICContractFn, setLoading, clearState, setNetworkID, setActiveUser, userWalletconnected } = actions
 // Export the reducer, either as a default or named export
 export default reducer

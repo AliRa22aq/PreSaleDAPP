@@ -1,0 +1,1869 @@
+{
+  "contractName": "SalesTracker",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "containsActiveSale",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "activeSalesCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "activeSalesList",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.11+commit.d7f03943\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"activeSalesCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"activeSalesList\",\"outputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"\",\"type\":\"bytes32[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"containsActiveSale\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/SalesTracker.sol\":\"SalesTracker\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":1},\"remappings\":[]},\"sources\":{\"project:/contracts/SalesTracker.sol\":{\"keccak256\":\"0xcb3ec8e81e9eeca637fe2359a6b447e17d1cd5c38fc985983275535262884bb0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://622ef1a14a674990b983dbc3d3233f4dd9d84eec91c11a4804458d3c358ca741\",\"dweb:/ipfs/QmNaCJhhXebzDgYz9u19DdmKtf4gYyReL934z63odmJZmM\"]},\"project:/contracts/library/EnumerableSet.sol\":{\"keccak256\":\"0x167887ace98631d1029b623dc3d13f987820fb4c53c73b9aa80dfb48bf9f97ef\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://17652963bcd247afc125f0b37752ac6e34ea3a94cdbd20e0cd6da3595ef141d7\",\"dweb:/ipfs/QmanQSxEothsCHEsyTA4ZMXP9BJ8ss3DuaU4yVGHb9VkPg\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\r\n// OpenZeppelin Contracts v4.4.1 (utils/structs/EnumerableSet.sol)\r\n\r\npragma solidity ^0.8.0;\r\n\r\nimport \"./library/EnumerableSet.sol\";\r\n\r\nabstract contract SalesTracker {\r\n\r\n    using EnumerableSet for EnumerableSet.UintSet;\r\n    EnumerableSet.UintSet private activeSalves;\r\n\r\n    function addActiveSale(uint256 value) internal returns (bool) {\r\n        return EnumerableSet.add(activeSalves, value);\r\n    }\r\n\r\n    function removeActiveSale(uint256 value) internal returns (bool) {\r\n        return EnumerableSet.remove(activeSalves, value);\r\n    }\r\n\r\n    function containsActiveSale(uint256 value) public view returns (bool) {\r\n        return EnumerableSet.contains(activeSalves, value);    \r\n    }\r\n\r\n    function activeSalesCount() public view returns (uint256) {\r\n        return EnumerableSet.length(activeSalves);\r\n    }\r\n\r\n    function activeSalesList() public view returns (bytes32[] memory) {\r\n        return activeSalves._inner._values;\r\n    }\r\n\r\n}",
+  "sourcePath": "D:\\Fiverr\\PreSaleDApp\\pre-sale-dapp\\Contract\\contracts\\SalesTracker.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/SalesTracker.sol",
+    "exportedSymbols": {
+      "EnumerableSet": [
+        4312
+      ],
+      "SalesTracker": [
+        3145
+      ]
+    },
+    "id": 3146,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3072,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "103:23:13"
+      },
+      {
+        "absolutePath": "project:/contracts/library/EnumerableSet.sol",
+        "file": "./library/EnumerableSet.sol",
+        "id": 3073,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3146,
+        "sourceUnit": 4313,
+        "src": "130:37:13",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": true,
+        "baseContracts": [],
+        "canonicalName": "SalesTracker",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 3145,
+        "linearizedBaseContracts": [
+          3145
+        ],
+        "name": "SalesTracker",
+        "nameLocation": "189:12:13",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 3077,
+            "libraryName": {
+              "id": 3074,
+              "name": "EnumerableSet",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 4312,
+              "src": "217:13:13"
+            },
+            "nodeType": "UsingForDirective",
+            "src": "211:46:13",
+            "typeName": {
+              "id": 3076,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 3075,
+                "name": "EnumerableSet.UintSet",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 4182,
+                "src": "235:21:13"
+              },
+              "referencedDeclaration": 4182,
+              "src": "235:21:13",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_UintSet_$4182_storage_ptr",
+                "typeString": "struct EnumerableSet.UintSet"
+              }
+            }
+          },
+          {
+            "constant": false,
+            "id": 3080,
+            "mutability": "mutable",
+            "name": "activeSalves",
+            "nameLocation": "293:12:13",
+            "nodeType": "VariableDeclaration",
+            "scope": 3145,
+            "src": "263:42:13",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+              "typeString": "struct EnumerableSet.UintSet"
+            },
+            "typeName": {
+              "id": 3079,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 3078,
+                "name": "EnumerableSet.UintSet",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 4182,
+                "src": "263:21:13"
+              },
+              "referencedDeclaration": 4182,
+              "src": "263:21:13",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_UintSet_$4182_storage_ptr",
+                "typeString": "struct EnumerableSet.UintSet"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 3093,
+              "nodeType": "Block",
+              "src": "376:64:13",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 3089,
+                        "name": "activeSalves",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3080,
+                        "src": "412:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      },
+                      {
+                        "id": 3090,
+                        "name": "value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3082,
+                        "src": "426:5:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "id": 3087,
+                        "name": "EnumerableSet",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4312,
+                        "src": "394:13:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_EnumerableSet_$4312_$",
+                          "typeString": "type(library EnumerableSet)"
+                        }
+                      },
+                      "id": 3088,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "add",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4203,
+                      "src": "394:17:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_UintSet_$4182_storage_ptr_$_t_uint256_$returns$_t_bool_$",
+                        "typeString": "function (struct EnumerableSet.UintSet storage pointer,uint256) returns (bool)"
+                      }
+                    },
+                    "id": 3091,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "394:38:13",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 3086,
+                  "id": 3092,
+                  "nodeType": "Return",
+                  "src": "387:45:13"
+                }
+              ]
+            },
+            "id": 3094,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addActiveSale",
+            "nameLocation": "323:13:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3083,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3082,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "345:5:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3094,
+                  "src": "337:13:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3081,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "337:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "336:15:13"
+            },
+            "returnParameters": {
+              "id": 3086,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3085,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3094,
+                  "src": "370:4:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 3084,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "370:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "369:6:13"
+            },
+            "scope": 3145,
+            "src": "314:126:13",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 3107,
+              "nodeType": "Block",
+              "src": "513:67:13",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 3103,
+                        "name": "activeSalves",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3080,
+                        "src": "552:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      },
+                      {
+                        "id": 3104,
+                        "name": "value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3096,
+                        "src": "566:5:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "id": 3101,
+                        "name": "EnumerableSet",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4312,
+                        "src": "531:13:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_EnumerableSet_$4312_$",
+                          "typeString": "type(library EnumerableSet)"
+                        }
+                      },
+                      "id": 3102,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "remove",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4224,
+                      "src": "531:20:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_UintSet_$4182_storage_ptr_$_t_uint256_$returns$_t_bool_$",
+                        "typeString": "function (struct EnumerableSet.UintSet storage pointer,uint256) returns (bool)"
+                      }
+                    },
+                    "id": 3105,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "531:41:13",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 3100,
+                  "id": 3106,
+                  "nodeType": "Return",
+                  "src": "524:48:13"
+                }
+              ]
+            },
+            "id": 3108,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "removeActiveSale",
+            "nameLocation": "457:16:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3097,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3096,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "482:5:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3108,
+                  "src": "474:13:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3095,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "474:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "473:15:13"
+            },
+            "returnParameters": {
+              "id": 3100,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3099,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3108,
+                  "src": "507:4:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 3098,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "507:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "506:6:13"
+            },
+            "scope": 3145,
+            "src": "448:132:13",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 3121,
+              "nodeType": "Block",
+              "src": "658:73:13",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 3117,
+                        "name": "activeSalves",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3080,
+                        "src": "699:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      },
+                      {
+                        "id": 3118,
+                        "name": "value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3110,
+                        "src": "713:5:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "id": 3115,
+                        "name": "EnumerableSet",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4312,
+                        "src": "676:13:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_EnumerableSet_$4312_$",
+                          "typeString": "type(library EnumerableSet)"
+                        }
+                      },
+                      "id": 3116,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "contains",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4245,
+                      "src": "676:22:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_UintSet_$4182_storage_ptr_$_t_uint256_$returns$_t_bool_$",
+                        "typeString": "function (struct EnumerableSet.UintSet storage pointer,uint256) view returns (bool)"
+                      }
+                    },
+                    "id": 3119,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "676:43:13",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 3114,
+                  "id": 3120,
+                  "nodeType": "Return",
+                  "src": "669:50:13"
+                }
+              ]
+            },
+            "functionSelector": "62d3b4e3",
+            "id": 3122,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "containsActiveSale",
+            "nameLocation": "597:18:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3111,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3110,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "624:5:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3122,
+                  "src": "616:13:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3109,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "616:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "615:15:13"
+            },
+            "returnParameters": {
+              "id": 3114,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3113,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3122,
+                  "src": "652:4:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 3112,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "652:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "651:6:13"
+            },
+            "scope": 3145,
+            "src": "588:143:13",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3132,
+              "nodeType": "Block",
+              "src": "797:60:13",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 3129,
+                        "name": "activeSalves",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3080,
+                        "src": "836:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      ],
+                      "expression": {
+                        "id": 3127,
+                        "name": "EnumerableSet",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4312,
+                        "src": "815:13:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_EnumerableSet_$4312_$",
+                          "typeString": "type(library EnumerableSet)"
+                        }
+                      },
+                      "id": 3128,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4260,
+                      "src": "815:20:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_UintSet_$4182_storage_ptr_$returns$_t_uint256_$",
+                        "typeString": "function (struct EnumerableSet.UintSet storage pointer) view returns (uint256)"
+                      }
+                    },
+                    "id": 3130,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "815:34:13",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 3126,
+                  "id": 3131,
+                  "nodeType": "Return",
+                  "src": "808:41:13"
+                }
+              ]
+            },
+            "functionSelector": "303deba3",
+            "id": 3133,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "activeSalesCount",
+            "nameLocation": "748:16:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3123,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "764:2:13"
+            },
+            "returnParameters": {
+              "id": 3126,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3125,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3133,
+                  "src": "788:7:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3124,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "788:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "787:9:13"
+            },
+            "scope": 3145,
+            "src": "739:118:13",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3143,
+              "nodeType": "Block",
+              "src": "931:53:13",
+              "statements": [
+                {
+                  "expression": {
+                    "expression": {
+                      "expression": {
+                        "id": 3139,
+                        "name": "activeSalves",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3080,
+                        "src": "949:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      },
+                      "id": 3140,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "_inner",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4181,
+                      "src": "949:19:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Set_$3724_storage",
+                        "typeString": "struct EnumerableSet.Set storage ref"
+                      }
+                    },
+                    "id": 3141,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "_values",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 3719,
+                    "src": "949:27:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage",
+                      "typeString": "bytes32[] storage ref"
+                    }
+                  },
+                  "functionReturnParameters": 3138,
+                  "id": 3142,
+                  "nodeType": "Return",
+                  "src": "942:34:13"
+                }
+              ]
+            },
+            "functionSelector": "9ee929d8",
+            "id": 3144,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "activeSalesList",
+            "nameLocation": "874:15:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3134,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "889:2:13"
+            },
+            "returnParameters": {
+              "id": 3138,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3137,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3144,
+                  "src": "913:16:13",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 3135,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "913:7:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 3136,
+                    "nodeType": "ArrayTypeName",
+                    "src": "913:9:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "912:18:13"
+            },
+            "scope": 3145,
+            "src": "865:119:13",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 3146,
+        "src": "171:818:13",
+        "usedErrors": []
+      }
+    ],
+    "src": "103:886:13"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/SalesTracker.sol",
+    "exportedSymbols": {
+      "EnumerableSet": [
+        4312
+      ],
+      "SalesTracker": [
+        3145
+      ]
+    },
+    "id": 3146,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3072,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "103:23:13"
+      },
+      {
+        "absolutePath": "project:/contracts/library/EnumerableSet.sol",
+        "file": "./library/EnumerableSet.sol",
+        "id": 3073,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 3146,
+        "sourceUnit": 4313,
+        "src": "130:37:13",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": true,
+        "baseContracts": [],
+        "canonicalName": "SalesTracker",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 3145,
+        "linearizedBaseContracts": [
+          3145
+        ],
+        "name": "SalesTracker",
+        "nameLocation": "189:12:13",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 3077,
+            "libraryName": {
+              "id": 3074,
+              "name": "EnumerableSet",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 4312,
+              "src": "217:13:13"
+            },
+            "nodeType": "UsingForDirective",
+            "src": "211:46:13",
+            "typeName": {
+              "id": 3076,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 3075,
+                "name": "EnumerableSet.UintSet",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 4182,
+                "src": "235:21:13"
+              },
+              "referencedDeclaration": 4182,
+              "src": "235:21:13",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_UintSet_$4182_storage_ptr",
+                "typeString": "struct EnumerableSet.UintSet"
+              }
+            }
+          },
+          {
+            "constant": false,
+            "id": 3080,
+            "mutability": "mutable",
+            "name": "activeSalves",
+            "nameLocation": "293:12:13",
+            "nodeType": "VariableDeclaration",
+            "scope": 3145,
+            "src": "263:42:13",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+              "typeString": "struct EnumerableSet.UintSet"
+            },
+            "typeName": {
+              "id": 3079,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 3078,
+                "name": "EnumerableSet.UintSet",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 4182,
+                "src": "263:21:13"
+              },
+              "referencedDeclaration": 4182,
+              "src": "263:21:13",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_UintSet_$4182_storage_ptr",
+                "typeString": "struct EnumerableSet.UintSet"
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "body": {
+              "id": 3093,
+              "nodeType": "Block",
+              "src": "376:64:13",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 3089,
+                        "name": "activeSalves",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3080,
+                        "src": "412:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      },
+                      {
+                        "id": 3090,
+                        "name": "value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3082,
+                        "src": "426:5:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "id": 3087,
+                        "name": "EnumerableSet",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4312,
+                        "src": "394:13:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_EnumerableSet_$4312_$",
+                          "typeString": "type(library EnumerableSet)"
+                        }
+                      },
+                      "id": 3088,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "add",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4203,
+                      "src": "394:17:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_UintSet_$4182_storage_ptr_$_t_uint256_$returns$_t_bool_$",
+                        "typeString": "function (struct EnumerableSet.UintSet storage pointer,uint256) returns (bool)"
+                      }
+                    },
+                    "id": 3091,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "394:38:13",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 3086,
+                  "id": 3092,
+                  "nodeType": "Return",
+                  "src": "387:45:13"
+                }
+              ]
+            },
+            "id": 3094,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addActiveSale",
+            "nameLocation": "323:13:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3083,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3082,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "345:5:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3094,
+                  "src": "337:13:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3081,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "337:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "336:15:13"
+            },
+            "returnParameters": {
+              "id": 3086,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3085,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3094,
+                  "src": "370:4:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 3084,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "370:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "369:6:13"
+            },
+            "scope": 3145,
+            "src": "314:126:13",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 3107,
+              "nodeType": "Block",
+              "src": "513:67:13",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 3103,
+                        "name": "activeSalves",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3080,
+                        "src": "552:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      },
+                      {
+                        "id": 3104,
+                        "name": "value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3096,
+                        "src": "566:5:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "id": 3101,
+                        "name": "EnumerableSet",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4312,
+                        "src": "531:13:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_EnumerableSet_$4312_$",
+                          "typeString": "type(library EnumerableSet)"
+                        }
+                      },
+                      "id": 3102,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "remove",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4224,
+                      "src": "531:20:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_UintSet_$4182_storage_ptr_$_t_uint256_$returns$_t_bool_$",
+                        "typeString": "function (struct EnumerableSet.UintSet storage pointer,uint256) returns (bool)"
+                      }
+                    },
+                    "id": 3105,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "531:41:13",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 3100,
+                  "id": 3106,
+                  "nodeType": "Return",
+                  "src": "524:48:13"
+                }
+              ]
+            },
+            "id": 3108,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "removeActiveSale",
+            "nameLocation": "457:16:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3097,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3096,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "482:5:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3108,
+                  "src": "474:13:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3095,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "474:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "473:15:13"
+            },
+            "returnParameters": {
+              "id": 3100,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3099,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3108,
+                  "src": "507:4:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 3098,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "507:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "506:6:13"
+            },
+            "scope": 3145,
+            "src": "448:132:13",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 3121,
+              "nodeType": "Block",
+              "src": "658:73:13",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 3117,
+                        "name": "activeSalves",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3080,
+                        "src": "699:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      },
+                      {
+                        "id": 3118,
+                        "name": "value",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3110,
+                        "src": "713:5:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "id": 3115,
+                        "name": "EnumerableSet",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4312,
+                        "src": "676:13:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_EnumerableSet_$4312_$",
+                          "typeString": "type(library EnumerableSet)"
+                        }
+                      },
+                      "id": 3116,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "contains",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4245,
+                      "src": "676:22:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_UintSet_$4182_storage_ptr_$_t_uint256_$returns$_t_bool_$",
+                        "typeString": "function (struct EnumerableSet.UintSet storage pointer,uint256) view returns (bool)"
+                      }
+                    },
+                    "id": 3119,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "676:43:13",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "functionReturnParameters": 3114,
+                  "id": 3120,
+                  "nodeType": "Return",
+                  "src": "669:50:13"
+                }
+              ]
+            },
+            "functionSelector": "62d3b4e3",
+            "id": 3122,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "containsActiveSale",
+            "nameLocation": "597:18:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3111,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3110,
+                  "mutability": "mutable",
+                  "name": "value",
+                  "nameLocation": "624:5:13",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3122,
+                  "src": "616:13:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3109,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "616:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "615:15:13"
+            },
+            "returnParameters": {
+              "id": 3114,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3113,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3122,
+                  "src": "652:4:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 3112,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "652:4:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "651:6:13"
+            },
+            "scope": 3145,
+            "src": "588:143:13",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3132,
+              "nodeType": "Block",
+              "src": "797:60:13",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 3129,
+                        "name": "activeSalves",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3080,
+                        "src": "836:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      ],
+                      "expression": {
+                        "id": 3127,
+                        "name": "EnumerableSet",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4312,
+                        "src": "815:13:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_EnumerableSet_$4312_$",
+                          "typeString": "type(library EnumerableSet)"
+                        }
+                      },
+                      "id": 3128,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4260,
+                      "src": "815:20:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_UintSet_$4182_storage_ptr_$returns$_t_uint256_$",
+                        "typeString": "function (struct EnumerableSet.UintSet storage pointer) view returns (uint256)"
+                      }
+                    },
+                    "id": 3130,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "815:34:13",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 3126,
+                  "id": 3131,
+                  "nodeType": "Return",
+                  "src": "808:41:13"
+                }
+              ]
+            },
+            "functionSelector": "303deba3",
+            "id": 3133,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "activeSalesCount",
+            "nameLocation": "748:16:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3123,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "764:2:13"
+            },
+            "returnParameters": {
+              "id": 3126,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3125,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3133,
+                  "src": "788:7:13",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3124,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "788:7:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "787:9:13"
+            },
+            "scope": 3145,
+            "src": "739:118:13",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3143,
+              "nodeType": "Block",
+              "src": "931:53:13",
+              "statements": [
+                {
+                  "expression": {
+                    "expression": {
+                      "expression": {
+                        "id": 3139,
+                        "name": "activeSalves",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 3080,
+                        "src": "949:12:13",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_UintSet_$4182_storage",
+                          "typeString": "struct EnumerableSet.UintSet storage ref"
+                        }
+                      },
+                      "id": 3140,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "_inner",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 4181,
+                      "src": "949:19:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Set_$3724_storage",
+                        "typeString": "struct EnumerableSet.Set storage ref"
+                      }
+                    },
+                    "id": 3141,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "_values",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": 3719,
+                    "src": "949:27:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage",
+                      "typeString": "bytes32[] storage ref"
+                    }
+                  },
+                  "functionReturnParameters": 3138,
+                  "id": 3142,
+                  "nodeType": "Return",
+                  "src": "942:34:13"
+                }
+              ]
+            },
+            "functionSelector": "9ee929d8",
+            "id": 3144,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "activeSalesList",
+            "nameLocation": "874:15:13",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3134,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "889:2:13"
+            },
+            "returnParameters": {
+              "id": 3138,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3137,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3144,
+                  "src": "913:16:13",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 3135,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "913:7:13",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 3136,
+                    "nodeType": "ArrayTypeName",
+                    "src": "913:9:13",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "912:18:13"
+            },
+            "scope": 3145,
+            "src": "865:119:13",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 3146,
+        "src": "171:818:13",
+        "usedErrors": []
+      }
+    ],
+    "src": "103:886:13"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.11+commit.d7f03943.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2021-12-24T00:03:29.784Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

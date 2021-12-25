@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./interfaces/IERC20Metadata.sol";
 import "./Context.sol";
 
-contract PresaleToken is IERC20Metadata{
+contract PresaleToken {
 
     mapping(address => uint256) private _balances;
 
