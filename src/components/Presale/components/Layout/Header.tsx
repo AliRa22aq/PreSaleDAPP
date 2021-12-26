@@ -106,9 +106,24 @@ function Header() {
       dispatch(setActiveUser(selectedAccount));
           
 
-      console.log(PresaleABI)
+      console.log(PresaleABI.abi)
       // Load Contract Data
-      const presaleContract =  await new web3.eth.Contract(PresaleABI.abi, presaleContractAddress);
+
+      let presaleContract:any;
+      
+    //   if (Number(chainId) === 56) {
+    //     web3 = new Web3(new Web3.providers.HttpProvider(`https://bsc-dataseed.binance.org/`)) 
+    //     presaleContract = await new web3.eth.Contract(PresaleABI.abi, presaleContractAddress);
+    //  }
+    //  else if (Number(chainId) === 97) {
+    //     web3 = new Web3(new Web3.providers.HttpProvider(`https://data-seed-prebsc-1-s1.binance.org:8545/`))   
+    //     presaleContract = await new web3.eth.Contract(PresaleABI.abi, presaleContractAddress);
+    //  }
+    
+        web3 = new Web3(new Web3.providers.HttpProvider(`https://data-seed-prebsc-1-s1.binance.org:8545/`))   
+        presaleContract = await new web3.eth.Contract(PresaleABI.abi, presaleContractAddress);
+
+      // const presaleContract =  await new web3.eth.Contract(PresaleABI.abi, presaleContractAddress);
 
       const upfrontFee = await presaleContract.methods.upfrontfee().call();
       const percentageFee = await presaleContract.methods.salesFeeInPercent().call();

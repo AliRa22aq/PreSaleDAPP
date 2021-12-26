@@ -205,11 +205,11 @@ function InputForm() {
             // web3 = new Web3(window.ethereum);
 
             if (networkID === 56) {
-                // web3 = new Web3(new Web3.providers.HttpProvider(`https://bsc-dataseed.binance.org/`)) 
+                web3 = new Web3(new Web3.providers.HttpProvider(`https://bsc-dataseed.binance.org/`)) 
                 Contract = await new web3.eth.Contract(JSON.parse(res.data.result), address);
             }
             else if (networkID === 97) {
-                // web3 = new Web3(new Web3.providers.HttpProvider(`https://data-seed-prebsc-1-s1.binance.org:8545/`))   
+                web3 = new Web3(new Web3.providers.HttpProvider(`https://data-seed-prebsc-1-s1.binance.org:8545/`))   
                 Contract = await new web3.eth.Contract(JSON.parse(res.data.result), address);
             }
 
@@ -555,7 +555,7 @@ function InputForm() {
 
                                         <Grid container sx={{ padding: 0 }}>
 
-                                            <Grid item xs={3} sx={{ padding: 1 }}>
+                                            <Grid item xs={4} lg={2} sx={{ padding: 1 }}>
                                                 <FormControl fullWidth>
                                                     <InputLabel id="demo-simple-select-label">Type</InputLabel>
                                                     <Field
@@ -574,7 +574,33 @@ function InputForm() {
                                                 </FormControl>
                                             </Grid>
 
-                                            <Grid item xs={9} sx={{ padding: 1 }} >
+                                            <Grid item xs={4} lg={5} sx={{ padding: 1 }} >
+                                                <Field
+                                                    component={TextField}
+                                                    type="number"
+                                                    name="tokensForSale"
+                                                    onChange={(e: any) => handleTokenomics(e.target.value, "tokensForSale")}
+                                                    value={tokenomincs.tokensForSale}
+                                                    label="Tokens For sale"
+                                                    fullWidth
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={4} lg={5} sx={{ padding: 1 }} >
+                                                <Field
+                                                    component={TextField}
+                                                    type="number"
+                                                    name="tokensForLiquidity"
+                                                    onChange={(e: any) => handleTokenomics(e.target.value, "tokensForLiquidity")}
+                                                    value={tokenomincs.tokensForLiquidity}
+
+
+                                                    label="Additional tokens for Liquidity pool in % "
+                                                    fullWidth
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={12} sx={{ padding: 1 }} >
                                                 {
                                                     saleType == 2 ?
                                                         <Field
@@ -589,31 +615,7 @@ function InputForm() {
                                                 }
                                             </Grid>
 
-                                            <Grid item xs={6} sx={{ padding: 1 }} >
-                                                <Field
-                                                    component={TextField}
-                                                    type="number"
-                                                    name="tokensForSale"
-                                                    onChange={(e: any) => handleTokenomics(e.target.value, "tokensForSale")}
-                                                    value={tokenomincs.tokensForSale}
-                                                    label="Tokens For sale"
-                                                    fullWidth
-                                                />
-                                            </Grid>
 
-                                            <Grid item xs={6} sx={{ padding: 1 }} >
-                                                <Field
-                                                    component={TextField}
-                                                    type="number"
-                                                    name="tokensForLiquidity"
-                                                    onChange={(e: any) => handleTokenomics(e.target.value, "tokensForLiquidity")}
-                                                    value={tokenomincs.tokensForLiquidity}
-
-
-                                                    label="Additional tokens for Liquidity pool in % "
-                                                    fullWidth
-                                                />
-                                            </Grid>
 
                                             {
                                                 tokenomincs.tokensForSale > 0 && tokenomincs.tokensForLiquidity > 0 && (
@@ -708,21 +710,6 @@ function InputForm() {
                                                     fullWidth
                                                 />
                                             </Grid>
-                                            {
-                                                saleType === 2 ?
-                                                    <Grid item xs={12} sx={{ margin: 0 }} >
-                                                        <Field
-                                                            component={TextField}
-                                                            type="number"
-                                                            name="minTokensForParticipation"
-                                                            label="Minimum Tokens For Participation (Only TokenHolder case) "
-                                                            fullWidth
-                                                        />
-                                                    </Grid>
-                                                    :
-                                                    null
-                                            }
-
 
                                             <Grid item xs={6} sx={{ margin: 0 }} >
                                                 <Field
@@ -770,7 +757,20 @@ function InputForm() {
                                                 </LocalizationProvider>
                                             </Grid>
 
-
+                                            {
+                                                saleType === 2 ?
+                                                    <Grid item xs={12} sx={{ margin: 0 }} >
+                                                        <Field
+                                                            component={TextField}
+                                                            type="number"
+                                                            name="minTokensForParticipation"
+                                                            label="Minimum Tokens For Participation (Only TokenHolder case) "
+                                                            fullWidth
+                                                        />
+                                                    </Grid>
+                                                    :
+                                                    null
+                                            }
 
 
                                             <Grid item xs={12} sx={{ margin: 1, display: "flex", justifyContent: "space-between" }} >
@@ -938,7 +938,7 @@ function InputForm() {
                                         <Grid container spacing={1} sx={{ padding: "10px", fontSize: "14px", fontWeight: 600 }}>
 
                                             <Grid item xs={6}>
-                                                Upfront Fee: <span style={{ margin: "0px", fontSize: "inherit", color: "#5272ff" }}> {web3.utils.fromWei(presaleData.upforntFee, 'ether')} BNB </span>
+                                                Upfront Fee: <span style={{ margin: "0px", fontSize: "inherit", color: "#5272ff" }}> {web3.utils.fromWei(String(presaleData.upforntFee), 'ether')} BNB </span>
                                             </Grid>
 
                                             <Grid item xs={6}>
@@ -1177,46 +1177,46 @@ function InputForm() {
                             </Card>
 
                             {/* Put buttons here */}
+                            <Grid item xs={12}
+                                sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent: "center", alignItems: "center", alignSelf: "center" }}>
+
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    className="form-button"
+                                    size="small"
+                                    sx={{ margin: 2 }}
+                                    disabled={formData.contractInfo.youhold >= formData.saleInfo.tokenRequired ? false : true}
+                                    onClick={() => approveTokens()}
+
+                                >
+                                    <div >Approve {formData.saleInfo.tokenRequired > 0 ? formData.saleInfo.tokenRequired : null} Tokens</div>
+
+                                </Button>
+
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                    sx={{ margin: 2 }}
+                                    disabled={formData.saleInfo.approvedTokens !== 0 && formData.saleInfo.approvedTokens >= formData.saleInfo.tokenRequired ? false : true}
+                                    onClick={() => submitPresale()}
+
+                                >
+                                    <div >Submit Presale</div>
+
+                                </Button>
+
+                            </Grid>
                         </>
                         :
                         null
                 }
 
 
-                <Grid item xs={12}
-                    sx={{ border: process.env.REACT_APP_BORDER, display: "flex", justifyContent: "center", alignItems: "center", alignSelf: "center" }}>
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        className="form-button"
-                        size="small"
-                        sx={{ margin: 2 }}
-                        disabled={formData.saleInfo.approvedTokens >= formData.saleInfo.tokenRequired ? true : false}
-                        onClick={() => approveTokens()}
-
-                    >
-                        <div >Approve {formData.saleInfo.tokenRequired > 0 ? formData.saleInfo.tokenRequired : null} Tokens</div>
-
-                    </Button>
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        size="small"
-                        className="form-button"
-                        sx={{ margin: 2 }}
-                        disabled={formData.saleInfo.approvedTokens !== 0 && formData.saleInfo.approvedTokens >= formData.saleInfo.tokenRequired ? false : true}
-                        onClick={() => submitPresale()}
-
-                    >
-                        <div >Submit Presale</div>
-
-                    </Button>
-
-                </Grid>
 
             </Grid>
 
