@@ -29,6 +29,7 @@
     "eth-gas-reporter": "^0.2.23",
     "formik": "^2.2.9",
     "formik-material-ui": "^4.0.0-alpha.2",
+    "notistack": "^2.0.3",
     "pancakeswap-peripheral": "^1.1.0-beta.0",
     "react": "^17.0.2",
     "react-chartjs-2": "^4.0.0",

@@ -10,19 +10,6 @@ function PresaleForm() {
             <RootContainer >
 
             <Grid container spacing={0} sx={{}}>
-
-                {/* <Grid item xs ={12} lg={3} >
-                    <FormHeader >
-                        Crowd Sale Rules
-                    </FormHeader >
-
-                    <FormBody>
-                    <Card sx={{height: 300}}>
-                            Hello wrold
-                    </Card>
-                    </FormBody>
-                
-                </ Grid> */}
                 
                 <Grid item xs ={12}  sx={{border: "0px solid black"}}>
                         <FormHeader >

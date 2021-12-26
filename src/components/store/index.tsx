@@ -36,19 +36,22 @@ export interface Sale {
 }
 
 export interface ContractInfo {
-    address: string | null;
+  address: string | null;
+  methods : any;
     name: string | null;
     symbol: string | null;
     decimal: string | null;
     totalSupply: string | null;
     youhold: string | null;
-}
-
-export interface SaleInfo {
-  tokensForLiquidity: number | null,
-  tokensForSale: number | null
-  criteriaAddress: string | null
-  type: number | null
+  }
+  
+  export interface SaleInfo {
+    tokensForLiquidity: number | null,
+    tokensForSale: number | null
+    criteriaAddress: string | null
+    type: number | null
+    approvedTokens: number,
+    tokenRequired: number
 }
 
 export interface ParticipationCriteria {
@@ -78,11 +81,10 @@ export interface FormData {
   generalInfo: GeneralInfo
 }
 
-
-
 const formData: FormData = {
   contractInfo: {
     address: null,
+    methods: null,
     name: null,
     symbol: null,
     decimal: null,
@@ -93,7 +95,9 @@ const formData: FormData = {
     tokensForLiquidity: null,
     tokensForSale: null,
     criteriaAddress: null,
-    type: null
+    type: null,
+    approvedTokens: 0,
+    tokenRequired: 0
   },
   participationCriteria: {
     maxReqTokens: null,
@@ -115,6 +119,20 @@ const formData: FormData = {
 }
 
 
+export interface PresaleData {
+  contractAddress: string | null,
+  methods: any,  
+  upforntFee : string | null,
+  percentageFee: string | null
+}
+
+export const presaleData : PresaleData = {
+  contractAddress: null,
+  methods: null,
+  upforntFee : null,
+  percentageFee: null
+}
+
 interface DataType {
   networkID: number,
   userAddress: string,
@@ -127,11 +145,10 @@ interface DataType {
   isWaletConnect: boolean,
   isSignedIn: boolean,
   userPincicInfo: { balance: string },
+  presaleData : PresaleData,
   formData: FormData
 
 }
-
-
 
 const initialState: DataType = {
   networkID: 0,
@@ -145,6 +162,7 @@ const initialState: DataType = {
   isWaletConnect: false,
   isSignedIn: false,
   userPincicInfo: { balance: "0" },
+  presaleData : presaleData,
   formData : formData
 
 }
@@ -204,6 +222,13 @@ const dataSlice = createSlice({
       state.userPincicInfo.balance = payload
     },
 
+    setPresaleData(state, { payload }: PayloadAction<PresaleData>) {
+      state.presaleData = payload
+    },
+
+
+    
+    
     setFormcontractInfo(state, { payload }: PayloadAction<ContractInfo>) {
       state.formData.contractInfo = payload
     },
@@ -220,6 +245,9 @@ const dataSlice = createSlice({
       state.formData.generalInfo = payload
     },
     
+    setApprovedTokens(state, { payload }: PayloadAction<number>) {
+      state.formData.saleInfo.approvedTokens = payload
+    },
 
   }
 
@@ -232,6 +260,6 @@ const dataSlice = createSlice({
 // Extract the action creators object and the reducer
 const { actions, reducer } = dataSlice
 // Extract and export each action creator by name
-export const {setGeneralInfo,  setParticipationCriteria, setSaleInfo, setFormcontractInfo, setStatus, setSaleProgress, setuserPicnicBalance, setPICNICContractFn, setLoading, clearState, setNetworkID, setActiveUser, userWalletconnected } = actions
+export const {setApprovedTokens, setPresaleData, setGeneralInfo,  setParticipationCriteria, setSaleInfo, setFormcontractInfo, setStatus, setSaleProgress, setuserPicnicBalance, setPICNICContractFn, setLoading, clearState, setNetworkID, setActiveUser, userWalletconnected } = actions
 // Export the reducer, either as a default or named export
 export default reducer

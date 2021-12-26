@@ -14,7 +14,7 @@ contract Presale is Ownable{
     using SafeMath for uint256;
 
     uint public count = 0;
-    uint public upfrontfee = 100;
+    uint public upfrontfee = 2 ether;
     uint8 public salesFeeInPercent = 2;
 
     // Declare a set state variable    
@@ -177,7 +177,7 @@ contract Presale is Ownable{
 
         if( msg.sender != owner() ){
             if(!isUserWhitelistedToStartProject[msg.sender]){
-                require( msg.value >= upfrontfee, "Insufficient Funds to start the presale");
+                require( msg.value >= upfrontfee, "Insufficient funds to start the presale");
             }
         }
         
@@ -192,12 +192,9 @@ contract Presale is Ownable{
         require( _tokensForSale > 0, "tokens for sale must be more than 0");
 
         require( _reqestedTokens.maxTokensReq > _reqestedTokens.minTokensReq, "_maxTokensReq > _minTokensReq");
-        require( _presaleTimes.expiredAt > _presaleTimes.startedAt, "expiredAt > startedAt");
-        require( 
-            _presaleTimes.startedAt > block.timestamp && 
-            _presaleTimes.expiredAt > block.timestamp,
-            "expiredAt and startedAt should be more than now"
-            );
+
+        require( _presaleTimes.startedAt >= (block.timestamp + 15 minutes), "startedAt should be more than 15 minutes from now" );
+        require( _presaleTimes.expiredAt >= (block.timestamp + 1 days), "expiry date should be atleast more than one day from now time");
         
         uint reservedTokens = _tokensForSale.mul(_reservedTokensPCForLP).div(100);
         bool transfer = IERC20(_preSaleContractAddress).transferFrom(msg.sender, address(this), _tokensForSale.add(reservedTokens));

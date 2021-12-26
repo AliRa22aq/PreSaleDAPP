@@ -69,7 +69,7 @@ contract("Presale", (accounts) => {
     await erc20._mint(user, totalTokens, { from: user });
     await erc20.approve(presaleContractAddress, totalTokens, { from: user });
     
-    await presaleContract.setPresale(type, erc20Address, erc20Address, liquidity, tokensOnSale, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user, value: fee})      
+    await presaleContract.setPresale(type, erc20Address, erc20Address, liquidity, tokensOnSale, 100, 250, [now + 15*60+5, now + 24*60*60+5] ,[500, 2000], 8000, { from: user, value: fee})      
 
     const count = await presaleContract.count();
     assert.equal(count, 1);
@@ -127,7 +127,7 @@ contract("Presale", (accounts) => {
     await erc20._mint(user1, 17000, { from: user1 });
     await erc20.approve(presaleContractAddress, 17000, { from: user1 });
     
-    await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 7500, { from: user1, value: 100})      
+    await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 15*60+5, now + 24*60*60+5] ,[500, 2000], 7500, { from: user1, value: 100})      
 
     const saleID = await presaleContract.count();
     assert.equal(saleID, 1);
@@ -166,7 +166,7 @@ contract("Presale", (accounts) => {
     await erc20._mint(user1, 17000, { from: user1 });
     await erc20.approve(presaleContractAddress, 17000, { from: user1 });
     
-    await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user1, value: 100})      
+    await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 15*60+5, now + 24*60*60+5] ,[500, 2000], 8000, { from: user1, value: 100})      
 
     const saleID = await presaleContract.count();
     assert.equal(saleID, 1);
@@ -209,7 +209,7 @@ contract("Presale", (accounts) => {
     await erc20._mint(user1, 17000, { from: user1 });
     await erc20.approve(presaleContractAddress, 17000, { from: user1 });
     
-    await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user1, value: 100})      
+    await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 15*60+5, now + 24*60*60+5] ,[500, 2000], 8000, { from: user1, value: 100})      
 
     const saleID = await presaleContract.count();
     assert.equal(saleID, 1);
@@ -260,7 +260,7 @@ contract("Presale", (accounts) => {
 
   });
 
-  // describe("Deployment =>", async () => {
+  describe("Deployment =>", async () => {
 
   //   it("deploys successfully", async () => {
  
@@ -280,9 +280,9 @@ contract("Presale", (accounts) => {
   //     assert.equal(count, 0);
   //   });
     
-  // });
+  });
     
-  // describe("As a Master ", async () => {
+  describe("As a Master ", async () => {
 
   //   it("should be able to update the overall fees", async () => {
   
@@ -392,11 +392,11 @@ contract("Presale", (accounts) => {
           
   //     });
 
-  // })
+  })
 
-  // describe("Presale initialization ", () => {
+  describe("Presale initialization ", () => {
 
-  //   describe("Contract", () => {
+    describe("Contract", () => {
       
   //     it("should reflect the sale information in right way", async () => {
 
@@ -426,11 +426,11 @@ contract("Presale", (accounts) => {
         
   //     })
 
-  //   })
+    })
     
-  //   describe("as master of the contract", () => {
+    describe("as master of the contract", () => {
       
-  //     describe("should be able to", () => {
+      describe("should be able to", () => {
         
   //       it("start an open presale without fee", async () => {
                     
@@ -466,9 +466,9 @@ contract("Presale", (accounts) => {
   //       });
       
 
-  //     })
+      })
 
-  //     describe("should not be able to", () => {
+      describe("should not be able to", () => {
         
   //         it("start a presale without approving proper tokens to the contract", async () => {
                       
@@ -496,13 +496,13 @@ contract("Presale", (accounts) => {
     
   //         });
         
-  //       })     
+      })     
 
-  //   })
+    })
 
-  //   describe("as owner of the sale", () => {
+    describe("as owner of the sale", () => {
 
-  //     describe("should not be able to ", () => {
+      describe("should not be able to ", () => {
       
   //       it("start a presale without approving proper tokens to the contract", async () => {
                     
@@ -614,9 +614,48 @@ contract("Presale", (accounts) => {
 
   //       })
 
-  //     })
 
-  //     describe("should be able to ", () => {
+        it("start a sale starting at just now", async () => {
+
+            await erc20._mint(user1, 17000, { from: user1 });
+            await erc20.approve(presaleContractAddress, 17000, { from: user1 });
+            
+            // console.log(now)
+
+
+            let err = false;
+            try {
+            await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 0, [now + 15*59, now + 24*60*60+5] ,[500, 2000], 8000, { from: user1, value: 100})              
+            } catch (e) {
+              console.log(e.reason)
+              err = true;
+          }
+          assert.equal(err, true);
+
+        })
+
+        it("start a sale with expiry time less than 24 hours from now", async () => {
+
+          await erc20._mint(user1, 17000, { from: user1 });
+          await erc20.approve(presaleContractAddress, 17000, { from: user1 });
+          
+          // console.log(now)
+
+
+          let err = false;
+          try {
+          await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 0, [now + 15*60+5, now + 24*59*60] ,[500, 2000], 8000, { from: user1, value: 100})              
+          } catch (e) {
+            console.log(e.reason)
+            err = true;
+        }
+        assert.equal(err, true);
+
+      })
+
+      })
+
+      describe("should be able to ", () => {
 
   //       it("change the participation criteria only before the sale begins", async () => {
 
@@ -701,17 +740,36 @@ contract("Presale", (accounts) => {
   //         // console.log("info.preSaleContractAddr => ", info.preSaleContractAddr)
   //         assert.equal(info.preSaleContractAddr, '0x0000000000000000000000000000000000000000');
 
-
-
   //       });
 
-  //     })
+          it("start a sale with starting time 15 minutes from now and expiry time 24 hours from now ", async () => {
 
-  //   })
+            await erc20._mint(user1, 17000, { from: user1 });
+            await erc20.approve(presaleContractAddress, 17000, { from: user1 });
+            
+            await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 0, [now + 15*60+5, now + 24*60*60+5] ,[500, 2000], 8000, { from: user1, value: 100})              
+            
+            const info = await presaleContract.presaleInfo(1);
+            assert.equal(info.preSaleStatus, 0);
+        
+            
+            // let err = false;
+            // try {
+            // } catch (e) {
+            //   console.log(e.reason)
+            //   err = true;
+            // }
+            // assert.equal(err, true);
 
-  //   describe("as a whitelisted user", () => {
+        })
 
-  //     describe("should be able to ", () => {
+      })
+
+    })
+
+    describe("as a whitelisted user", () => {
+
+      describe("should be able to ", () => {
 
   //       it("start an open presale", async () => {
 
@@ -755,15 +813,15 @@ contract("Presale", (accounts) => {
 
   //       });
       
-  //     })
+      })
 
-  //   }) 
+    }) 
 
-  // })   
+  })   
     
-  // describe("Once presale starts", () => {
+  describe("Once presale starts", () => {
 
-  //   describe("Contract", () => {
+    describe("Contract", () => {
       
   //     it("should reflect the partipant's contribution in right way", async () => {
 
@@ -982,9 +1040,9 @@ contract("Presale", (accounts) => {
 
 
 
-  //   })
+    })
     
-  //   describe("as the master", () => {
+    describe("as the master", () => {
       
   //     it("should be able to update the salesFeeInPercent of any running project", async () => {
          
@@ -1010,9 +1068,9 @@ contract("Presale", (accounts) => {
           
   //     });
     
-  //   })
+    })
     
-  //   describe("as an Owner", () => {
+    describe("as an Owner", () => {
 
   //       it("should not be able to change the participation criteria once the sale begins", async () => {
 
@@ -1073,9 +1131,9 @@ contract("Presale", (accounts) => {
 
   //       });
 
-  //   })
+    })
     
-  //   describe("as a participant", () => {
+    describe("as a participant", () => {
 
   //   it("should not be able to buy a token from an invalid presale", async () => {
 
@@ -1250,168 +1308,169 @@ contract("Presale", (accounts) => {
 
   //   })
 
-  //   describe("in an Open sale", () => {
+      describe("in an Open sale", () => {
 
-  //     it("should be able to buy tokens by meeting all criterias", async () => {
+    //     it("should be able to buy tokens by meeting all criterias", async () => {
 
-  //       const saleID = await runningSale(0, user1, 100);
-  //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
+    //       const saleID = await runningSale(0, user1, 100);
+    //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
 
-  //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "500000"});
-  //       await presaleContract.buyTokensOnPresale(saleID, 300, {from: user2, value: "300000"});
-  //       await presaleContract.buyTokensOnPresale(saleID, 200, {from: user2, value: "200000"});
-        
-  //     })
+    //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "500000"});
+    //       await presaleContract.buyTokensOnPresale(saleID, 300, {from: user2, value: "300000"});
+    //       await presaleContract.buyTokensOnPresale(saleID, 200, {from: user2, value: "200000"});
+          
+    //     })
 
-  //     it("participant's contributions should reflect in the data properly", async () => {
+    //     it("participant's contributions should reflect in the data properly", async () => {
 
-  //       const saleID = await runningSale(0, user1, 100);
-  //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
+    //       const saleID = await runningSale(0, user1, 100);
+    //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
 
-  //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
-  //       await presaleContract.buyTokensOnPresale(saleID, 300, {from: user2, value: "30000"});
-  //       await presaleContract.buyTokensOnPresale(saleID, 200, {from: user2, value: "20000"});
+    //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
+    //       await presaleContract.buyTokensOnPresale(saleID, 300, {from: user2, value: "30000"});
+    //       await presaleContract.buyTokensOnPresale(saleID, 200, {from: user2, value: "20000"});
 
-  //       const participant = await presaleContract.participant(saleID, user2);
+    //       const participant = await presaleContract.participant(saleID, user2);
 
-  //       assert.equal(participant.value, 100000);
-  //       assert.equal(participant.tokens, 1000);
-  //       assert.equal(participant.whiteListed, false);
-        
-  //     })
+    //       assert.equal(participant.value, 100000);
+    //       assert.equal(participant.tokens, 1000);
+    //       assert.equal(participant.whiteListed, false);
+          
+    //     })
+      
+      })
+
+      describe("in an only whitelist sale", () => {
+
+    //     it("should not be able to participate in sale if is not whitelisted", async () => {
+
+    //       const saleID = await runningSale(1, user1, 100);
+
+    //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
+
+    //       let err = false;
+    //       try {
+    //         await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
+    //       }
+    //       catch(error){
+    //         // console.log(error.reason)
+    //         err = true;
+    //       }
+    //       assert.equal(err, true);
+          
+    //     })
+
+    //     it("should be able to participate in sale if is whitelisted", async () => {
+
+    //       // const runningSale = async (type, user, fee, criteriaToken, 250)
+
+    //       const saleID = await runningSale(1, user1, 100);
+
+    //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
+
+    //       await presaleContract.whiteListUsersToBuyTokens(saleID, user2, {from: user1});
+    //       await presaleContract.whiteListUsersToBuyTokens(saleID, user3, {from: user1});
+
+    //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
+    //       await presaleContract.buyTokensOnPresale(saleID, 1000, {from: user3, value: "100000"});
+          
+    //     })
+
+    //     it("participant's contributions should reflect in the data properly", async () => {
+
+    //       const saleID = await runningSale(1, user1, 100);
+
+    //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
+
+    //       await presaleContract.whiteListUsersToBuyTokens(saleID, user2, {from: user1});
+    //       await presaleContract.whiteListUsersToBuyTokens(saleID, user3, {from: user1});
+
+    //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
+    //       await presaleContract.buyTokensOnPresale(saleID, 300, {from: user2, value: "30000"});
+          
+    //       await presaleContract.buyTokensOnPresale(saleID, 800, {from: user3, value: "80000"});
+
+    //       const participant2 = await presaleContract.participant(saleID, user2);
+    //       const participant3 = await presaleContract.participant(saleID, user3);
+
+    //       assert.equal(participant2.value, 80000);
+    //       assert.equal(participant2.tokens, 800);
+    //       assert.equal(participant2.whiteListed, true);
+
+    //       assert.equal(participant3.value, 80000);
+    //       assert.equal(participant3.tokens, 800);
+    //       assert.equal(participant3.whiteListed, true);
+
+          
+    //     })
+      
+      })
+
+      describe("in an only token holders sale", () => {
+
+    //     it("should not be able to participate in sale if he don't have enough criteria tokens", async () => {
+
+    //       const saleID = await runningSale(2, user1, 100, picnicTokenAddress, 250);
+
+    //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
+
+    //       let err = false;
+    //       try {
+    //         await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
+    //       }
+    //       catch(error){
+    //         // console.log(error.reason)
+    //         err = true;
+    //       }
+    //       assert.equal(err, true);
+          
+          
+    //     })
+
+    //     it("should be able participate in sale if he have enough criteria tokens", async () => {
+
+    //       const saleID = await runningSale(2, user1, 100, picnicTokenAddress, 250);
+
+    //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
+
+    //       await picnicToken._mint(user2, 250, { from: user2 })
+          
+    //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
+
+    //     })
+
+    //     it("participant's contributions should reflect in the data properly", async () => {
+
+    //       const saleID = await runningSale(2, user1, 100, picnicTokenAddress, 250);
+
+    //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
+
+    //       await picnicToken._mint(user2, 250, { from: user2 })
+    //       await picnicToken._mint(user3, 250, { from: user3 })
+          
+    //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
+    //       await presaleContract.buyTokensOnPresale(saleID, 300, {from: user2, value: "30000"});
+          
+    //       await presaleContract.buyTokensOnPresale(saleID, 800, {from: user3, value: "80000"});
+
+    //       const participant2 = await presaleContract.participant(saleID, user2);
+    //       const participant3 = await presaleContract.participant(saleID, user3);
+
+    //       assert.equal(participant2.value, 80000);
+    //       assert.equal(participant2.tokens, 800);
+    //       assert.equal(participant2.whiteListed, false);
+
+    //       assert.equal(participant3.value, 80000);
+    //       assert.equal(participant3.tokens, 800);
+    //       assert.equal(participant3.whiteListed, false);
+          
+    //     })
+      
+      })
+
+    })
     
-  //   })
-
-  //   describe("in an only whitelist sale", () => {
-
-  //     it("should not be able to participate in sale if is not whitelisted", async () => {
-
-  //       const saleID = await runningSale(1, user1, 100);
-
-  //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
-
-  //       let err = false;
-  //       try {
-  //         await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
-  //       }
-  //       catch(error){
-  //         // console.log(error.reason)
-  //         err = true;
-  //       }
-  //       assert.equal(err, true);
-        
-  //     })
-
-  //     it("should be able to participate in sale if is whitelisted", async () => {
-
-  //       // const runningSale = async (type, user, fee, criteriaToken, 250)
-
-  //       const saleID = await runningSale(1, user1, 100);
-
-  //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
-
-  //       await presaleContract.whiteListUsersToBuyTokens(saleID, user2, {from: user1});
-  //       await presaleContract.whiteListUsersToBuyTokens(saleID, user3, {from: user1});
-
-  //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
-  //       await presaleContract.buyTokensOnPresale(saleID, 1000, {from: user3, value: "100000"});
-        
-  //     })
-
-  //     it("participant's contributions should reflect in the data properly", async () => {
-
-  //       const saleID = await runningSale(1, user1, 100);
-
-  //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
-
-  //       await presaleContract.whiteListUsersToBuyTokens(saleID, user2, {from: user1});
-  //       await presaleContract.whiteListUsersToBuyTokens(saleID, user3, {from: user1});
-
-  //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
-  //       await presaleContract.buyTokensOnPresale(saleID, 300, {from: user2, value: "30000"});
-        
-  //       await presaleContract.buyTokensOnPresale(saleID, 800, {from: user3, value: "80000"});
-
-  //       const participant2 = await presaleContract.participant(saleID, user2);
-  //       const participant3 = await presaleContract.participant(saleID, user3);
-
-  //       assert.equal(participant2.value, 80000);
-  //       assert.equal(participant2.tokens, 800);
-  //       assert.equal(participant2.whiteListed, true);
-
-  //       assert.equal(participant3.value, 80000);
-  //       assert.equal(participant3.tokens, 800);
-  //       assert.equal(participant3.whiteListed, true);
-
-        
-  //     })
-    
-  //   })
-
-  //   describe("in an only token holders sale", () => {
-
-  //     it("should not be able to participate in sale if he don't have enough criteria tokens", async () => {
-
-  //       const saleID = await runningSale(2, user1, 100, picnicTokenAddress, 250);
-
-  //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
-
-  //       let err = false;
-  //       try {
-  //         await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
-  //       }
-  //       catch(error){
-  //         // console.log(error.reason)
-  //         err = true;
-  //       }
-  //       assert.equal(err, true);
-        
-        
-  //     })
-
-  //     it("should be able participate in sale if he have enough criteria tokens", async () => {
-
-  //       const saleID = await runningSale(2, user1, 100, picnicTokenAddress, 250);
-
-  //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
-
-  //       await picnicToken._mint(user2, 250, { from: user2 })
-        
-  //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
-
-  //     })
-
-  //     it("participant's contributions should reflect in the data properly", async () => {
-
-  //       const saleID = await runningSale(2, user1, 100, picnicTokenAddress, 250);
-
-  //       await presaleContract.updatePresaleTime(saleID, now, now + 10000, {from: user1});
-
-  //       await picnicToken._mint(user2, 250, { from: user2 })
-  //       await picnicToken._mint(user3, 250, { from: user3 })
-        
-  //       await presaleContract.buyTokensOnPresale(saleID, 500, {from: user2, value: "50000"});
-  //       await presaleContract.buyTokensOnPresale(saleID, 300, {from: user2, value: "30000"});
-        
-  //       await presaleContract.buyTokensOnPresale(saleID, 800, {from: user3, value: "80000"});
-
-  //       const participant2 = await presaleContract.participant(saleID, user2);
-  //       const participant3 = await presaleContract.participant(saleID, user3);
-
-  //       assert.equal(participant2.value, 80000);
-  //       assert.equal(participant2.tokens, 800);
-  //       assert.equal(participant2.whiteListed, false);
-
-  //       assert.equal(participant3.value, 80000);
-  //       assert.equal(participant3.tokens, 800);
-  //       assert.equal(participant3.whiteListed, false);
-        
-  //     })
-    
-  //   })
-  //   })
-    
-  // })
+  })
 
   describe("Once presale ends", () => {
     
@@ -1538,272 +1597,272 @@ contract("Presale", (accounts) => {
 
         // })
 
-        it("Test 2", async () => {
+        // it("Test 2", async () => {
 
-          routerContract = await Router.new();
-          routerAddress = await routerContract.address;
-          await presaleContract.setRouterAddr(routerAddress);
+        //   routerContract = await Router.new();
+        //   routerAddress = await routerContract.address;
+        //   await presaleContract.setRouterAddr(routerAddress);
       
-          await erc20._mint(user1, 17000, { from: user1 });
-          await erc20.approve(presaleContractAddress, 17000, { from: user1 });
+        //   await erc20._mint(user1, 17000, { from: user1 });
+        //   await erc20.approve(presaleContractAddress, 17000, { from: user1 });
           
-          await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user1, value: 100})      
+        //   await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user1, value: 100})      
       
-          const saleID = await presaleContract.count();
-          assert.equal(saleID, 1);
+        //   const saleID = await presaleContract.count();
+        //   assert.equal(saleID, 1);
       
-          const info0 = await presaleContract.presaleInfo(saleID);
-          assert.equal(info0.preSaleStatus, 0);
+        //   const info0 = await presaleContract.presaleInfo(saleID);
+        //   assert.equal(info0.preSaleStatus, 0);
       
-          await presaleContract.updatePresaleTime(saleID, now, now + 20, {from: user1});
+        //   await presaleContract.updatePresaleTime(saleID, now, now + 20, {from: user1});
       
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user2, value: "200000"});
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user3, value: "200000"});
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user4, value: "200000"});            
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user5, value: "200000"});            
-          await presaleContract.buyTokensOnPresale(saleID, 1000, {from: user6, value: "100000"});            
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user2, value: "200000"});
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user3, value: "200000"});
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user4, value: "200000"});            
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user5, value: "200000"});            
+        //   await presaleContract.buyTokensOnPresale(saleID, 1000, {from: user6, value: "100000"});            
         
-          await delayFn(10000)
+        //   await delayFn(10000)
       
-          await presaleContract.endPresale(saleID, {from: user1});
+        //   await presaleContract.endPresale(saleID, {from: user1});
 
-          const internalData = await presaleContract.internalData(saleID);
-          const info = await presaleContract.presaleInfo(saleID);
+        //   const internalData = await presaleContract.internalData(saleID);
+        //   const info = await presaleContract.presaleInfo(saleID);
 
-          console.log("tokensForSale ", Number(info.tokensForSale))
-          console.log("remainingTokensForSale", Number(info.remainingTokensForSale))
-          console.log("preSaleStatus", Number(info.preSaleStatus))
-          console.log(" ")
-          console.log("totalTokensSold ", String(internalData.totalTokensSold))
-          console.log("extraTokens ", String(internalData.extraTokens))
-          console.log("tokensAddedToLiquidity ", String(internalData.tokensAddedToLiquidity))
+        //   console.log("tokensForSale ", Number(info.tokensForSale))
+        //   console.log("remainingTokensForSale", Number(info.remainingTokensForSale))
+        //   console.log("preSaleStatus", Number(info.preSaleStatus))
+        //   console.log(" ")
+        //   console.log("totalTokensSold ", String(internalData.totalTokensSold))
+        //   console.log("extraTokens ", String(internalData.extraTokens))
+        //   console.log("tokensAddedToLiquidity ", String(internalData.tokensAddedToLiquidity))
           
-          // console.log("revenueFromPresale ", String(internalData.revenueFromPresale))
-          // const contractTokens1_afterEnding = await erc20.balanceOf(presaleContractAddress)
-          // assert.equal(contractTokens1_afterEnding, contractTokens1 - internalData.tokensAddedToLiquidity)   
+        //   // console.log("revenueFromPresale ", String(internalData.revenueFromPresale))
+        //   // const contractTokens1_afterEnding = await erc20.balanceOf(presaleContractAddress)
+        //   // assert.equal(contractTokens1_afterEnding, contractTokens1 - internalData.tokensAddedToLiquidity)   
           
-          // const tokensInRouterAddress = await erc20.balanceOf(routerAddress)
-          // console.log("tokens In RouterAddress => ", Number(tokensInRouterAddress))
+        //   // const tokensInRouterAddress = await erc20.balanceOf(routerAddress)
+        //   // console.log("tokens In RouterAddress => ", Number(tokensInRouterAddress))
           
-          // console.log("poolShareBNB ", String(internalData.poolShareBNB))
-          // console.log("devTeamShareBNB ", String(internalData.devTeamShareBNB))
-          // console.log("ownersShareBNB ", String(internalData.ownersShareBNB))
+        //   // console.log("poolShareBNB ", String(internalData.poolShareBNB))
+        //   // console.log("devTeamShareBNB ", String(internalData.devTeamShareBNB))
+        //   // console.log("ownersShareBNB ", String(internalData.ownersShareBNB))
 
-        })
+        // })
 
 
-        it("Test 3", async () => {
+        // it("Test 3", async () => {
         
-          routerContract = await Router.new();
-          routerAddress = await routerContract.address;
-          await presaleContract.setRouterAddr(routerAddress);
+        //   routerContract = await Router.new();
+        //   routerAddress = await routerContract.address;
+        //   await presaleContract.setRouterAddr(routerAddress);
       
-          await erc20._mint(user1, 17000, { from: user1 });
-          await erc20.approve(presaleContractAddress, 17000, { from: user1 });
+        //   await erc20._mint(user1, 17000, { from: user1 });
+        //   await erc20.approve(presaleContractAddress, 17000, { from: user1 });
           
-          await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 5500, { from: user1, value: 100})      
+        //   await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 5500, { from: user1, value: 100})      
       
-          const saleID = await presaleContract.count();
-          assert.equal(saleID, 1);
+        //   const saleID = await presaleContract.count();
+        //   assert.equal(saleID, 1);
       
-          const info0 = await presaleContract.presaleInfo(saleID);
-          assert.equal(info0.preSaleStatus, 0);
+        //   const info0 = await presaleContract.presaleInfo(saleID);
+        //   assert.equal(info0.preSaleStatus, 0);
       
-          await presaleContract.updatePresaleTime(saleID, now, now + 20, {from: user1});
+        //   await presaleContract.updatePresaleTime(saleID, now, now + 20, {from: user1});
       
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user2, value: "200000"});
-          await presaleContract.buyTokensOnPresale(saleID, 1000, {from: user3, value: "200000"});
-          await presaleContract.buyTokensOnPresale(saleID, 1000, {from: user4, value: "200000"});            
-          await presaleContract.buyTokensOnPresale(saleID, 1000, {from: user5, value: "200000"});            
-          await presaleContract.buyTokensOnPresale(saleID, 500, {from: user6, value: "100000"});            
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user2, value: "200000"});
+        //   await presaleContract.buyTokensOnPresale(saleID, 1000, {from: user3, value: "200000"});
+        //   await presaleContract.buyTokensOnPresale(saleID, 1000, {from: user4, value: "200000"});            
+        //   await presaleContract.buyTokensOnPresale(saleID, 1000, {from: user5, value: "200000"});            
+        //   await presaleContract.buyTokensOnPresale(saleID, 500, {from: user6, value: "100000"});            
         
-          await delayFn(10000)
+        //   await delayFn(10000)
       
-          await presaleContract.endPresale(saleID, {from: user1});
+        //   await presaleContract.endPresale(saleID, {from: user1});
 
-          const internalData = await presaleContract.internalData(saleID);
-          const info = await presaleContract.presaleInfo(saleID);
+        //   const internalData = await presaleContract.internalData(saleID);
+        //   const info = await presaleContract.presaleInfo(saleID);
 
-          console.log("tokensForSale ", Number(info.tokensForSale))
-          console.log("remainingTokensForSale", Number(info.remainingTokensForSale))
-          console.log("preSaleStatus", Number(info.preSaleStatus))
-          console.log(" ")
-          console.log("totalTokensSold ", String(internalData.totalTokensSold))
-          console.log("extraTokens ", String(internalData.extraTokens))
-          console.log("tokensAddedToLiquidity ", String(internalData.tokensAddedToLiquidity))
+        //   console.log("tokensForSale ", Number(info.tokensForSale))
+        //   console.log("remainingTokensForSale", Number(info.remainingTokensForSale))
+        //   console.log("preSaleStatus", Number(info.preSaleStatus))
+        //   console.log(" ")
+        //   console.log("totalTokensSold ", String(internalData.totalTokensSold))
+        //   console.log("extraTokens ", String(internalData.extraTokens))
+        //   console.log("tokensAddedToLiquidity ", String(internalData.tokensAddedToLiquidity))
           
-          // console.log("revenueFromPresale ", String(internalData.revenueFromPresale))
-          // const contractTokens1_afterEnding = await erc20.balanceOf(presaleContractAddress)
-          // assert.equal(contractTokens1_afterEnding, contractTokens1 - internalData.tokensAddedToLiquidity)   
+        //   // console.log("revenueFromPresale ", String(internalData.revenueFromPresale))
+        //   // const contractTokens1_afterEnding = await erc20.balanceOf(presaleContractAddress)
+        //   // assert.equal(contractTokens1_afterEnding, contractTokens1 - internalData.tokensAddedToLiquidity)   
           
-          // const tokensInRouterAddress = await erc20.balanceOf(routerAddress)
-          // console.log("tokens In RouterAddress => ", Number(tokensInRouterAddress))
+        //   // const tokensInRouterAddress = await erc20.balanceOf(routerAddress)
+        //   // console.log("tokens In RouterAddress => ", Number(tokensInRouterAddress))
           
-          // console.log("poolShareBNB ", String(internalData.poolShareBNB))
-          // console.log("devTeamShareBNB ", String(internalData.devTeamShareBNB))
-          // console.log("ownersShareBNB ", String(internalData.ownersShareBNB))
+        //   // console.log("poolShareBNB ", String(internalData.poolShareBNB))
+        //   // console.log("devTeamShareBNB ", String(internalData.devTeamShareBNB))
+        //   // console.log("ownersShareBNB ", String(internalData.ownersShareBNB))
 
-        })
+        // })
 
-        it("Test 4", async () => {
+        // it("Test 4", async () => {
 
-          routerContract = await Router.new();
-          routerAddress = await routerContract.address;
-          await presaleContract.setRouterAddr(routerAddress);
+        //   routerContract = await Router.new();
+        //   routerAddress = await routerContract.address;
+        //   await presaleContract.setRouterAddr(routerAddress);
       
-          await erc20._mint(user1, 23250, { from: user1 });
-          await erc20.approve(presaleContractAddress, 23250, { from: user1 });
+        //   await erc20._mint(user1, 23250, { from: user1 });
+        //   await erc20.approve(presaleContractAddress, 23250, { from: user1 });
           
-          await presaleContract.setPresale(0, erc20Address, erc20Address, 55, 15000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user1, value: 100})      
+        //   await presaleContract.setPresale(0, erc20Address, erc20Address, 55, 15000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user1, value: 100})      
       
-          const saleID = await presaleContract.count();
-          assert.equal(saleID, 1);
+        //   const saleID = await presaleContract.count();
+        //   assert.equal(saleID, 1);
       
-          const info0 = await presaleContract.presaleInfo(saleID);
-          assert.equal(info0.preSaleStatus, 0);
+        //   const info0 = await presaleContract.presaleInfo(saleID);
+        //   assert.equal(info0.preSaleStatus, 0);
       
-          await presaleContract.updatePresaleTime(saleID, now, now + 20, {from: user1});
+        //   await presaleContract.updatePresaleTime(saleID, now, now + 20, {from: user1});
       
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user2, value: "200000"});
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user3, value: "200000"});
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user4, value: "200000"});            
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user5, value: "200000"});            
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user2, value: "200000"});
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user3, value: "200000"});
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user4, value: "200000"});            
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user5, value: "200000"});            
         
-          await delayFn(10000)
+        //   await delayFn(10000)
       
-          await presaleContract.endPresale(saleID, {from: user1});
+        //   await presaleContract.endPresale(saleID, {from: user1});
 
-          const internalData = await presaleContract.internalData(saleID);
-          const info = await presaleContract.presaleInfo(saleID);
+        //   const internalData = await presaleContract.internalData(saleID);
+        //   const info = await presaleContract.presaleInfo(saleID);
 
-          console.log("tokensForSale ", Number(info.tokensForSale))
-          console.log("remainingTokensForSale", Number(info.remainingTokensForSale))
-          console.log("preSaleStatus", Number(info.preSaleStatus))
-          console.log(" ")
-          console.log("totalTokensSold ", String(internalData.totalTokensSold))
-          console.log("extraTokens ", String(internalData.extraTokens))
-          console.log("tokensAddedToLiquidity ", String(internalData.tokensAddedToLiquidity))
+        //   console.log("tokensForSale ", Number(info.tokensForSale))
+        //   console.log("remainingTokensForSale", Number(info.remainingTokensForSale))
+        //   console.log("preSaleStatus", Number(info.preSaleStatus))
+        //   console.log(" ")
+        //   console.log("totalTokensSold ", String(internalData.totalTokensSold))
+        //   console.log("extraTokens ", String(internalData.extraTokens))
+        //   console.log("tokensAddedToLiquidity ", String(internalData.tokensAddedToLiquidity))
           
-          // console.log("revenueFromPresale ", String(internalData.revenueFromPresale))
-          // const contractTokens1_afterEnding = await erc20.balanceOf(presaleContractAddress)
-          // assert.equal(contractTokens1_afterEnding, contractTokens1 - internalData.tokensAddedToLiquidity)   
+        //   // console.log("revenueFromPresale ", String(internalData.revenueFromPresale))
+        //   // const contractTokens1_afterEnding = await erc20.balanceOf(presaleContractAddress)
+        //   // assert.equal(contractTokens1_afterEnding, contractTokens1 - internalData.tokensAddedToLiquidity)   
           
-          // const tokensInRouterAddress = await erc20.balanceOf(routerAddress)
-          // console.log("tokens In RouterAddress => ", Number(tokensInRouterAddress))
+        //   // const tokensInRouterAddress = await erc20.balanceOf(routerAddress)
+        //   // console.log("tokens In RouterAddress => ", Number(tokensInRouterAddress))
           
-          // console.log("poolShareBNB ", String(internalData.poolShareBNB))
-          // console.log("devTeamShareBNB ", String(internalData.devTeamShareBNB))
-          // console.log("ownersShareBNB ", String(internalData.ownersShareBNB))
+        //   // console.log("poolShareBNB ", String(internalData.poolShareBNB))
+        //   // console.log("devTeamShareBNB ", String(internalData.devTeamShareBNB))
+        //   // console.log("ownersShareBNB ", String(internalData.ownersShareBNB))
 
-        })
+        // })
 
-        it("Test 5", async () => {
+        // it("Test 5", async () => {
 
-          routerContract = await Router.new();
-          routerAddress = await routerContract.address;
-          await presaleContract.setRouterAddr(routerAddress);
+        //   routerContract = await Router.new();
+        //   routerAddress = await routerContract.address;
+        //   await presaleContract.setRouterAddr(routerAddress);
       
-          await erc20._mint(user1, 17000, { from: user1 });
-          await erc20.approve(presaleContractAddress, 17000, { from: user1 });
+        //   await erc20._mint(user1, 17000, { from: user1 });
+        //   await erc20.approve(presaleContractAddress, 17000, { from: user1 });
           
-          await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user1, value: 100})      
+        //   await presaleContract.setPresale(0, erc20Address, erc20Address, 70, 10000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user1, value: 100})      
       
-          const saleID = await presaleContract.count();
-          assert.equal(saleID, 1);
+        //   const saleID = await presaleContract.count();
+        //   assert.equal(saleID, 1);
       
-          const info0 = await presaleContract.presaleInfo(saleID);
-          assert.equal(info0.preSaleStatus, 0);
+        //   const info0 = await presaleContract.presaleInfo(saleID);
+        //   assert.equal(info0.preSaleStatus, 0);
       
-          await presaleContract.updatePresaleTime(saleID, now, now + 20, {from: user1});
+        //   await presaleContract.updatePresaleTime(saleID, now, now + 20, {from: user1});
       
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user2, value: "200000"});
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user3, value: "200000"});
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user4, value: "200000"});            
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user2, value: "200000"});
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user3, value: "200000"});
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user4, value: "200000"});            
         
-          await delayFn(10000)
+        //   await delayFn(10000)
       
-          await presaleContract.endPresale(saleID, {from: user1});
+        //   await presaleContract.endPresale(saleID, {from: user1});
 
-          const internalData = await presaleContract.internalData(saleID);
-          const info = await presaleContract.presaleInfo(saleID);
+        //   const internalData = await presaleContract.internalData(saleID);
+        //   const info = await presaleContract.presaleInfo(saleID);
 
-          console.log("tokensForSale ", Number(info.tokensForSale))
-          console.log("remainingTokensForSale", Number(info.remainingTokensForSale))
-          console.log("preSaleStatus", Number(info.preSaleStatus))
-          console.log(" ")
-          console.log("totalTokensSold ", String(internalData.totalTokensSold))
-          console.log("extraTokens ", String(internalData.extraTokens))
-          console.log("tokensAddedToLiquidity ", String(internalData.tokensAddedToLiquidity))
-          console.log("poolShareBNB ", String(internalData.poolShareBNB))
-          console.log("devTeamShareBNB ", String(internalData.devTeamShareBNB))
-          console.log("ownersShareBNB ", String(internalData.ownersShareBNB))
+        //   console.log("tokensForSale ", Number(info.tokensForSale))
+        //   console.log("remainingTokensForSale", Number(info.remainingTokensForSale))
+        //   console.log("preSaleStatus", Number(info.preSaleStatus))
+        //   console.log(" ")
+        //   console.log("totalTokensSold ", String(internalData.totalTokensSold))
+        //   console.log("extraTokens ", String(internalData.extraTokens))
+        //   console.log("tokensAddedToLiquidity ", String(internalData.tokensAddedToLiquidity))
+        //   console.log("poolShareBNB ", String(internalData.poolShareBNB))
+        //   console.log("devTeamShareBNB ", String(internalData.devTeamShareBNB))
+        //   console.log("ownersShareBNB ", String(internalData.ownersShareBNB))
           
-          // console.log("revenueFromPresale ", String(internalData.revenueFromPresale))
-          // const contractTokens1_afterEnding = await erc20.balanceOf(presaleContractAddress)
-          // assert.equal(contractTokens1_afterEnding, contractTokens1 - internalData.tokensAddedToLiquidity)   
+        //   // console.log("revenueFromPresale ", String(internalData.revenueFromPresale))
+        //   // const contractTokens1_afterEnding = await erc20.balanceOf(presaleContractAddress)
+        //   // assert.equal(contractTokens1_afterEnding, contractTokens1 - internalData.tokensAddedToLiquidity)   
           
-          // const tokensInRouterAddress = await erc20.balanceOf(routerAddress)
-          // console.log("tokens In RouterAddress => ", Number(tokensInRouterAddress))
+        //   // const tokensInRouterAddress = await erc20.balanceOf(routerAddress)
+        //   // console.log("tokens In RouterAddress => ", Number(tokensInRouterAddress))
           
 
-        })
+        // })
 
-        it("Test 6", async () => {
+        // it("Test 6", async () => {
 
-          routerContract = await Router.new();
-          routerAddress = await routerContract.address;
-          await presaleContract.setRouterAddr(routerAddress);
+        //   routerContract = await Router.new();
+        //   routerAddress = await routerContract.address;
+        //   await presaleContract.setRouterAddr(routerAddress);
       
-          await erc20._mint(user1, 23250, { from: user1 });
-          await erc20.approve(presaleContractAddress, 23250, { from: user1 });
+        //   await erc20._mint(user1, 23250, { from: user1 });
+        //   await erc20.approve(presaleContractAddress, 23250, { from: user1 });
           
-          await presaleContract.setPresale(0, erc20Address, erc20Address, 55, 15000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user1, value: 100})      
+        //   await presaleContract.setPresale(0, erc20Address, erc20Address, 55, 15000, 100, 250, [now + 5000, now + 10000] ,[500, 2000], 8000, { from: user1, value: 100})      
       
-          const saleID = await presaleContract.count();
-          assert.equal(saleID, 1);
+        //   const saleID = await presaleContract.count();
+        //   assert.equal(saleID, 1);
       
-          const info0 = await presaleContract.presaleInfo(saleID);
-          assert.equal(info0.preSaleStatus, 0);
+        //   const info0 = await presaleContract.presaleInfo(saleID);
+        //   assert.equal(info0.preSaleStatus, 0);
       
-          await presaleContract.updatePresaleTime(saleID, now, now + 20, {from: user1});
+        //   await presaleContract.updatePresaleTime(saleID, now, now + 20, {from: user1});
       
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user2, value: "200000"});
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user3, value: "200000"});
-          await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user4, value: "200000"});            
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user2, value: "200000"});
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user3, value: "200000"});
+        //   await presaleContract.buyTokensOnPresale(saleID, 2000, {from: user4, value: "200000"});            
         
-          await delayFn(10000)
+        //   await delayFn(10000)
       
-          await presaleContract.endPresale(saleID, {from: user1});
+        //   await presaleContract.endPresale(saleID, {from: user1});
 
-          const internalData = await presaleContract.internalData(saleID);
-          const info = await presaleContract.presaleInfo(saleID);
+        //   const internalData = await presaleContract.internalData(saleID);
+        //   const info = await presaleContract.presaleInfo(saleID);
 
-          console.log("tokensForSale ", Number(info.tokensForSale))
-          console.log("remainingTokensForSale", Number(info.remainingTokensForSale))
-          console.log("preSaleStatus", Number(info.preSaleStatus))
-          console.log(" ")
-          console.log("totalTokensSold ", String(internalData.totalTokensSold))
-          console.log("extraTokens ", String(internalData.extraTokens))
-          console.log("tokensAddedToLiquidity ", String(internalData.tokensAddedToLiquidity))
-          console.log("poolShareBNB ", String(internalData.poolShareBNB))
-          console.log("devTeamShareBNB ", String(internalData.devTeamShareBNB))
-          console.log("ownersShareBNB ", String(internalData.ownersShareBNB))
+        //   console.log("tokensForSale ", Number(info.tokensForSale))
+        //   console.log("remainingTokensForSale", Number(info.remainingTokensForSale))
+        //   console.log("preSaleStatus", Number(info.preSaleStatus))
+        //   console.log(" ")
+        //   console.log("totalTokensSold ", String(internalData.totalTokensSold))
+        //   console.log("extraTokens ", String(internalData.extraTokens))
+        //   console.log("tokensAddedToLiquidity ", String(internalData.tokensAddedToLiquidity))
+        //   console.log("poolShareBNB ", String(internalData.poolShareBNB))
+        //   console.log("devTeamShareBNB ", String(internalData.devTeamShareBNB))
+        //   console.log("ownersShareBNB ", String(internalData.ownersShareBNB))
           
-          // console.log("revenueFromPresale ", String(internalData.revenueFromPresale))
-          // const contractTokens1_afterEnding = await erc20.balanceOf(presaleContractAddress)
-          // assert.equal(contractTokens1_afterEnding, contractTokens1 - internalData.tokensAddedToLiquidity)   
+        //   // console.log("revenueFromPresale ", String(internalData.revenueFromPresale))
+        //   // const contractTokens1_afterEnding = await erc20.balanceOf(presaleContractAddress)
+        //   // assert.equal(contractTokens1_afterEnding, contractTokens1 - internalData.tokensAddedToLiquidity)   
           
-          // const tokensInRouterAddress = await erc20.balanceOf(routerAddress)
-          // console.log("tokens In RouterAddress => ", Number(tokensInRouterAddress))
+        //   // const tokensInRouterAddress = await erc20.balanceOf(routerAddress)
+        //   // console.log("tokens In RouterAddress => ", Number(tokensInRouterAddress))
           
 
-        })
+        // })
 
       })
 
     })
 
-    // describe("as an Owner", () => {
+    describe("as an Owner", () => {
 
     //   it("should be able to end the sale if it is soldout", async () => {
         
@@ -1908,9 +1967,9 @@ contract("Presale", (accounts) => {
 
     //   })
 
-    // })
+    })
 
-    // describe("as a participant", () => {
+    describe("as a participant", () => {
 
     //   it("should not be able to participate once the sale has been ended by owner after success + soldout", async () => {
         
@@ -2012,7 +2071,7 @@ contract("Presale", (accounts) => {
     //   })
 
     
-    //   describe("before claiming", () => {
+      describe("before claiming", () => {
 
     //     it("should not own any presale tokens", async () => {
           
@@ -2042,13 +2101,13 @@ contract("Presale", (accounts) => {
 
     //     })    
 
-    //   })
+      })
 
-    // })   
+    })   
     
   })
 
-  // describe("On successfull sale", () => {
+  describe("On successfull sale", () => {
 
   //   it("everyone should recieve his shares as expected", async () => { 
       
@@ -2367,7 +2426,7 @@ contract("Presale", (accounts) => {
   //   })  
 
 
-  // })
+  })
 
   describe("On unsuccessfull sale", () => {
 

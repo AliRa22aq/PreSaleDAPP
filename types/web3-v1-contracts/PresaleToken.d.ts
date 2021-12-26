@@ -21,23 +21,6 @@ interface EventOptions {
   topics?: string[];
 }
 
-export type Approval = ContractEventLog<{
-  owner: string;
-  spender: string;
-  value: string;
-  0: string;
-  1: string;
-  2: string;
-}>;
-export type Transfer = ContractEventLog<{
-  from: string;
-  to: string;
-  value: string;
-  0: string;
-  1: string;
-  2: string;
-}>;
-
 export interface PresaleToken extends BaseContract {
   constructor(
     jsonInterface: any[],
@@ -76,9 +59,6 @@ export interface PresaleToken extends BaseContract {
       amount: number | string | BN
     ): NonPayableTransactionObject<void>;
 
-    /**
-     * Returns the name of the token.
-     */
     name(): NonPayableTransactionObject<string>;
 
     /**
@@ -92,18 +72,6 @@ export interface PresaleToken extends BaseContract {
     decimals(): NonPayableTransactionObject<string>;
   };
   events: {
-    Approval(cb?: Callback<Approval>): EventEmitter;
-    Approval(options?: EventOptions, cb?: Callback<Approval>): EventEmitter;
-
-    Transfer(cb?: Callback<Transfer>): EventEmitter;
-    Transfer(options?: EventOptions, cb?: Callback<Transfer>): EventEmitter;
-
     allEvents(options?: EventOptions, cb?: Callback<EventLog>): EventEmitter;
   };
-
-  once(event: "Approval", cb: Callback<Approval>): void;
-  once(event: "Approval", options: EventOptions, cb: Callback<Approval>): void;
-
-  once(event: "Transfer", cb: Callback<Transfer>): void;
-  once(event: "Transfer", options: EventOptions, cb: Callback<Transfer>): void;
 }

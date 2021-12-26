@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import store from './components/store/store';
 import { BrowserRouter } from "react-router-dom";
 import {ThemeProvider, createTheme } from '@mui/material/styles';
+// import { SnackbarProvider, VariantType, useSnackbar } from 'notistack';
 
 const theme = createTheme({
   palette: {
