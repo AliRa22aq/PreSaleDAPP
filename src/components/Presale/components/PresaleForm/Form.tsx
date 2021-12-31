@@ -39,22 +39,6 @@ import axios from "axios";
 
 const Web3 = require("web3");
 
-// import Alert from '@mui/material/Alert';
-
-// import Snackbar from '@mui/material/Snackbar';
-// import MuiAlert, { AlertProps } from '@mui/material/Alert';
-// import { SnackbarProvider, VariantType, useSnackbar } from 'notistack';
-
-
-// const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-//     props,
-//     ref,
-//   ) {
-//     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-//   });
-
-
-// let abi: any;
 
 function InputForm() {
 
@@ -114,8 +98,6 @@ function InputForm() {
         fileReader.readAsDataURL(e.target.files[0]);
         fileReader.onload = (e) => {
 
-            // console.log(JSON.stringify(e?.target?.result))
-
             if (e && e.target && e.target.result) {
                 setLogo(e?.target?.result);
             }
@@ -142,7 +124,6 @@ function InputForm() {
         setExpanded(window)
         setActiveStep(step)
         setSubmit(true)
-
     }
 
     const [contractAdd, setContractAdd] = useState("")
@@ -167,7 +148,7 @@ function InputForm() {
     }
 
 
-    // Import Functions 
+    // Important Functions 
 
     const fethcContractInfo = async (address: any) => {
         console.log("error fethcContractInfo start")
@@ -231,13 +212,6 @@ function InputForm() {
         const balanceOf = await Contract.methods.balanceOf(userAddress).call();
         const name = await Contract.methods.name().call();
 
-        // const allownce = await Contract.methods.allowance(userAddress, "0x468C63e7c71CC54e7D7481916214222c6Ac24C48").call()
-        // const allownce = await Contract.methods.allowance(userAddress, "0x468C63e7c71CC54e7D7481916214222c6Ac24C48").call()
-
-        // await Contract.methods.approve("0x468C63e7c71CC54e7D7481916214222c6Ac24C48", "17000").send({ from: userAddress });
-
-        // console.log("allownce ", allownce)
-
         const contractInfo: ContractInfo = {
             address: address,
             methods: Contract.methods,
@@ -251,9 +225,6 @@ function InputForm() {
         dispatch(setFormcontractInfo(contractInfo))
 
         setTokenInfo({ loading: false, error: false })
-
-        // console.log("error fethcContractInfo ends")
-
 
     }
 
@@ -359,41 +330,6 @@ function InputForm() {
         setContractAdd("")
     }, [])
 
-
-    // const { enqueueSnackbar } = useSnackbar();
-
-    // const handleClick = () => {
-    //   enqueueSnackbar('I love snacks.');
-    // };
-
-    // const handleClickVariant = (variant: VariantType) => () => {
-    //   // variant could be success, error, warning, info, or default
-    //   enqueueSnackbar('This is a success message!', { variant });
-    // };
-
-
-
-    // const [openSuccessSnack, setOpenSuccessSnack] = React.useState(false);
-    // const [openFailourSnack, setOpenFailourSnack] = React.useState(false);
-
-    // const handleClickSnack = (type: "success"|"failour") => {
-    //     if(type === "success"){
-    //         setOpenSuccessSnack(true);
-    //     }
-    //     else if (type === "failour"){
-    //         setOpenFailourSnack(true)
-    //     }
-    // };
-
-    // const handleCloseSnack = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    //   if (reason === 'clickaway') {
-    //     return;
-    //   }
-    //   setOpenSuccessSnack(false);
-    // };
-
-
-
     return (
         <div>
 
@@ -468,22 +404,21 @@ function InputForm() {
                                                             <>
                                                                 {
                                                                     networkID === 56 ?
-                                                                        <div>
+                                                                        <div style={{padding: 1, fontSize: "16px"}}>
                                                                             For testing: <br />
                                                                             0x96D91c8f5eE3C4478854944A7523d8975094D2B3 <br />
                                                                             0x033c90840F27C83B1Aa0Ffe6Db65C954BF6ABbdd <br />
                                                                             0x59F829DDfEe8aa3A53b3A00d23AD934Aaae69c05 <br />
                                                                         </div>
                                                                         :
-
-                                                                        networkID === 97 ?
-                                                                            <div>
+                                                                    networkID === 97 ?
+                                                                        <div style={{padding: 1, fontSize: "16px"}}>
                                                                                 For testing: <br />
                                                                                 0x769c15B3cD7a240FaE9194a71330FF6A9E6D1Cd9 <br />
                                                                                 0xa85B5d02bD800611bdE58a1536C42F18F2f717B3 <br />
-                                                                            </div>
-                                                                            :
-                                                                            null
+                                                                        </div>
+                                                                        :
+                                                                        null
                                                                 }
                                                             </>
                                             }
@@ -553,9 +488,9 @@ function InputForm() {
 
                                     <AccordionDetails>
 
-                                        <Grid container sx={{ padding: 0 }}>
+                                        <Grid container sx={{ padding: 1 }}>
 
-                                            <Grid item xs={4} lg={2} sx={{ padding: 1 }}>
+                                            <Grid item xs={4} lg={2} sx={{ padding: 0 }}>
                                                 <FormControl fullWidth>
                                                     <InputLabel id="demo-simple-select-label">Type</InputLabel>
                                                     <Field
@@ -574,7 +509,7 @@ function InputForm() {
                                                 </FormControl>
                                             </Grid>
 
-                                            <Grid item xs={4} lg={5} sx={{ padding: 1 }} >
+                                            <Grid item xs={4} lg={5} sx={{ padding: 0 }} >
                                                 <Field
                                                     component={TextField}
                                                     type="number"
@@ -586,7 +521,7 @@ function InputForm() {
                                                 />
                                             </Grid>
 
-                                            <Grid item xs={4} lg={5} sx={{ padding: 1 }} >
+                                            <Grid item xs={4} lg={5} sx={{ padding: 0 }} >
                                                 <Field
                                                     component={TextField}
                                                     type="number"
@@ -600,7 +535,7 @@ function InputForm() {
                                                 />
                                             </Grid>
 
-                                            <Grid item xs={12} sx={{ padding: 1 }} >
+                                            <Grid item xs={12} sx={{ padding: 0 }} >
                                                 {
                                                     saleType == 2 ?
                                                         <Field
