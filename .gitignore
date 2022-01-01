@@ -3,12 +3,13 @@
 # dependencies
 /node_modules
 /Contract/node_modules
-/presaleContract/node_modules
+/Locker/node_modules
 
 /.pnp
 .pnp.js
 
 ./Contract/.env
+./Locker/.env
 
 # testing
 /coverage
@@ -16,8 +17,6 @@
 /src/assets/**
 # production
 /build
-/Contract/build
-/presaleContract/build
 
 # misc
 .DS_Store

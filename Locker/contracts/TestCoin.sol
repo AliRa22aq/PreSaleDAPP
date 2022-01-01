@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./Context.sol";
 
-contract PresaleToken {
+contract TestCoin {
 
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
