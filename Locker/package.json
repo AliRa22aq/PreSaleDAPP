@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@openzeppelin/test-helpers": "^0.5.15"
+    "@openzeppelin/test-helpers": "^0.5.15",
+    "eth-gas-reporter": "^0.2.23"
   }
 }
