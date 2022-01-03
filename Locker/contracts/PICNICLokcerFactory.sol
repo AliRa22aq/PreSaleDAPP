@@ -5,8 +5,11 @@ pragma solidity ^0.8.0;
 import "./IERC20.sol";
 import "./Ownable.sol";
 import "./SafeMath.sol";
+import "./PLock.sol";
+import "./IPLock.sol";
 
-contract PICNICLocker is Ownable {
+
+contract PICNICLockerFactory is Ownable {
 
     using SafeMath for uint;
     uint public lockerCount;    
@@ -26,6 +29,7 @@ contract PICNICLocker is Ownable {
         Type _type;
         address owner; 
         address tokenAddress;
+        address lockerAddress;
         uint numOfTokens;
         uint lockTime;
         uint unlockTime;
@@ -51,38 +55,48 @@ contract PICNICLocker is Ownable {
     }
 
 
-    function lockTokens(Type _type, address _token, uint _numOfTokens, uint _unlockTime) payable public {
+
+    function createLcoker(Type _type, address _token, uint _numOfTokens, uint _unlockTime) payable public {
+
         require(msg.value >= lockFee, "Please pay the fee");
         require(_unlockTime > block.timestamp, "The unlock time should in future");
 
-        IERC20(_token).transferFrom(_msgSender(), address(this), _numOfTokens);
+
 
         lockerCount++;
+
+
+        PLock lockerr = new PLock(lockerCount, _msgSender(), _token, _numOfTokens, _unlockTime);
+
+        IERC20(_token).transferFrom(_msgSender(), address(lockerr), _numOfTokens);
 
         loker[lockerCount] = Loker(
             lockerCount,
             _type,
             _msgSender(),
             _token,
+            address(lockerr),
             _numOfTokens,
             block.timestamp,
             _unlockTime,
             Status.LOCKED
         );
 
+
         lockersListByUserAddress[_msgSender()].push(lockerCount);
         lockersListByTokenAddress[_token].push(lockerCount);
 
         emit Locked (lockerCount, _msgSender(), _token, _numOfTokens, _unlockTime );
-
+        
     }
 
+    
     function unlockTokens(uint _id, uint _numOfTokens) public OnlyLockerOnwer(_id) Expired(_id) {
 
         Loker memory lokerData = loker[_id];
         require(lokerData.numOfTokens >= _numOfTokens, "Not enough tokens to withdraw");
 
-        IERC20(lokerData.tokenAddress).transfer(_msgSender(), _numOfTokens);
+        IPLock(loker[_id].lockerAddress).unlockTokens(_numOfTokens);
 
         loker[_id].numOfTokens = lokerData.numOfTokens.sub(_numOfTokens);   
 
@@ -99,7 +113,8 @@ contract PICNICLocker is Ownable {
         require(msg.value >= updateLokcerFee, "Please pay the updating fee");
         require(_numOfTokens > 0, "Tokens should be more than zero");
 
-        IERC20(loker[_id].tokenAddress).transferFrom(_msgSender(), address(this), _numOfTokens);
+        IERC20(loker[_id].tokenAddress).transferFrom(_msgSender(), address(loker[_id].lockerAddress), _numOfTokens);
+        IPLock(loker[_id].lockerAddress).addTokenstoALocker(_numOfTokens);
 
         loker[_id].numOfTokens = loker[_id].numOfTokens.add(_numOfTokens);
 
@@ -110,9 +125,15 @@ contract PICNICLocker is Ownable {
         require(msg.value >= updateLokcerFee, "please pay the updating fee");
         require(_additionTime > 0, "Addition time should be more than zero");
 
+        IPLock(loker[_id].lockerAddress).increaseLocktime(_additionTime);
+
         loker[_id].unlockTime = loker[_id].unlockTime.add(_additionTime);
 
     }
+
+
+
+
 
     function getLockersListbyUser(address _userAddress) public view returns (uint[] memory) {
         return lockersListByUserAddress[_userAddress];
